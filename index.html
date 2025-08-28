@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Catálogo de Telas</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      margin: 0;
+      padding: 0;
+      background: #f8f9fc;
+      color: #333;
+    }
+    header {
+      background: linear-gradient(135deg, #6c63ff, #3a2ec9);
+      color: white;
+      padding: 1rem;
+      text-align: center;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+    }
+    header h1 {
+      margin: 0;
+      font-size: 1.5rem;
+    }
+    .search-box {
+      margin: 1rem;
+      text-align: center;
+    }
+    .search-box input {
+      width: 95%;
+      max-width: 600px;
+      padding: 0.8rem;
+      border-radius: 12px;
+      border: 1px solid #ccc;
+      font-size: 1rem;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    }
+    .catalogo {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 1rem;
+      padding: 1rem;
+    }
+    .card {
+      background: white;
+      border-radius: 16px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      transition: transform 0.2s ease;
+    }
+    .card:hover {
+      transform: scale(1.02);
+    }
+    .card img {
+      width: 100%;
+      height: 200px;
+      object-fit: cover;
+      background: #eee;
+    }
+    .card-content {
+      padding: 1rem;
+      flex-grow: 1;
+    }
+    .card-content h3 {
+      margin: 0 0 0.5rem;
+      font-size: 1.2rem;
+      color: #444;
+    }
+    .card-content p {
+      margin: 0.3rem 0;
+      font-size: 0.95rem;
+    }
+    .card-content a {
+      display: inline-block;
+      margin-top: 0.8rem;
+      padding: 0.5rem 1rem;
+      background: #6c63ff;
+      color: white;
+      text-decoration: none;
+      border-radius: 8px;
+      font-size: 0.9rem;
+      transition: background 0.2s ease;
+    }
+    .card-content a:hover {
+      background: #574fd6;
+    }
+    @media (max-width: 600px) {
+      .card img {
+        height: 160px;
+      }
+      .card-content h3 {
+        font-size: 1rem;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>Catálogo de Telas</h1>
+  </header>
+
+  <div class="search-box">
+    <input type="text" id="searchInput" placeholder="Buscar por código, descripción, proveedor, catálogo, tipo o ubicación...">
+  </div>
+
+  <div class="catalogo" id="catalogo"></div>
+
+  <script>
+    // CSV local
+    const CSV_URL = "./datos.csv";
+
+    // Convertir CSV a objetos
+    function parseCSV(text) {
+      const rows = text.split("\n").map(r => r.trim()).filter(r => r.length > 0);
+      const headers = rows[0].split(",");
+      return rows.slice(1).map(row => {
+        const values = row.split(",");
+        let obj = {};
+        headers.forEach((h, i) => obj[h.trim()] = values[i] ? values[i].trim() : "");
+        return obj;
+      });
+    }
+
+    // Renderizar tarjetas
+    function renderCatalogo(data) {
+      const catalogo = document.getElementById("catalogo");
+      catalogo.innerHTML = "";
+      data.forEach(item => {
+        const card = document.createElement("div");
+        card.className = "card";
+        card.innerHTML = `
+          <img loading="lazy" src="${item.IMAGEN}" alt="${item.DESCRIPCION}" 
+            onerror="this.src='https://via.placeholder.com/300x200?text=Sin+Imagen'">
+          <div class="card-content">
+            <h3>${item.DESCRIPCION || "Sin descripción"}</h3>
+            <p><b>Código:</b> ${item.CODIGO || "-"}</p>
+            <p><b>Cantidad:</b> ${item.CANTIDAD || "-"}</p>
+            <p><b>Ubicación:</b> ${item.UBICACION || "-"}</p>
+            <p><b>Proveedor:</b> ${item.PROVEEDOR || "-"}</p>
+            <p><b>Catálogo:</b> ${item.CATALOGO || "-"}</p>
+            <p><b>Tipo:</b> ${item.TIPO || "-"}</p>
+            <a href="${item["WEB SITE"]}" target="_blank">Ver más</a>
+          </div>
+        `;
+        catalogo.appendChild(card);
+      });
+    }
+
+    // Filtro avanzado
+    function setupSearch(data) {
+      const searchInput = document.getElementById("searchInput");
+      searchInput.addEventListener("input", () => {
+        const q = searchInput.value.toLowerCase();
+        const filtrados = data.filter(item =>
+          (item.CODIGO || "").toLowerCase().includes(q) ||
+          (item.DESCRIPCION || "").toLowerCase().includes(q) ||
+          (item.PROVEEDOR || "").toLowerCase().includes(q) ||
+          (item.CATALOGO || "").toLowerCase().includes(q) ||
+          (item.TIPO || "").toLowerCase().includes(q) ||
+          (item.UBICACION || "").toLowerCase().includes(q)
+        );
+        renderCatalogo(filtrados);
+      });
+    }
+
+    // Cargar CSV
+    fetch(CSV_URL)
+      .then(resp => resp.text())
+      .then(text => {
+        const data = parseCSV(text);
+        renderCatalogo(data);
+        setupSearch(data);
+      })
+      .catch(err => console.error("Error cargando CSV:", err));
+  </script>
+</body>
+</html>
+
