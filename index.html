@@ -29,13 +29,9 @@
     }
     #resultados {
       display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+      grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); /* más tarjetas por fila */
       gap: 15px;
       padding: 15px;
-
-      /* Zoom inicial */
-      transform: scale(0.85);
-      transform-origin: top center;
     }
     .card {
       background: #fff;
@@ -99,6 +95,17 @@
       complete: function(results) {
         datos = results.data.filter(row => row.CODIGO && row.DESCRIPCION);
         mostrarResultados(datos);
+
+        // Revisar si viene ?ubicacion= en la URL
+        const params = new URLSearchParams(window.location.search);
+        if (params.has('ubicacion')) {
+          const ubicacion = params.get('ubicacion').toLowerCase();
+          buscador.value = ubicacion;
+          const filtrados = datos.filter(fila =>
+            (fila.UBICACION || '').toLowerCase().includes(ubicacion)
+          );
+          mostrarResultados(filtrados);
+        }
       }
     });
 
@@ -125,11 +132,11 @@
       const filtrados = datos.filter(fila =>
         (fila.CODIGO || '').toLowerCase().includes(texto) ||
         (fila.DESCRIPCION || '').toLowerCase().includes(texto) ||
-        (fila.PROVEEDOR || '').toLowerCase().includes(texto)
+        (fila.PROVEEDOR || '').toLowerCase().includes(texto) ||
+        (fila.UBICACION || '').toLowerCase().includes(texto)
       );
       mostrarResultados(filtrados);
     });
   </script>
 </body>
 </html>
-
