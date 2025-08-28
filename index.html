@@ -49,9 +49,10 @@
       background: #555;
     }
 
+    /* Vista lista (una tarjeta por fila) */
     #resultados {
       display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); /* vista lista */
+      grid-template-columns: 1fr;
       gap: 15px;
       padding: 15px;
     }
@@ -82,7 +83,7 @@
       color: #555;
     }
 
-    /* VISTA CUADRÍCULA */
+    /* Vista cuadrícula (4 columnas en móvil, más en pantallas grandes) */
     .grid-view {
       grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
     }
@@ -105,85 +106,84 @@
     <h1>Catálogo de Telas</h1>
   </header>
 
-  <input type="text" id="buscador" placeholder="Buscar por código, descripción o proveedor...">
+  <input type="text" id="buscador" placeholder="Buscar tela...">
 
   <div id="view-buttons">
-    <button onclick="setView('list')">☰ Lista</button>
-    <button onclick="setView('grid')">🔲 Cuadrícula</button>
+    <button onclick="setListView()">☰ Lista</button>
+    <button onclick="setGridView()">🔲 Cuadrícula</button>
   </div>
 
   <div id="resultados"></div>
 
-  <script src="https://cdn.jsdelivr.net/npm/papaparse@5.4.1/papaparse.min.js"></script>
   <script>
-    const CSV_URL_LOCAL  = './datos.csv'; // archivo local en GitHub
-    let datos = [];
+    const CSV_URL = "datos.csv"; // usa tu archivo local en GitHub
+    const resultados = document.getElementById("resultados");
+    const buscador = document.getElementById("buscador");
 
-    const resultadosDiv = document.getElementById('resultados');
-    const buscador = document.getElementById('buscador');
+    // Alternar vista
+    function setListView() {
+      resultados.classList.remove("grid-view");
+    }
 
-    // Cambiar vista
-    function setView(view) {
-      if (view === 'grid') {
-        resultadosDiv.classList.add('grid-view');
-      } else {
-        resultadosDiv.classList.remove('grid-view');
-      }
+    function setGridView() {
+      resultados.classList.add("grid-view");
+    }
+
+    // Cargar CSV
+    async function cargarDatos() {
+      const res = await fetch(CSV_URL);
+      const data = await res.text();
+      const filas = data.split("\n").slice(1); // quitar encabezado
+
+      window.telas = filas.map(fila => {
+        const cols = fila.split(",");
+        return {
+          codigo: cols[0],
+          descripcion: cols[1],
+          cantidad: cols[2],
+          ubicacion: cols[3],
+          catalogo: cols[4],
+          proveedor: cols[5],
+          tipo: cols[6],
+          web: cols[9],
+          imagen: cols[10]
+        };
+      });
+
+      mostrarTelas(window.telas);
     }
 
     // Mostrar resultados
-    function mostrarResultados(filas) {
-      resultadosDiv.innerHTML = "";
-      if (filas.length === 0) {
-        resultadosDiv.innerHTML = "<p>No se encontraron resultados</p>";
-        return;
-      }
-      filas.forEach(fila => {
-        const card = document.createElement('div');
+    function mostrarTelas(telas) {
+      resultados.innerHTML = "";
+      telas.forEach(tela => {
+        if (!tela.codigo) return; // evitar vacíos
+        const card = document.createElement("div");
         card.className = "card";
         card.innerHTML = `
-          <img src="${fila.IMAGEN}" alt="${fila.DESCRIPCION}" loading="lazy">
-          <h3>${fila.CODIGO || ""}</h3>
-          <p>${fila.DESCRIPCION || ""}</p>
-          <p><strong>Ubicación:</strong> ${fila.UBICACION || ""}</p>
-          <p><strong>Proveedor:</strong> ${fila.PROVEEDOR || ""}</p>
+          <img src="${tela.imagen}" alt="${tela.descripcion}">
+          <h3>${tela.descripcion}</h3>
+          <p><b>Código:</b> ${tela.codigo}</p>
+          <p><b>Cantidad:</b> ${tela.cantidad}</p>
+          <p><b>Ubicación:</b> ${tela.ubicacion}</p>
+          <a href="${tela.web}" target="_blank">Ver más</a>
         `;
-        resultadosDiv.appendChild(card);
+        resultados.appendChild(card);
       });
     }
 
-    // Buscar
-    buscador.addEventListener("input", () => {
-      const texto = buscador.value.toLowerCase();
-      const filtrados = datos.filter(fila =>
-        (fila.CODIGO || "").toLowerCase().includes(texto) ||
-        (fila.DESCRIPCION || "").toLowerCase().includes(texto) ||
-        (fila.PROVEEDOR || "").toLowerCase().includes(texto) ||
-        (fila.UBICACION || "").toLowerCase().includes(texto)
+    // Buscador
+    buscador.addEventListener("input", e => {
+      const texto = e.target.value.toLowerCase();
+      const filtradas = window.telas.filter(tela =>
+        tela.descripcion.toLowerCase().includes(texto) ||
+        tela.codigo.toLowerCase().includes(texto) ||
+        tela.ubicacion.toLowerCase().includes(texto)
       );
-      mostrarResultados(filtrados);
+      mostrarTelas(filtradas);
     });
 
-    // Cargar CSV local
-    Papa.parse(CSV_URL_LOCAL, {
-      download: true,
-      header: true,
-      complete: function(results) {
-        datos = results.data;
-        mostrarResultados(datos);
-
-        // Filtro automático por QR (ubicacion en URL)
-        const params = new URLSearchParams(window.location.search);
-        if (params.has('ubicacion')) {
-          const ubicacion = params.get('ubicacion').toLowerCase();
-          buscador.value = ubicacion;
-          const filtrados = datos.filter(fila =>
-            (fila.UBICACION || '').toLowerCase().includes(ubicacion)
-          );
-          mostrarResultados(filtrados);
-        }
-      }
-    });
+    cargarDatos();
   </script>
 </body>
 </html>
