@@ -2,7 +2,7 @@
 <html lang="es">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=0.5, maximum-scale=3.0, user-scalable=yes">
+  <meta name="viewport" content="width=1200, initial-scale=0.5, minimum-scale=0.3, maximum-scale=3.0, user-scalable=yes">
   <title>Catálogo de Telas</title>
   <style>
     body {
@@ -12,19 +12,20 @@
       background: #f5f5f5;
     }
     header {
-      background: #333;
+      background: #222;
       color: #fff;
-      padding: 10px;
+      padding: 15px;
       text-align: center;
     }
     #buscador {
       width: 90%;
-      margin: 10px auto;
+      max-width: 400px;
+      padding: 10px;
+      margin: 15px auto;
       display: block;
-      padding: 8px;
-      font-size: 16px;
       border: 1px solid #ccc;
-      border-radius: 5px;
+      border-radius: 8px;
+      font-size: 16px;
     }
     #resultados {
       display: grid;
@@ -34,8 +35,8 @@
     }
     .card {
       background: #fff;
-      border-radius: 10px;
-      box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+      border-radius: 12px;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
       overflow: hidden;
       display: flex;
       flex-direction: column;
@@ -46,31 +47,27 @@
     }
     .card img {
       width: 100%;
-      height: 150px;
+      height: 180px;
       object-fit: cover;
-      border-bottom: 1px solid #ddd;
       loading: lazy;
     }
     .card-content {
       padding: 10px;
     }
     .card-content h3 {
+      margin: 0 0 10px;
       font-size: 16px;
-      margin: 0 0 5px 0;
       color: #333;
     }
     .card-content p {
-      margin: 3px 0;
+      margin: 5px 0;
       font-size: 14px;
       color: #555;
     }
     .card-content a {
-      color: #007bff;
+      color: #007BFF;
       text-decoration: none;
       font-size: 13px;
-    }
-    .card-content a:hover {
-      text-decoration: underline;
     }
   </style>
 </head>
@@ -78,77 +75,56 @@
   <header>
     <h1>Catálogo de Telas</h1>
   </header>
-  <input type="text" id="buscador" placeholder="Buscar por descripción, proveedor o tipo...">
+
+  <input type="text" id="buscador" placeholder="Buscar por código, descripción o proveedor...">
+
   <div id="resultados"></div>
 
   <script src="https://cdn.jsdelivr.net/npm/papaparse@5.4.1/papaparse.min.js"></script>
   <script>
-    const CSV_URL_LOCAL = './datos.csv';
+    const CSV_URL = './datos.csv';
 
-    function cargarDatos(filtroUbicacion = null) {
-      Papa.parse(CSV_URL_LOCAL, {
-        download: true,
-        header: true,
-        complete: function(results) {
-          const data = results.data;
-          mostrarResultados(data, filtroUbicacion);
-        }
-      });
-    }
+    const contenedor = document.getElementById('resultados');
+    const buscador = document.getElementById('buscador');
 
-    function mostrarResultados(data, filtroUbicacion) {
-      const contenedor = document.getElementById('resultados');
+    let datos = [];
+
+    Papa.parse(CSV_URL, {
+      download: true,
+      header: true,
+      complete: function(results) {
+        datos = results.data.filter(row => row.CODIGO && row.DESCRIPCION);
+        mostrarResultados(datos);
+      }
+    });
+
+    function mostrarResultados(filas) {
       contenedor.innerHTML = '';
-
-      let busqueda = document.getElementById('buscador').value.toLowerCase();
-
-      let filtrados = data.filter(item => {
-        let coincideBusqueda = 
-          item.DESCRIPCION?.toLowerCase().includes(busqueda) ||
-          item.PROVEEDOR?.toLowerCase().includes(busqueda) ||
-          item.TIPO?.toLowerCase().includes(busqueda);
-
-        let coincideUbicacion = filtroUbicacion ? item.UBICACION === filtroUbicacion : true;
-
-        return coincideBusqueda && coincideUbicacion;
-      });
-
-      filtrados.forEach(item => {
-        if (!item.CODIGO) return;
-
+      filas.forEach(fila => {
         const card = document.createElement('div');
         card.className = 'card';
-
-        const img = document.createElement('img');
-        img.src = item.IMAGEN || 'https://via.placeholder.com/150';
-        img.alt = item.DESCRIPCION;
-
-        const content = document.createElement('div');
-        content.className = 'card-content';
-
-        content.innerHTML = `
-          <h3>${item.DESCRIPCION || ''}</h3>
-          <p><b>Código:</b> ${item.CODIGO || ''}</p>
-          <p><b>Cantidad:</b> ${item.CANTIDAD || ''}</p>
-          <p><b>Ubicación:</b> ${item.UBICACION || ''}</p>
-          <p><b>Proveedor:</b> ${item.PROVEEDOR || ''}</p>
-          <a href="${item['WEB SITE'] || '#'}" target="_blank">Ver en catálogo</a>
+        card.innerHTML = `
+          <img src="${fila.IMAGEN}" alt="${fila.DESCRIPCION}" loading="lazy">
+          <div class="card-content">
+            <h3>${fila.CODIGO}</h3>
+            <p><strong>${fila.DESCRIPCION}</strong></p>
+            <p>Ubicación: ${fila.UBICACION || '-'}</p>
+            <a href="${fila['WEB SITE']}" target="_blank">Ver más</a>
+          </div>
         `;
-
-        card.appendChild(img);
-        card.appendChild(content);
         contenedor.appendChild(card);
       });
     }
 
-    document.getElementById('buscador').addEventListener('input', () => cargarDatos());
-
-    window.onload = () => {
-      const params = new URLSearchParams(window.location.search);
-      const ubicacion = params.get('ubicacion');
-      cargarDatos(ubicacion);
-    };
+    buscador.addEventListener('input', e => {
+      const texto = e.target.value.toLowerCase();
+      const filtrados = datos.filter(fila =>
+        (fila.CODIGO || '').toLowerCase().includes(texto) ||
+        (fila.DESCRIPCION || '').toLowerCase().includes(texto) ||
+        (fila.PROVEEDOR || '').toLowerCase().includes(texto)
+      );
+      mostrarResultados(filtrados);
+    });
   </script>
 </body>
 </html>
-
