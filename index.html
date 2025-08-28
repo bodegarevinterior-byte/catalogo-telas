@@ -2,76 +2,75 @@
 <html lang="es">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=0.5, maximum-scale=3.0, user-scalable=yes">
   <title>Catálogo de Telas</title>
   <style>
     body {
       font-family: Arial, sans-serif;
-      margin: 0; padding: 0;
+      margin: 0;
+      padding: 0;
       background: #f5f5f5;
     }
     header {
-      background: #222;
-      color: white;
-      padding: 1rem;
+      background: #333;
+      color: #fff;
+      padding: 10px;
       text-align: center;
     }
-    #search {
+    #buscador {
       width: 90%;
-      margin: 1rem auto;
+      margin: 10px auto;
       display: block;
-      padding: 0.6rem;
-      font-size: 1rem;
-      border-radius: 8px;
+      padding: 8px;
+      font-size: 16px;
       border: 1px solid #ccc;
+      border-radius: 5px;
     }
-    .grid {
+    #resultados {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-      gap: 1rem;
-      padding: 1rem;
+      grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+      gap: 15px;
+      padding: 15px;
     }
     .card {
-      background: white;
-      border-radius: 12px;
-      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
-      padding: 1rem;
+      background: #fff;
+      border-radius: 10px;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+      overflow: hidden;
       display: flex;
       flex-direction: column;
-      align-items: center;
-      transition: transform 0.2s ease;
+      transition: transform 0.2s;
     }
     .card:hover {
       transform: scale(1.02);
     }
     .card img {
-      max-width: 100%;
-      border-radius: 8px;
-      margin-bottom: 0.5rem;
+      width: 100%;
+      height: 150px;
+      object-fit: cover;
+      border-bottom: 1px solid #ddd;
+      loading: lazy;
     }
-    .card h3 {
-      margin: 0.2rem 0;
-      font-size: 1.2rem;
+    .card-content {
+      padding: 10px;
+    }
+    .card-content h3 {
+      font-size: 16px;
+      margin: 0 0 5px 0;
       color: #333;
     }
-    .card p {
-      margin: 0.2rem 0;
-      font-size: 0.9rem;
-      color: #666;
+    .card-content p {
+      margin: 3px 0;
+      font-size: 14px;
+      color: #555;
     }
-    .card a {
-      margin-top: 0.5rem;
+    .card-content a {
+      color: #007bff;
       text-decoration: none;
-      color: white;
-      background: #007bff;
-      padding: 0.4rem 0.8rem;
-      border-radius: 6px;
-      font-size: 0.9rem;
+      font-size: 13px;
     }
-    .no-results {
-      text-align: center;
-      margin: 2rem;
-      color: #666;
+    .card-content a:hover {
+      text-decoration: underline;
     }
   </style>
 </head>
@@ -79,109 +78,77 @@
   <header>
     <h1>Catálogo de Telas</h1>
   </header>
+  <input type="text" id="buscador" placeholder="Buscar por descripción, proveedor o tipo...">
+  <div id="resultados"></div>
 
-  <input type="text" id="search" placeholder="Buscar por código, descripción, proveedor, ubicación..." />
-
-  <div class="grid" id="grid"></div>
-  <p class="no-results" id="noResults" style="display:none;">No se encontraron resultados</p>
-
+  <script src="https://cdn.jsdelivr.net/npm/papaparse@5.4.1/papaparse.min.js"></script>
   <script>
-    const CSV_URL = './datos.csv'; // usa el CSV local del repo
+    const CSV_URL_LOCAL = './datos.csv';
 
-    // Función para convertir CSV en objetos
-    function parseCSV(text) {
-      const rows = text.trim().split('\n').map(r => r.split(','));
-      const headers = rows.shift();
-      return rows.map(row => {
-        let obj = {};
-        headers.forEach((h, i) => obj[h.trim()] = row[i] ? row[i].trim() : "");
-        return obj;
+    function cargarDatos(filtroUbicacion = null) {
+      Papa.parse(CSV_URL_LOCAL, {
+        download: true,
+        header: true,
+        complete: function(results) {
+          const data = results.data;
+          mostrarResultados(data, filtroUbicacion);
+        }
       });
     }
 
-    // Función para mostrar tarjetas
-    function displayData(data) {
-      const grid = document.getElementById('grid');
-      const noResults = document.getElementById('noResults');
-      grid.innerHTML = '';
+    function mostrarResultados(data, filtroUbicacion) {
+      const contenedor = document.getElementById('resultados');
+      contenedor.innerHTML = '';
 
-      if (data.length === 0) {
-        noResults.style.display = 'block';
-        return;
-      }
-      noResults.style.display = 'none';
+      let busqueda = document.getElementById('buscador').value.toLowerCase();
 
-      data.forEach(item => {
+      let filtrados = data.filter(item => {
+        let coincideBusqueda = 
+          item.DESCRIPCION?.toLowerCase().includes(busqueda) ||
+          item.PROVEEDOR?.toLowerCase().includes(busqueda) ||
+          item.TIPO?.toLowerCase().includes(busqueda);
+
+        let coincideUbicacion = filtroUbicacion ? item.UBICACION === filtroUbicacion : true;
+
+        return coincideBusqueda && coincideUbicacion;
+      });
+
+      filtrados.forEach(item => {
+        if (!item.CODIGO) return;
+
         const card = document.createElement('div');
         card.className = 'card';
 
-        // Imagen con lazy loading
         const img = document.createElement('img');
-        img.src = item['IMAGEN'] || '';
-        img.alt = item['DESCRIPCION'] || 'Tela';
-        img.loading = "lazy";
+        img.src = item.IMAGEN || 'https://via.placeholder.com/150';
+        img.alt = item.DESCRIPCION;
+
+        const content = document.createElement('div');
+        content.className = 'card-content';
+
+        content.innerHTML = `
+          <h3>${item.DESCRIPCION || ''}</h3>
+          <p><b>Código:</b> ${item.CODIGO || ''}</p>
+          <p><b>Cantidad:</b> ${item.CANTIDAD || ''}</p>
+          <p><b>Ubicación:</b> ${item.UBICACION || ''}</p>
+          <p><b>Proveedor:</b> ${item.PROVEEDOR || ''}</p>
+          <a href="${item['WEB SITE'] || '#'}" target="_blank">Ver en catálogo</a>
+        `;
+
         card.appendChild(img);
-
-        const title = document.createElement('h3');
-        title.textContent = item['DESCRIPCION'];
-        card.appendChild(title);
-
-        const ubic = document.createElement('p');
-        ubic.textContent = "Ubicación: " + item['UBICACION'];
-        card.appendChild(ubic);
-
-        const prov = document.createElement('p');
-        prov.textContent = "Proveedor: " + item['PROVEEDOR'];
-        card.appendChild(prov);
-
-        if (item['WEB SITE']) {
-          const link = document.createElement('a');
-          link.href = item['WEB SITE'];
-          link.target = "_blank";
-          link.textContent = "Ver más";
-          card.appendChild(link);
-        }
-
-        grid.appendChild(card);
+        card.appendChild(content);
+        contenedor.appendChild(card);
       });
     }
 
-    // Función para aplicar filtro
-    function aplicarFiltro() {
-      const term = document.getElementById('search').value.toLowerCase();
-      const filtered = data.filter(item =>
-        item['CODIGO'].toLowerCase().includes(term) ||
-        item['DESCRIPCION'].toLowerCase().includes(term) ||
-        item['PROVEEDOR'].toLowerCase().includes(term) ||
-        item['UBICACION'].toLowerCase().includes(term)
-      );
-      displayData(filtered);
-    }
+    document.getElementById('buscador').addEventListener('input', () => cargarDatos());
 
-    let data = [];
-
-    // Cargar CSV
-    fetch(CSV_URL)
-      .then(res => res.text())
-      .then(text => {
-        data = parseCSV(text);
-
-        // Revisar si hay un filtro en la URL
-        const params = new URLSearchParams(window.location.search);
-        const ubicacionFiltro = params.get('ubicacion');
-
-        if (ubicacionFiltro) {
-          document.getElementById('search').value = ubicacionFiltro;
-          aplicarFiltro();
-        } else {
-          displayData(data);
-        }
-
-        // Activar búsqueda
-        document.getElementById('search').addEventListener('input', aplicarFiltro);
-      });
+    window.onload = () => {
+      const params = new URLSearchParams(window.location.search);
+      const ubicacion = params.get('ubicacion');
+      cargarDatos(ubicacion);
+    };
   </script>
 </body>
 </html>
-
 
