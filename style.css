@@ -2,119 +2,67 @@ body {
   font-family: Arial, sans-serif;
   margin: 0;
   padding: 0;
+  background: #f9f9f9;
 }
 
 header {
   text-align: center;
   padding: 1rem;
+  background: #333;
+  color: white;
 }
 
 #search {
-  width: 90%;
-  max-width: 500px;
+  margin-top: 0.5rem;
   padding: 0.5rem;
-  margin: 1rem auto;
-  display: block;
+  width: 90%;
+  max-width: 400px;
 }
 
 .view-buttons {
-  margin: 1rem;
+  margin-top: 1rem;
 }
 
 .view-buttons button {
-  margin: 0 0.5rem;
+  margin: 0 5px;
   padding: 0.5rem 1rem;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
 }
 
-#catalog {
+main {
+  padding: 1rem;
   display: grid;
   gap: 1rem;
-  padding: 1rem;
 }
 
 /* Vista lista */
-.list-view .card {
+.list .card {
   display: flex;
-  flex-direction: row;
   align-items: center;
-  padding: 1rem;
-  border: 1px solid #ccc;
-  border-radius: 8px;
-}
-
-.list-view .card img {
-  width: 100px;
-  height: auto;
-  margin-right: 1rem;
 }
 
 /* Vista cuadrícula */
-.grid-view {
+.grid {
   grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
 }
 
-.grid-view .card {
-  border: 1px solid #ccc;
-  border-radius: 8px;
-  overflow: hidden;
-  padding: 0.5rem;
-  text-align: center;
-}
-
-.grid-view .card img {
-  width: 100%;
-  height: auto;
-  border-radius: 4px;
-}
-
-/* Vista galería */
-.gallery-view {
+/* Vista galería (muchas miniaturas) */
+.gallery {
   grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
 }
 
-.gallery-view .card {
-  border: none;
-  padding: 0;
-}
-
-.gallery-view .card img {
-  width: 100%;
-  height: auto;
-  display: block;
-}
-
-/* Modal */
-.modal {
-  display: none;
-  position: fixed;
-  z-index: 10;
-  left: 0;
-  top: 0;
-  width: 100%;
-  height: 100%;
-  overflow: auto;
-  background-color: rgba(0,0,0,0.7);
-}
-
-.modal-content {
-  background: #fff;
-  margin: 10% auto;
-  padding: 1rem;
+.card {
+  background: white;
   border-radius: 8px;
-  max-width: 500px;
+  padding: 0.5rem;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+  text-align: center;
 }
 
-.modal img {
+.card img {
   width: 100%;
   height: auto;
-  margin-bottom: 1rem;
-}
-
-.close {
-  position: absolute;
-  top: 20px;
-  right: 40px;
-  color: #fff;
-  font-size: 30px;
-  cursor: pointer;
+  border-radius: 5px;
 }
