@@ -1,25 +1,190 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Catálogo de Telas</title>
-  <link rel="stylesheet" href="style.css">
+  <style>
+    :root{
+      --gap:14px;
+      --radius:12px;
+      --shadow:0 2px 6px rgba(0,0,0,.1);
+      --bg:#f4f4f4;
+      --ink:#333;
+      --ink2:#555;
+      --brand:#1f6feb;
+      --brand-d:#1756b8;
+    }
+    *{box-sizing:border-box}
+    body{
+      margin:0; font-family:system-ui, Arial, sans-serif; background:var(--bg); color:var(--ink);
+    }
+    header{
+      background:#222; color:#fff; padding:16px; text-align:center;
+    }
+    #controls{
+      display:flex; gap:8px; justify-content:center; align-items:center; padding:12px var(--gap);
+      flex-wrap:wrap; background:#fff; box-shadow:var(--shadow);
+    }
+    #buscador{
+      flex:1 1 360px; max-width:520px; padding:10px 12px; border:1px solid #ddd; border-radius:8px; font-size:16px;
+    }
+    .btn{
+      padding:10px 14px; border:none; border-radius:8px; font-weight:600; cursor:pointer; color:#fff; background:var(--brand);
+    }
+    .btn:hover{ background:var(--brand-d); }
+    .btn.alt{ background:#666; }
+    .btn.alt:hover{ background:#4d4d4d; }
+
+    /* Contenedor de resultados: base */
+    #resultados{
+      display:grid; gap:var(--gap); padding:var(--gap);
+      align-items:start;
+    }
+
+    /* Vista LISTA (1 por fila) */
+    #resultados.lista-view{ grid-template-columns: 1fr; }
+
+    /* Vista CUADRÍCULA (múltiples columnas) */
+    #resultados.grid-view{ grid-template-columns: repeat(auto-fill, minmax(90px, 1fr)); }
+
+    /* Tarjeta */
+    .card{
+      background:#fff; border-radius:var(--radius); box-shadow:var(--shadow);
+      overflow:hidden; display:flex; flex-direction:column;
+      transition:transform .15s ease;
+    }
+    .card:hover{ transform:translateY(-2px); }
+    .thumb{
+      width:100%; height:200px; object-fit:cover; display:block; background:#eee;
+    }
+    .content{ padding:10px 12px; }
+    .title{ margin:0 0 6px; font-size:16px; line-height:1.2; }
+    .meta{ margin:4px 0; font-size:14px; color:var(--ink2); }
+    .link{
+      margin-top:6px; display:inline-block; text-decoration:none; color:#fff; background:var(--brand);
+      padding:6px 10px; border-radius:8px; font-size:13px;
+    }
+
+    /* Ajustes en CUADRÍCULA para que quepan más */
+    #resultados.grid-view .thumb{ height:120px; }
+    #resultados.grid-view .title{ font-size:12px; }
+    #resultados.grid-view .meta{ font-size:11px; }
+  </style>
 </head>
 <body>
-  <header>
-    <h1>Catálogo de Telas</h1>
-    <input type="text" id="search" placeholder="Buscar por código, descripción o ubicación...">
+  <header><h1>Catálogo de Telas</h1></header>
 
-    <div class="view-buttons">
-      <button onclick="setView('list')">Lista</button>
-      <button onclick="setView('grid')">Cuadrícula</button>
-      <button onclick="setView('gallery')">Galería</button>
-    </div>
-  </header>
+  <div id="controls">
+    <input id="buscador" type="text" placeholder="Buscar por código, descripción, proveedor o ubicación…" />
+    <button class="btn alt" id="btnLista" type="button">☰ Lista</button>
+    <button class="btn" id="btnGrid" type="button">🔲 Cuadrícula</button>
+  </div>
 
-  <main id="catalog"></main>
+  <div id="resultados" class="lista-view"></div>
 
-  <script src="script.js"></script>
+  <!-- PapaParse para CSV robusto -->
+  <script src="https://cdn.jsdelivr.net/npm/papaparse@5.4.1/papaparse.min.js"></script>
+  <script>
+    const CSV_URL = './datos.csv';
+    const resultados = document.getElementById('resultados');
+    const buscador   = document.getElementById('buscador');
+    const btnLista   = document.getElementById('btnLista');
+    const btnGrid    = document.getElementById('btnGrid');
+
+    let datos = [];
+
+    // ---- Render ----
+    function render(lista){
+      resultados.innerHTML = '';
+      if (!lista || !lista.length){
+        resultados.innerHTML = '<p style="text-align:center;color:#666;margin:24px 0">No se encontraron resultados</p>';
+        return;
+      }
+      const frag = document.createDocumentFragment();
+      for (const item of lista){
+        // Valores seguros
+        const CODIGO = item['CODIGO'] || '';
+        const DESCRIPCION = item['DESCRIPCION'] || '';
+        const UBICACION = item['UBICACION'] || '';
+        const PROVEEDOR = item['PROVEEDOR'] || '';
+        const WEB = item['WEB SITE'] || '';
+        const IMG = item['IMAGEN'] || '';
+
+        if (!CODIGO && !DESCRIPCION) continue;
+
+        const card = document.createElement('div');
+        card.className = 'card';
+        card.innerHTML = `
+          <img class="thumb" src="${IMG}" alt="${DESCRIPCION}" loading="lazy" />
+          <div class="content">
+            <h3 class="title">${DESCRIPCION || CODIGO}</h3>
+            <p class="meta"><b>Código:</b> ${CODIGO}</p>
+            <p class="meta"><b>Ubicación:</b> ${UBICACION}</p>
+            <p class="meta"><b>Proveedor:</b> ${PROVEEDOR}</p>
+            ${WEB ? `<a class="link" href="${WEB}" target="_blank" rel="noopener">Ver más</a>` : ''}
+          </div>
+        `;
+        frag.appendChild(card);
+      }
+      resultados.appendChild(frag);
+    }
+
+    // ---- Filtro de texto (buscador) ----
+    function aplicarFiltroTexto(){
+      const t = (buscador.value || '').toLowerCase().trim();
+      if (!t){ render(datos); return; }
+      const filtrados = datos.filter(it =>
+        (it['CODIGO']||'').toLowerCase().includes(t) ||
+        (it['DESCRIPCION']||'').toLowerCase().includes(t) ||
+        (it['PROVEEDOR']||'').toLowerCase().includes(t) ||
+        (it['UBICACION']||'').toLowerCase().includes(t)
+      );
+      render(filtrados);
+    }
+
+    // ---- Vista ----
+    function setListView(){
+      resultados.classList.remove('grid-view');
+      resultados.classList.add('lista-view');
+    }
+    function setGridView(){
+      resultados.classList.remove('lista-view');
+      resultados.classList.add('grid-view');
+    }
+
+    btnLista.addEventListener('click', setListView);
+    btnGrid .addEventListener('click', setGridView);
+    buscador.addEventListener('input', aplicarFiltroTexto);
+
+    // ---- Carga CSV ----
+    Papa.parse(CSV_URL, {
+      download: true,
+      header: true,
+      skipEmptyLines: true,
+      complete: function(res){
+        // Normaliza y filtra filas vacías reales
+        datos = (res.data || []).filter(r =>
+          (r['CODIGO'] && r['CODIGO'].trim()) ||
+          (r['DESCRIPCION'] && r['DESCRIPCION'].trim())
+        );
+        // Render inicial (lista)
+        render(datos);
+
+        // Filtro automático por ?ubicacion= del QR
+        const params = new URLSearchParams(window.location.search);
+        const ubic = params.get('ubicacion');
+        if (ubic){
+          buscador.value = ubic;
+          aplicarFiltroTexto();
+        }
+
+        // (Opcional) permitir forzar vista vía ?view=grid|list
+        const view = params.get('view');
+        if (view === 'grid') setGridView();
+        if (view === 'list') setListView();
+      }
+    });
+  </script>
 </body>
 </html>
