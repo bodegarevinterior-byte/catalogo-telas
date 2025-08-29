@@ -9,26 +9,25 @@
 <body>
   <header>
     <h1>Catálogo de Telas</h1>
-    <input type="text" id="search" placeholder="Buscar telas...">
+    <input type="text" id="search" placeholder="Buscar por código, descripción o ubicación...">
     <div class="view-buttons">
-      <button onclick="setView('list')">📑 Lista</button>
-      <button onclick="setView('grid')">🗂️ Cuadrícula</button>
-      <button onclick="setView('gallery')">📷 Galería</button>
+      <button id="listView">Lista</button>
+      <button id="gridView">Cuadrícula</button>
+      <button id="galleryView">Galería</button>
     </div>
   </header>
-
-  <main id="catalogo"></main>
+  <main id="catalog"></main>
 
   <!-- Modal -->
   <div id="modal" class="modal">
+    <span class="close">&times;</span>
     <div class="modal-content">
-      <span class="close" onclick="closeModal()">&times;</span>
       <img id="modal-img" src="" alt="Imagen tela">
-      <h2 id="modal-desc"></h2>
       <p><strong>Código:</strong> <span id="modal-codigo"></span></p>
+      <p><strong>Descripción:</strong> <span id="modal-desc"></span></p>
       <p><strong>Ubicación:</strong> <span id="modal-ubicacion"></span></p>
       <p><strong>Proveedor:</strong> <span id="modal-proveedor"></span></p>
-      <a id="modal-link" href="#" target="_blank">Ver en sitio web</a>
+      <p><a id="modal-link" href="#" target="_blank">Ver en sitio web</a></p>
     </div>
   </div>
 

@@ -1,80 +1,109 @@
-const CSV_URL = "datos.csv"; // archivo local
+document.addEventListener("DOMContentLoaded", () => {
+  const catalog = document.getElementById("catalog");
+  const searchInput = document.getElementById("search");
 
-let data = [];
-let currentView = "list";
+  const listBtn = document.getElementById("listView");
+  const gridBtn = document.getElementById("gridView");
+  const galleryBtn = document.getElementById("galleryView");
 
-async function loadCSV() {
-  const response = await fetch(CSV_URL);
-  const text = await response.text();
-  const rows = text.trim().split("\n").map(r => r.split(","));
+  const modal = document.getElementById("modal");
+  const modalImg = document.getElementById("modal-img");
+  const modalCodigo = document.getElementById("modal-codigo");
+  const modalDesc = document.getElementById("modal-desc");
+  const modalUbicacion = document.getElementById("modal-ubicacion");
+  const modalProveedor = document.getElementById("modal-proveedor");
+  const modalLink = document.getElementById("modal-link");
+  const modalClose = document.querySelector(".close");
 
-  const headers = rows[0];
-  data = rows.slice(1).map(row => {
-    let obj = {};
-    headers.forEach((h, i) => obj[h.trim()] = row[i] || "");
-    return obj;
-  });
+  let data = [];
+  let viewMode = "list";
 
-  render();
-}
+  // Cargar CSV
+  fetch("datos.csv")
+    .then(res => res.text())
+    .then(text => {
+      data = parseCSV(text);
+      applyURLFilter();
+      render();
+    });
 
-function render() {
-  const catalogo = document.getElementById("catalogo");
-  const search = document.getElementById("search").value.toLowerCase();
-  catalogo.className = currentView + "-view";
+  function parseCSV(text) {
+    const rows = text.trim().split("\n").map(r => r.split(","));
+    const headers = rows[0];
+    return rows.slice(1).map(row => {
+      let obj = {};
+      headers.forEach((h, i) => obj[h.trim()] = row[i]);
+      return obj;
+    });
+  }
 
-  catalogo.innerHTML = "";
+  function render() {
+    catalog.className = "";
+    catalog.classList.add(viewMode + "-view");
+    catalog.innerHTML = "";
 
-  data.filter(item => 
-    item.DESCRIPCION.toLowerCase().includes(search) ||
-    item.CODIGO.toLowerCase().includes(search) ||
-    item.PROVEEDOR.toLowerCase().includes(search)
-  ).forEach(item => {
-    if (currentView === "gallery") {
+    const query = searchInput.value.toLowerCase();
+
+    const filtered = data.filter(item => {
+      return (
+        item["CODIGO"].toLowerCase().includes(query) ||
+        item["DESCRIPCION"].toLowerCase().includes(query) ||
+        item["UBICACION"].toLowerCase().includes(query)
+      );
+    });
+
+    filtered.forEach(item => {
       const card = document.createElement("div");
       card.className = "card";
       const img = document.createElement("img");
-      img.src = item.IMAGEN;
+      img.src = item["IMAGEN"];
+      img.alt = item["DESCRIPCION"];
       img.loading = "lazy";
-      img.alt = item.DESCRIPCION;
-      img.onclick = () => openModal(item);
-      card.appendChild(img);
-      catalogo.appendChild(card);
-    } else {
-      const card = document.createElement("div");
-      card.className = "card";
-      card.innerHTML = `
-        <img src="${item.IMAGEN}" alt="${item.DESCRIPCION}" loading="lazy">
-        <h3>${item.DESCRIPCION}</h3>
-        <p><strong>Código:</strong> ${item.CODIGO}</p>
-        <p><strong>Ubicación:</strong> ${item.UBICACION}</p>
-        <p><strong>Proveedor:</strong> ${item.PROVEEDOR}</p>
-        <a href="${item["WEB SITE"]}" target="_blank">Ver en sitio web</a>
-      `;
-      catalogo.appendChild(card);
+
+      if (viewMode === "gallery") {
+        img.addEventListener("click", () => openModal(item));
+        card.appendChild(img);
+      } else {
+        const title = document.createElement("h3");
+        title.textContent = item["DESCRIPCION"];
+
+        const ubic = document.createElement("p");
+        ubic.textContent = "Ubicación: " + item["UBICACION"];
+
+        card.appendChild(img);
+        card.appendChild(title);
+        card.appendChild(ubic);
+      }
+      catalog.appendChild(card);
+    });
+  }
+
+  function openModal(item) {
+    modal.style.display = "block";
+    modalImg.src = item["IMAGEN"];
+    modalCodigo.textContent = item["CODIGO"];
+    modalDesc.textContent = item["DESCRIPCION"];
+    modalUbicacion.textContent = item["UBICACION"];
+    modalProveedor.textContent = item["PROVEEDOR"];
+    modalLink.href = item["WEB SITE"];
+  }
+
+  modalClose.onclick = () => (modal.style.display = "none");
+  window.onclick = e => { if (e.target === modal) modal.style.display = "none"; };
+
+  // Cambiar vistas
+  listBtn.onclick = () => { viewMode = "list"; render(); };
+  gridBtn.onclick = () => { viewMode = "grid"; render(); };
+  galleryBtn.onclick = () => { viewMode = "gallery"; render(); };
+
+  searchInput.addEventListener("input", render);
+
+  // QR filtro URL
+  function applyURLFilter() {
+    const params = new URLSearchParams(window.location.search);
+    const ubicacion = params.get("ubicacion");
+    if (ubicacion) {
+      searchInput.value = ubicacion;
     }
-  });
-}
-
-function setView(view) {
-  currentView = view;
-  render();
-}
-
-function openModal(item) {
-  document.getElementById("modal-img").src = item.IMAGEN;
-  document.getElementById("modal-desc").textContent = item.DESCRIPCION;
-  document.getElementById("modal-codigo").textContent = item.CODIGO;
-  document.getElementById("modal-ubicacion").textContent = item.UBICACION;
-  document.getElementById("modal-proveedor").textContent = item.PROVEEDOR;
-  document.getElementById("modal-link").href = item["WEB SITE"];
-  document.getElementById("modal").style.display = "flex";
-}
-
-function closeModal() {
-  document.getElementById("modal").style.display = "none";
-}
-
-document.getElementById("search").addEventListener("input", render);
-
-loadCSV();
+  }
+});
