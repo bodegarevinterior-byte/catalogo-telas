@@ -1,431 +1,75 @@
-CODIGO,DESCRIPCION,CANTIDAD,UBICACION,CATALOGO,PROVEEDOR,TIPO,ENTREGADO A:,REGRESO FECHA:,WEB SITE,IMAGEN
-ARMOR,ADMORE ARMOR,1,C01N01P01,ADMORE,FABRICUT,TELA,,,http://qrc.fabricut.com/?id=3955120,https://s3.amazonaws.com/fabricut.img/img/product_images/3955120.jpg
-AZURE,ADMORE AZURE,1,C01N01P01,ADMORE,FABRICUT,TELA,,,http://qrc.fabricut.com/?id=3955106,https://s3.amazonaws.com/fabricut.img/img/product_images/3955106.jpg
-CADET,ADMORE CADET,1,C01N01P01,ADMORE,FABRICUT,TELA,,,http://qrc.fabricut.com/?id=3955105,https://s3.amazonaws.com/fabricut.img/img/product_images/3955105.jpg
-CIDER,ADMORE CIDER,1,C01N01P01,ADMORE,FABRICUT,TELA,,,http://qrc.fabricut.com/?id=3955115,https://s3.amazonaws.com/fabricut.img/img/product_images/3955115.jpg
-CLOVER,ADMORE CLOVER,1,C01N01P01,ADMORE,FABRICUT,TELA,,,http://qrc.fabricut.com/?id=3955109,https://s3.amazonaws.com/fabricut.img/img/product_images/3955109.jpg
-COIN,ADMORE COIN,1,C01N01P01,ADMORE,FABRICUT,TELA,,,http://qrc.fabricut.com/?id=3955103,https://s3.amazonaws.com/fabricut.img/img/product_images/3955103.jpg
-CURRANT,ADMORE CURRANT,1,C01N01P01,ADMORE,FABRICUT,TELA,,,http://qrc.fabricut.com/?id=3955117,https://s3.amazonaws.com/fabricut.img/img/product_images/3955117.jpg
-DELUGE,ADMORE DELUGE,1,C01N01P01,ADMORE,FABRICUT,TELA,,,http://qrc.fabricut.com/?id=3955111,https://s3.amazonaws.com/fabricut.img/img/product_images/3955111.jpg
-DEWBERRY,ADMORE DEWBERRY,1,C01N01P01,ADMORE,FABRICUT,TELA,,,http://qrc.fabricut.com/?id=3955118,https://s3.amazonaws.com/fabricut.img/img/product_images/3955118.jpg
-FALCON,ADMORE FALCON,1,C01N01P02,ADMORE,FABRICUT,TELA,,,http://qrc.fabricut.com/?id=3955119,https://s3.amazonaws.com/fabricut.img/img/product_images/3955119.jpg
-GINGERBREAD,ADMORE GINGERBREAD,1,C01N01P02,ADMORE,FABRICUT,TELA,,,http://qrc.fabricut.com/?id=3955114,https://s3.amazonaws.com/fabricut.img/img/product_images/3955114.jpg
-LAUREL,ADMORE LAUREL,1,C01N01P02,ADMORE,FABRICUT,TELA,,,http://qrc.fabricut.com/?id=3955108,https://s3.amazonaws.com/fabricut.img/img/product_images/3955108.jpg
-LIPSTICK,ADMORE LIPSTICK,1,C01N01P02,ADMORE,FABRICUT,TELA,,,http://qrc.fabricut.com/?id=3955116,https://s3.amazonaws.com/fabricut.img/img/product_images/3955116.jpg
-ODYSSEY,ADMORE ODYSSEY,1,C01N01P02,ADMORE,FABRICUT,TELA,,,http://qrc.fabricut.com/?id=3955107,https://s3.amazonaws.com/fabricut.img/img/product_images/3955107.jpg
-PAVEMENT,ADMORE PAVEMENT,1,C01N01P02,ADMORE,FABRICUT,TELA,,,http://qrc.fabricut.com/?id=3955101,https://s3.amazonaws.com/fabricut.img/img/product_images/3955101.jpg
-PEPPER,ADMORE PEPPER,1,C01N01P02,ADMORE,FABRICUT,TELA,,,http://qrc.fabricut.com/?id=3955102,https://s3.amazonaws.com/fabricut.img/img/product_images/3955102.jpg
-SEADRIFT,ADMORE SEADRIFT,1,C01N01P02,ADMORE,FABRICUT,TELA,,,http://qrc.fabricut.com/?id=3955104,https://s3.amazonaws.com/fabricut.img/img/product_images/3955104.jpg
-SHOJI,ADMORE SHOJI,1,C01N01P03,ADMORE,FABRICUT,TELA,,,http://qrc.fabricut.com/?id=3955112,https://s3.amazonaws.com/fabricut.img/img/product_images/3955112.jpg
-SPICE,ADMORE SPICE,1,C01N01P03,ADMORE,FABRICUT,TELA,,,http://qrc.fabricut.com/?id=3955113,https://s3.amazonaws.com/fabricut.img/img/product_images/3955113.jpg
-STORMY,ADMORE STORMY,1,C01N01P03,ADMORE,FABRICUT,TELA,,,http://qrc.fabricut.com/?id=3955121,https://s3.amazonaws.com/fabricut.img/img/product_images/3955121.jpg
-TOURMALINE,ADMORE TOURMALINE,1,C01N01P03,ADMORE,FABRICUT,TELA,,,http://qrc.fabricut.com/?id=3955110,https://s3.amazonaws.com/fabricut.img/img/product_images/3955110.jpg
-WHEAT,CORSICA WHEAT,1,C01N01P04,CORSICA,FABRICUT,TELA,,,http://qrc.fabricut.com/?id=8183501,https://s3.amazonaws.com/fabricut.img/img/product_images/8183501.jpg
-TRUFFLE,CORSICA TRUFFLE,1,C01N01P04,CORSICA,FABRICUT,TELA,,,http://qrc.fabricut.com/?id=8183510,https://s3.amazonaws.com/fabricut.img/img/product_images/8183510.jpg
-SADDLE,CORSICA SADDLE,1,C01N01P04,CORSICA,FABRICUT,TELA,,,http://qrc.fabricut.com/?id=8183509,https://s3.amazonaws.com/fabricut.img/img/product_images/8183509.jpg
-MUDSLIDE,CORSICA MUDSLIDE,1,C01N01P04,CORSICA,FABRICUT,TELA,,,http://qrc.fabricut.com/?id=8183505,https://s3.amazonaws.com/fabricut.img/img/product_images/8183505.jpg
-MILKWEED,CORSICA MILKWEED,1,C01N01P04,CORSICA,FABRICUT,TELA,,,http://qrc.fabricut.com/?id=8183511,https://s3.amazonaws.com/fabricut.img/img/product_images/8183511.jpg
-MIDNIGHT,CORSICA MIDNIGHT,1,C01N01P04,CORSICA,FABRICUT,TELA,,,http://qrc.fabricut.com/?id=8183502,https://s3.amazonaws.com/fabricut.img/img/product_images/8183502.jpg
-ASH,CORSICA ASH,1,C01N01P04,CORSICA,FABRICUT,TELA,,,http://qrc.fabricut.com/?id=8183507,https://s3.amazonaws.com/fabricut.img/img/product_images/8183507.jpg
-HYDRANGEA,GLOURIOUS BOUQUET - WC HYDRANGEA,2,C01N01P05,GLOURIOUS BOUQUET - WC,FABRICUT,PAPEL TAPIZ,,,http://qrc.fabricut.com/?id=1542202,https://s3.amazonaws.com/fabricut.img/img/product_images/1542202.jpg
-SMOKE,LITERATURE - WC SMOKE,2,C01N01P06,LITERATURE - WC,FABRICUT,PAPEL TAPIZ,,,http://qrc.fabricut.com/?id=8912706,https://s3.amazonaws.com/fabricut.img/img/product_images/8912706.jpg
-CASTLE,LITERATURE - WC CASTLE,1,C01N01P06,LITERATURE - WC,FABRICUT,PAPEL TAPIZ,,,http://qrc.fabricut.com/?id=8912702,https://s3.amazonaws.com/fabricut.img/img/product_images/8912702.jpg
-KONA,LITERATURE - WC KONA,2,C01N01P06,LITERATURE - WC,FABRICUT,PAPEL TAPIZ,,,http://qrc.fabricut.com/?id=8912703,https://s3.amazonaws.com/fabricut.img/img/product_images/8912703.jpg
-COMET,LITERATURE - WC COMET,2,C01N01P06,LITERATURE - WC,FABRICUT,PAPEL TAPIZ,,,http://qrc.fabricut.com/?id=8912704,https://s3.amazonaws.com/fabricut.img/img/product_images/8912704.jpg
-LEAF,LUSH RAINFOREST - WC LEAF,2,C01N02P01,LUSH RAINFOREST - WC,FABRICUT,PAPEL TAPIZ,,,http://qrc.fabricut.com/?id=1541501,https://s3.amazonaws.com/fabricut.img/img/product_images/1541501.jpg
-DUSK,MIDNIGHT GARDEN - WC DUSK,2,C01N02P02,MIDNIGHT GARDEN - WC,FABRICUT,PAPEL TAPIZ,,,http://qrc.fabricut.com/?id=1542002,https://s3.amazonaws.com/fabricut.img/img/product_images/1542002.jpg
-ADRIATIC,TROPICAL GARDEN - WC ADRIATIC,2,C01N02P03,TROPICAL GARDEN - WC,FABRICUT,PAPEL TAPIZ,,,http://qrc.fabricut.com/?id=1542101,https://s3.amazonaws.com/fabricut.img/img/product_images/1542101.jpg
-NOUGAT-02,50086W MIETTE NOUGAT-02,2,C01N02P04,50086W MIETTE,FABRICUT,PAPEL TAPIZ,,,http://qr.fabricut.com/?id=5994702,https://s3.amazonaws.com/fabricut.img/img/product_images/5994702.jpg
-NAVY-04,50086W MIETTE NAVY-04,2,C01N02P04,50086W MIETTE,FABRICUT,PAPEL TAPIZ,,,http://qr.fabricut.com/?id=5994704,https://s3.amazonaws.com/fabricut.img/img/product_images/5994704.jpg
-NAVY-01,50370W PERTH NAVY-01,2,C01N02P04,50370W PERTH,FABRICUT,PAPEL TAPIZ,,,http://qr.fabricut.com/?id=6059801,https://s3.amazonaws.com/fabricut.img/img/product_images/6059801.jpg
-ROSE GOLD-05,50086W MIETTE ROSE GOLD-05,2,C01N02P04,50086W MIETTE,FABRICUT,PAPEL TAPIZ,,,http://qr.fabricut.com/?id=5994705,https://s3.amazonaws.com/fabricut.img/img/product_images/5994705.jpg
-QUARTZ,50308W MAXIS QUARTZ,4,C01N02P05,50308W MAXIS,FABRICUT,PAPEL TAPIZ,,,http://qr.fabricut.com/?id=4591915,https://s3.amazonaws.com/fabricut.img/img/product_images/0848215.jpg
-PEARL,50308W MAXIS PEARL,4,C01N02P05,50308W MAXIS,FABRICUT,PAPEL TAPIZ,,,http://qr.fabricut.com/?id=4591911,https://s3.amazonaws.com/fabricut.img/img/product_images/0848211.jpg
-COBALT,50308W MAXIS COBALT,4,C01N02P05,50308W MAXIS,FABRICUT,PAPEL TAPIZ,,,http://qr.fabricut.com/?id=4591905,https://s3.amazonaws.com/fabricut.img/img/product_images/0848205.jpg
-METAL,50308W MAXIS METAL,3,C01N02P05,50308W MAXIS,FABRICUT,PAPEL TAPIZ,,,http://qr.fabricut.com/?id=4591909,https://s3.amazonaws.com/fabricut.img/img/product_images/0848209.jpg
-METAL50314W,50314W ZARINA METAL50314W,2,C01N02P06,50314W ZARINA,FABRICUT,PAPEL TAPIZ,,,http://qr.fabricut.com/?id=4611407,https://s3.amazonaws.com/fabricut.img/img/product_images/0847207.jpg
-MUSHROOM,50314W ZARINA MUSHROOM,5,C01N02P06,50314W ZARINA,FABRICUT,PAPEL TAPIZ,,,http://qr.fabricut.com/?id=4611403,https://s3.amazonaws.com/fabricut.img/img/product_images/0847203.jpg
-PELICAN,50314W ZARINA PELICAN,4,C01N02P06,50314W ZARINA,FABRICUT,PAPEL TAPIZ,,,http://qr.fabricut.com/?id=4611405,https://s3.amazonaws.com/fabricut.img/img/product_images/0847205.jpg
-GOLD-02,50371W HODAR GOLD-02,5,C01N03P01,50371W HODAR,FABRICUT,PAPEL TAPIZ,,,http://qr.fabricut.com/?id=6060002,https://s3.amazonaws.com/fabricut.img/img/product_images/6060002.jpg
-SILVER-01,50371W HODAR SILVER-01,5,C01N03P01,50371W HODAR,FABRICUT,PAPEL TAPIZ,,,http://qr.fabricut.com/?id=6060001,https://s3.amazonaws.com/fabricut.img/img/product_images/6060001.jpg
-AQUA-01,50376W PERCE AQUA-01,3,C01N03P02,50376W PERCE,FABRICUT,PAPEL TAPIZ,,,http://qr.fabricut.com/?id=6061301,https://s3.amazonaws.com/fabricut.img/img/product_images/6061301.jpg
-GREY-02,50385W CILMA GREY-02,2,C01N03P02,50385W CILMA,FABRICUT,PAPEL TAPIZ,,,http://qr.fabricut.com/?id=6063202,https://s3.amazonaws.com/fabricut.img/img/product_images/6063202.jpg
-AQUA-01 ELIDA,50388W  ELIDA AQUA-01 ELIDA,5,C01N03P03,50388W  ELIDA,FABRICUT,PAPEL TAPIZ,,,http://qr.fabricut.com/?id=6064101,https://s3.amazonaws.com/fabricut.img/img/product_images/6064101.jpg
-GREY-02 ELIDA,50388W  ELIDA GREY-02 ELIDA,5,C01N03P03,50388W  ELIDA,FABRICUT,PAPEL TAPIZ,,,http://qr.fabricut.com/?id=6064102,https://s3.amazonaws.com/fabricut.img/img/product_images/6064102.jpg
-CYPRESS-02,50391W SINYAR CYPRESS-02,5,C01N03P04,50391W SINYAR,FABRICUT,PAPEL TAPIZ,,,http://qr.fabricut.com/?id=6083002,https://s3.amazonaws.com/fabricut.img/img/product_images/6083002.jpg
-MINERAL-03,50391W SINYAR MINERAL-03,5,C01N03P04,50391W SINYAR,FABRICUT,PAPEL TAPIZ,,,http://qr.fabricut.com/?id=6083003,https://s3.amazonaws.com/fabricut.img/img/product_images/6083003.jpg
-INDIGO-04,50391W SINYAR INDIGO-04,4,C01N03P04,50391W SINYAR,FABRICUT,PAPEL TAPIZ,,,http://qr.fabricut.com/?id=6083004,https://s3.amazonaws.com/fabricut.img/img/product_images/6083004.jpg
-BLUSH-05,50391W SINYAR BLUSH-05,5,C01N03P04,50391W SINYAR,FABRICUT,PAPEL TAPIZ,,,http://qr.fabricut.com/?id=6083005,https://s3.amazonaws.com/fabricut.img/img/product_images/6083005.jpg
-OAK-01,50391W SINYAR OAK-01,5,C01N03P04,50391W SINYAR,FABRICUT,PAPEL TAPIZ,,,http://qr.fabricut.com/?id=6083001,https://s3.amazonaws.com/fabricut.img/img/product_images/6083001.jpg
-GILT-01,50394W LATIF GILT-01,2,C01N03P05,50394W LATIF,FABRICUT,PAPEL TAPIZ,,,http://qr.fabricut.com/?id=6064301,https://s3.amazonaws.com/fabricut.img/img/product_images/6064301.jpg
-INDIGO-02,50394W LATIF INDIGO-02,2,C01N03P05,50394W LATIF,FABRICUT,PAPEL TAPIZ,,,http://qr.fabricut.com/?id=6064302,https://s3.amazonaws.com/fabricut.img/img/product_images/6064302.jpg
-SILVER-03,50394W LATIF SILVER-03,2,C01N03P05,50394W LATIF,FABRICUT,PAPEL TAPIZ,,,http://qr.fabricut.com/?id=6064303,https://s3.amazonaws.com/fabricut.img/img/product_images/6064303.jpg
-GILT-01 SHRUB,50395W SHRUB GILT-01 SHRUB,2,C01N03P06,50395W SHRUB,FABRICUT,PAPEL TAPIZ,,,http://qr.fabricut.com/?id=6064501,https://s3.amazonaws.com/fabricut.img/img/product_images/6064501.jpg
-INDIGO-02 SHRUB,50395W SHRUB INDIGO-02 SHRUB,2,C01N03P06,50395W SHRUB,FABRICUT,PAPEL TAPIZ,,,http://qr.fabricut.com/?id=6064502,https://s3.amazonaws.com/fabricut.img/img/product_images/6064502.jpg
-SILVER-03 SHRUB,50395W SHRUB SILVER-03 SHRUB,2,C01N03P06,50395W SHRUB,FABRICUT,PAPEL TAPIZ,,,http://qr.fabricut.com/?id=6064503,https://s3.amazonaws.com/fabricut.img/img/product_images/6064503.jpg
-ALLOY-02,50399W SHRUB ALLOY-02,2,C01N04P01,50399W SHRUB,FABRICUT,PAPEL TAPIZ,,,http://qr.fabricut.com/?id=6105202,https://s3.amazonaws.com/fabricut.img/img/product_images/6105202.jpg
-INDIGO-01,50399W SHRUB INDIGO-01,2,C01N04P01,50399W SHRUB,FABRICUT,PAPEL TAPIZ,,,http://qr.fabricut.com/?id=6105201,https://s3.amazonaws.com/fabricut.img/img/product_images/6105201.jpg
-ROSE-01,50400W ECCLES ROSE-01,2,C01N04P02,50400W ECCLES,FABRICUT,PAPEL TAPIZ,,,http://qr.fabricut.com/?id=6105501,https://s3.amazonaws.com/fabricut.img/img/product_images/6105501.jpg
-PLATINUM-02,50400W ECCLES PLATINUM-02,2,C01N04P02,50400W ECCLES,FABRICUT,PAPEL TAPIZ,,,http://qr.fabricut.com/?id=6105502,https://s3.amazonaws.com/fabricut.img/img/product_images/6105502.jpg
-MOONSTONE-01,50401W HOWTH MOONSTONE-01,5,C01N04P03,50401W HOWTH,FABRICUT,PAPEL TAPIZ,,,http://qr.fabricut.com/?id=6105801,https://s3.amazonaws.com/fabricut.img/img/product_images/6105801.jpg
-PAINT,A LA CARTE  PAINT,1,C01N05P01,A LA CARTE,S. HARRIS,TELA,,,http://qr.fabricut.com/?id=2204201,https://s3.amazonaws.com/fabricut.img/img/product_images/2204201.jpg
-REEF,ANKARA MOHAIR - HC REEF,1,C01N05P01,ANKARA MOHAIR - HC,S. HARRIS,TELA,,,http://qr.fabricut.com/?id=8529125,https://s3.amazonaws.com/fabricut.img/img/product_images/8529125.jpg
-METALLO,BEATING HEARTS  METALLO,1,C01N05P02,BEATING HEARTS,S. HARRIS,TRIMMING,,,http://qr.fabricut.com/?id=2290202,https://s3.amazonaws.com/fabricut.img/img/product_images/2290202.jpg
-GROTTO,BEATING HEARTS  GROTTO,1,C01N05P03,BEATING HEARTS,S. HARRIS,TRIMMING,,,http://qr.fabricut.com/?id=2290201,https://s3.amazonaws.com/fabricut.img/img/product_images/2290201.jpg
-ROSETTA,BEATING HEARTS  ROSETTA,1,C01N05P04,BEATING HEARTS,S. HARRIS,TRIMMING,,,http://qr.fabricut.com/?id=2290203,https://s3.amazonaws.com/fabricut.img/img/product_images/2290203.jpg
-,,,C01N05P05,,,,,,,
-,,,C01N05P06,,,,,,,
-,,,C01N06P01,,,,,,,
-,,,C01N06P02,,,,,,,
-,,,C01N06P03,,,,,,,
-,,,C01N06P04,,,,,,,
-,,,C01N06P05,,,,,,,
-,,,C01N06P06,,,,,,,
-,,,C01N07P01,,,,,,,
-,,,C01N07P02,,,,,,,
-,,,C01N07P03,,,,,,,
-,,,C01N07P04,,,,,,,
-,,,C01N07P05,,,,,,,
-,,,C01N07P06,,,,,,,
-,,,C01N08P01,,,,,,,
-,,,C01N08P02,,,,,,,
-,,,C01N08P03,,,,,,,
-,,,C01N08P04,,,,,,,
-,,,C01N08P05,,,,,,,
-,,,C01N08P06,,,,,,,
-,,,C02N01P01,,,,,,,
-,,,C02N01P02,,,,,,,
-,,,C02N01P03,,,,,,,
-,,,C02N01P04,,,,,,,
-,,,C02N01P05,,,,,,,
-,,,C02N01P06,,,,,,,
-,,,C02N02P01,,,,,,,
-,,,C02N02P02,,,,,,,
-,,,C02N02P03,,,,,,,
-,,,C02N02P04,,,,,,,
-,,,C02N02P05,,,,,,,
-,,,C02N02P06,,,,,,,
-,,,C02N03P01,,,,,,,
-,,,C02N03P02,,,,,,,
-,,,C02N03P03,,,,,,,
-,,,C02N03P04,,,,,,,
-,,,C02N03P05,,,,,,,
-,,,C02N03P06,,,,,,,
-,,,C02N04P01,,,,,,,
-,,,C02N04P02,,,,,,,
-,,,C02N04P03,,,,,,,
-,,,C02N04P04,,,,,,,
-,,,C02N04P05,,,,,,,
-,,,C02N04P06,,,,,,,
-,,,C02N05P01,,,,,,,
-,,,C02N05P02,,,,,,,
-,,,C02N05P03,,,,,,,
-,,,C02N05P04,,,,,,,
-,,,C02N05P05,,,,,,,
-,,,C02N05P06,,,,,,,
-,,,C02N06P01,,,,,,,
-,,,C02N06P02,,,,,,,
-,,,C02N06P03,,,,,,,
-,,,C02N06P04,,,,,,,
-,,,C02N06P05,,,,,,,
-,,,C02N06P06,,,,,,,
-,,,C02N07P01,,,,,,,
-,,,C02N07P02,,,,,,,
-,,,C02N07P03,,,,,,,
-,,,C02N07P04,,,,,,,
-,,,C02N07P05,,,,,,,
-,,,C02N07P06,,,,,,,
-,,,C02N08P01,,,,,,,
-,,,C02N08P02,,,,,,,
-,,,C02N08P03,,,,,,,
-,,,C02N08P04,,,,,,,
-,,,C02N08P05,,,,,,,
-,,,C02N08P06,,,,,,,
-,,,C03N01P01,,,,,,,
-,,,C03N01P02,,,,,,,
-,,,C03N01P03,,,,,,,
-,,,C03N01P04,,,,,,,
-,,,C03N01P05,,,,,,,
-,,,C03N01P06,,,,,,,
-,,,C03N02P01,,,,,,,
-,,,C03N02P02,,,,,,,
-,,,C03N02P03,,,,,,,
-,,,C03N02P04,,,,,,,
-,,,C03N02P05,,,,,,,
-,,,C03N02P06,,,,,,,
-,,,C03N03P01,,,,,,,
-,,,C03N03P02,,,,,,,
-,,,C03N03P03,,,,,,,
-,,,C03N03P04,,,,,,,
-,,,C03N03P05,,,,,,,
-,,,C03N03P06,,,,,,,
-,,,C03N04P01,,,,,,,
-,,,C03N04P02,,,,,,,
-,,,C03N04P03,,,,,,,
-,,,C03N04P04,,,,,,,
-,,,C03N04P05,,,,,,,
-,,,C03N04P06,,,,,,,
-,,,C03N05P01,,,,,,,
-,,,C03N05P02,,,,,,,
-,,,C03N05P03,,,,,,,
-,,,C03N05P04,,,,,,,
-,,,C03N05P05,,,,,,,
-,,,C03N05P06,,,,,,,
-,,,C03N06P01,,,,,,,
-,,,C03N06P02,,,,,,,
-,,,C03N06P03,,,,,,,
-,,,C03N06P04,,,,,,,
-,,,C03N06P05,,,,,,,
-,,,C03N06P06,,,,,,,
-,,,C03N07P01,,,,,,,
-,,,C03N07P02,,,,,,,
-,,,C03N07P03,,,,,,,
-,,,C03N07P04,,,,,,,
-,,,C03N07P05,,,,,,,
-,,,C03N07P06,,,,,,,
-,,,C03N08P01,,,,,,,
-,,,C03N08P02,,,,,,,
-,,,C03N08P03,,,,,,,
-,,,C03N08P04,,,,,,,
-,,,C03N08P05,,,,,,,
-,,,C03N08P06,,,,,,,
-,,,C04N01P01,,,,,,,
-,,,C04N01P02,,,,,,,
-,,,C04N01P03,,,,,,,
-,,,C04N01P04,,,,,,,
-,,,C04N01P05,,,,,,,
-,,,C04N01P06,,,,,,,
-,,,C04N02P01,,,,,,,
-,,,C04N02P02,,,,,,,
-,,,C04N02P03,,,,,,,
-,,,C04N02P04,,,,,,,
-,,,C04N02P05,,,,,,,
-,,,C04N02P06,,,,,,,
-,,,C04N03P01,,,,,,,
-,,,C04N03P02,,,,,,,
-,,,C04N03P03,,,,,,,
-,,,C04N03P04,,,,,,,
-,,,C04N03P05,,,,,,,
-,,,C04N03P06,,,,,,,
-,,,C04N04P01,,,,,,,
-,,,C04N04P02,,,,,,,
-,,,C04N04P03,,,,,,,
-,,,C04N04P04,,,,,,,
-,,,C04N04P05,,,,,,,
-,,,C04N04P06,,,,,,,
-,,,C04N05P01,,,,,,,
-,,,C04N05P02,,,,,,,
-,,,C04N05P03,,,,,,,
-,,,C04N05P04,,,,,,,
-,,,C04N05P05,,,,,,,
-,,,C04N05P06,,,,,,,
-,,,C04N06P01,,,,,,,
-,,,C04N06P02,,,,,,,
-,,,C04N06P03,,,,,,,
-,,,C04N06P04,,,,,,,
-,,,C04N06P05,,,,,,,
-,,,C04N06P06,,,,,,,
-,,,C04N07P01,,,,,,,
-,,,C04N07P02,,,,,,,
-,,,C04N07P03,,,,,,,
-,,,C04N07P04,,,,,,,
-,,,C04N07P05,,,,,,,
-,,,C04N07P06,,,,,,,
-,,,C04N08P01,,,,,,,
-,,,C04N08P02,,,,,,,
-,,,C04N08P03,,,,,,,
-,,,C04N08P04,,,,,,,
-,,,C04N08P05,,,,,,,
-,,,C04N08P06,,,,,,,
-,,,C05N01P01,,,,,,,
-,,,C05N01P02,,,,,,,
-,,,C05N01P03,,,,,,,
-,,,C05N01P04,,,,,,,
-,,,C05N01P05,,,,,,,
-,,,C05N01P06,,,,,,,
-,,,C05N02P01,,,,,,,
-,,,C05N02P02,,,,,,,
-,,,C05N02P03,,,,,,,
-,,,C05N02P04,,,,,,,
-,,,C05N02P05,,,,,,,
-,,,C05N02P06,,,,,,,
-,,,C05N03P01,,,,,,,
-,,,C05N03P02,,,,,,,
-,,,C05N03P03,,,,,,,
-,,,C05N03P04,,,,,,,
-,,,C05N03P05,,,,,,,
-,,,C05N03P06,,,,,,,
-,,,C05N04P01,,,,,,,
-,,,C05N04P02,,,,,,,
-,,,C05N04P03,,,,,,,
-,,,C05N04P04,,,,,,,
-,,,C05N04P05,,,,,,,
-,,,C05N04P06,,,,,,,
-,,,C05N05P01,,,,,,,
-,,,C05N05P02,,,,,,,
-,,,C05N05P03,,,,,,,
-,,,C05N05P04,,,,,,,
-,,,C05N05P05,,,,,,,
-,,,C05N05P06,,,,,,,
-,,,C05N06P01,,,,,,,
-,,,C05N06P02,,,,,,,
-,,,C05N06P03,,,,,,,
-,,,C05N06P04,,,,,,,
-,,,C05N06P05,,,,,,,
-,,,C05N06P06,,,,,,,
-,,,C05N07P01,,,,,,,
-,,,C05N07P02,,,,,,,
-,,,C05N07P03,,,,,,,
-,,,C05N07P04,,,,,,,
-,,,C05N07P05,,,,,,,
-,,,C05N07P06,,,,,,,
-,,,C05N08P01,,,,,,,
-,,,C05N08P02,,,,,,,
-,,,C05N08P03,,,,,,,
-,,,C05N08P04,,,,,,,
-,,,C05N08P05,,,,,,,
-,,,C05N08P06,,,,,,,
-,,,C06N01P01,,,,,,,
-,,,C06N01P02,,,,,,,
-,,,C06N01P03,,,,,,,
-,,,C06N01P04,,,,,,,
-,,,C06N01P05,,,,,,,
-,,,C06N01P06,,,,,,,
-,,,C06N02P01,,,,,,,
-,,,C06N02P02,,,,,,,
-,,,C06N02P03,,,,,,,
-,,,C06N02P04,,,,,,,
-,,,C06N02P05,,,,,,,
-1408406,Lealani Blue Haze,1,C06N02P06,,,,,,https://fabricut.com/stroheim/fabric/1408406/lealani/blue-haze?utm_source=qr-code,
-,,,C06N03P01,,,,,,,
-,,,C06N03P02,,,,,,,
-,,,C06N03P03,,,,,,,
-,,,C06N03P04,,,,,,,
-,,,C06N03P05,,,,,,,
-,,,C06N03P06,,,,,,,
-,,,C06N04P01,,,,,,,
-,,,C06N04P02,,,,,,,
-,,,C06N04P03,,,,,,,
-,,,C06N04P04,,,,,,,
-,,,C06N04P05,,,,,,,
-,,,C06N04P06,,,,,,,
-,,,C06N05P01,,,,,,,
-,,,C06N05P02,,,,,,,
-,,,C06N05P03,,,,,,,
-,,,C06N05P04,,,,,,,
-,,,C06N05P05,,,,,,,
-,,,C06N05P06,,,,,,,
-,,,C06N06P01,,,,,,,
-,,,C06N06P02,,,,,,,
-,,,C06N06P03,,,,,,,
-,,,C06N06P04,,,,,,,
-,,,C06N06P05,,,,,,,
-,,,C06N06P06,,,,,,,
-,,,C06N07P01,,,,,,,
-,,,C06N07P02,,,,,,,
-,,,C06N07P03,,,,,,,
-,,,C06N07P04,,,,,,,
-,,,C06N07P05,,,,,,,
-,,,C06N07P06,,,,,,,
-,,,C06N08P01,,,,,,,
-,,,C06N08P02,,,,,,,
-,,,C06N08P03,,,,,,,
-,,,C06N08P04,,,,,,,
-,,,C06N08P05,,,,,,,
-,,,C06N08P06,,,,,,,
-,,,C07N01P01,,,,,,,
-,,,C07N01P02,,,,,,,
-,,,C07N01P03,,,,,,,
-,,,C07N01P04,,,,,,,
-,,,C07N01P05,,,,,,,
-,,,C07N01P06,,,,,,,
-,,,C07N02P01,,,,,,,
-,,,C07N02P02,,,,,,,
-,,,C07N02P03,,,,,,,
-,,,C07N02P04,,,,,,,
-,,,C07N02P05,,,,,,,
-,,,C07N02P06,,,,,,,
-,,,C07N03P01,,,,,,,
-,,,C07N03P02,,,,,,,
-,,,C07N03P03,,,,,,,
-,,,C07N03P04,,,,,,,
-,,,C07N03P05,,,,,,,
-,,,C07N03P06,,,,,,,
-,,,C07N04P01,,,,,,,
-,,,C07N04P02,,,,,,,
-,,,C07N04P03,,,,,,,
-,,,C07N04P04,,,,,,,
-,,,C07N04P05,,,,,,,
-,,,C07N04P06,,,,,,,
-,,,C07N05P01,,,,,,,
-,,,C07N05P02,,,,,,,
-,,,C07N05P03,,,,,,,
-,,,C07N05P04,,,,,,,
-,,,C07N05P05,,,,,,,
-,,,C07N05P06,,,,,,,
-,,,C07N06P01,,,,,,,
-,,,C07N06P02,,,,,,,
-,,,C07N06P03,,,,,,,
-,,,C07N06P04,,,,,,,
-,,,C07N06P05,,,,,,,
-,,,C07N06P06,,,,,,,
-,,,C07N07P01,,,,,,,
-,,,C07N07P02,,,,,,,
-,,,C07N07P03,,,,,,,
-,,,C07N07P04,,,,,,,
-,,,C07N07P05,,,,,,,
-,,,C07N07P06,,,,,,,
-,,,C07N08P01,,,,,,,
-,,,C07N08P02,,,,,,,
-,,,C07N08P03,,,,,,,
-,,,C07N08P04,,,,,,,
-,,,C07N08P05,,,,,,,
-,,,C07N08P06,,,,,,,
-,,,C08N01P01,,,,,,,
-,,,C08N01P02,,,,,,,
-,,,C08N01P03,,,,,,,
-,,,C08N01P04,,,,,,,
-,,,C08N01P05,,,,,,,
-,,,C08N01P06,,,,,,,
-,,,C08N02P01,,,,,,,
-,,,C08N02P02,,,,,,,
-,,,C08N02P03,,,,,,,
-,,,C08N02P04,,,,,,,
-,,,C08N02P05,,,,,,,
-,,,C08N02P06,,,,,,,
-,,,C08N03P01,,,,,,,
-,,,C08N03P02,,,,,,,
-,,,C08N03P03,,,,,,,
-,,,C08N03P04,,,,,,,
-,,,C08N03P05,,,,,,,
-,,,C08N03P06,,,,,,,
-,,,C08N04P01,,,,,,,
-,,,C08N04P02,,,,,,,
-,,,C08N04P03,,,,,,,
-,,,C08N04P04,,,,,,,
-,,,C08N04P05,,,,,,,
-,,,C08N04P06,,,,,,,
-,,,C08N05P01,,,,,,,
-,,,C08N05P02,,,,,,,
-,,,C08N05P03,,,,,,,
-,,,C08N05P04,,,,,,,
-,,,C08N05P05,,,,,,,
-,,,C08N05P06,,,,,,,
-,,,C08N06P01,,,,,,,
-,,,C08N06P02,,,,,,,
-,,,C08N06P03,,,,,,,
-,,,C08N06P04,,,,,,,
-,,,C08N06P05,,,,,,,
-,,,C08N06P06,,,,,,,
-,,,C08N07P01,,,,,,,
-,,,C08N07P02,,,,,,,
-,,,C08N07P03,,,,,,,
-,,,C08N07P04,,,,,,,
-,,,C08N07P05,,,,,,,
-,,,C08N07P06,,,,,,,
-,,,C08N08P01,,,,,,,
-,,,C08N08P02,,,,,,,
-,,,C08N08P03,,,,,,,
-,,,C08N08P04,,,,,,,
-,,,C08N08P05,,,,,,,
-,,,C08N08P06,,,,,,,
+CODIGO,DESCRIPCION,CANTIDAD,UBICACION,CATALOGO,PROVEEDOR,TIPO,ENTREGADO A:,REGRESO FECHA:,WEB SITE,IMAGEN,ID
+ARMOR,ADMORE ARMOR,1,C01N01P01,ADMORE,FABRICUT,TELA,,,http://qrc.fabricut.com/?id=3955120,https://s3.amazonaws.com/fabricut.img/img/product_images/3955120.jpg,MUESTRA-001
+AZURE,ADMORE AZURE,1,C01N01P01,ADMORE,FABRICUT,TELA,,,http://qrc.fabricut.com/?id=3955106,https://s3.amazonaws.com/fabricut.img/img/product_images/3955106.jpg,MUESTRA-002
+CADET,ADMORE CADET,1,C01N01P01,ADMORE,FABRICUT,TELA,,,http://qrc.fabricut.com/?id=3955105,https://s3.amazonaws.com/fabricut.img/img/product_images/3955105.jpg,MUESTRA-003
+CIDER,ADMORE CIDER,1,C01N01P01,ADMORE,FABRICUT,TELA,,,http://qrc.fabricut.com/?id=3955115,https://s3.amazonaws.com/fabricut.img/img/product_images/3955115.jpg,MUESTRA-004
+CLOVER,ADMORE CLOVER,1,C01N01P01,ADMORE,FABRICUT,TELA,,,http://qrc.fabricut.com/?id=3955109,https://s3.amazonaws.com/fabricut.img/img/product_images/3955109.jpg,MUESTRA-005
+COIN,ADMORE COIN,1,C01N01P01,ADMORE,FABRICUT,TELA,,,http://qrc.fabricut.com/?id=3955103,https://s3.amazonaws.com/fabricut.img/img/product_images/3955103.jpg,MUESTRA-006
+CURRANT,ADMORE CURRANT,1,C01N01P01,ADMORE,FABRICUT,TELA,,,http://qrc.fabricut.com/?id=3955117,https://s3.amazonaws.com/fabricut.img/img/product_images/3955117.jpg,MUESTRA-007
+DELUGE,ADMORE DELUGE,1,C01N01P01,ADMORE,FABRICUT,TELA,,,http://qrc.fabricut.com/?id=3955111,https://s3.amazonaws.com/fabricut.img/img/product_images/3955111.jpg,MUESTRA-008
+DEWBERRY,ADMORE DEWBERRY,1,C01N01P01,ADMORE,FABRICUT,TELA,,,http://qrc.fabricut.com/?id=3955118,https://s3.amazonaws.com/fabricut.img/img/product_images/3955118.jpg,MUESTRA-009
+FALCON,ADMORE FALCON,1,C01N01P02,ADMORE,FABRICUT,TELA,,,http://qrc.fabricut.com/?id=3955119,https://s3.amazonaws.com/fabricut.img/img/product_images/3955119.jpg,MUESTRA-010
+GINGERBREAD,ADMORE GINGERBREAD,1,C01N01P02,ADMORE,FABRICUT,TELA,,,http://qrc.fabricut.com/?id=3955114,https://s3.amazonaws.com/fabricut.img/img/product_images/3955114.jpg,MUESTRA-011
+LAUREL,ADMORE LAUREL,1,C01N01P02,ADMORE,FABRICUT,TELA,,,http://qrc.fabricut.com/?id=3955108,https://s3.amazonaws.com/fabricut.img/img/product_images/3955108.jpg,MUESTRA-012
+LIPSTICK,ADMORE LIPSTICK,1,C01N01P02,ADMORE,FABRICUT,TELA,,,http://qrc.fabricut.com/?id=3955116,https://s3.amazonaws.com/fabricut.img/img/product_images/3955116.jpg,MUESTRA-013
+ODYSSEY,ADMORE ODYSSEY,1,C01N01P02,ADMORE,FABRICUT,TELA,,,http://qrc.fabricut.com/?id=3955107,https://s3.amazonaws.com/fabricut.img/img/product_images/3955107.jpg,MUESTRA-014
+PAVEMENT,ADMORE PAVEMENT,1,C01N01P02,ADMORE,FABRICUT,TELA,,,http://qrc.fabricut.com/?id=3955101,https://s3.amazonaws.com/fabricut.img/img/product_images/3955101.jpg,MUESTRA-015
+PEPPER,ADMORE PEPPER,1,C01N01P02,ADMORE,FABRICUT,TELA,,,http://qrc.fabricut.com/?id=3955102,https://s3.amazonaws.com/fabricut.img/img/product_images/3955102.jpg,MUESTRA-016
+SEADRIFT,ADMORE SEADRIFT,1,C01N01P02,ADMORE,FABRICUT,TELA,,,http://qrc.fabricut.com/?id=3955104,https://s3.amazonaws.com/fabricut.img/img/product_images/3955104.jpg,MUESTRA-017
+SHOJI,ADMORE SHOJI,1,C01N01P03,ADMORE,FABRICUT,TELA,,,http://qrc.fabricut.com/?id=3955112,https://s3.amazonaws.com/fabricut.img/img/product_images/3955112.jpg,MUESTRA-018
+SPICE,ADMORE SPICE,1,C01N01P03,ADMORE,FABRICUT,TELA,,,http://qrc.fabricut.com/?id=3955113,https://s3.amazonaws.com/fabricut.img/img/product_images/3955113.jpg,MUESTRA-019
+STORMY,ADMORE STORMY,1,C01N01P03,ADMORE,FABRICUT,TELA,,,http://qrc.fabricut.com/?id=3955121,https://s3.amazonaws.com/fabricut.img/img/product_images/3955121.jpg,MUESTRA-020
+TOURMALINE,ADMORE TOURMALINE,1,C01N01P03,ADMORE,FABRICUT,TELA,,,http://qrc.fabricut.com/?id=3955110,https://s3.amazonaws.com/fabricut.img/img/product_images/3955110.jpg,MUESTRA-021
+WHEAT,CORSICA WHEAT,1,C01N01P04,CORSICA,FABRICUT,TELA,,,http://qrc.fabricut.com/?id=8183501,https://s3.amazonaws.com/fabricut.img/img/product_images/8183501.jpg,MUESTRA-022
+TRUFFLE,CORSICA TRUFFLE,1,C01N01P04,CORSICA,FABRICUT,TELA,,,http://qrc.fabricut.com/?id=8183510,https://s3.amazonaws.com/fabricut.img/img/product_images/8183510.jpg,MUESTRA-023
+SADDLE,CORSICA SADDLE,1,C01N01P04,CORSICA,FABRICUT,TELA,,,http://qrc.fabricut.com/?id=8183509,https://s3.amazonaws.com/fabricut.img/img/product_images/8183509.jpg,MUESTRA-024
+MUDSLIDE,CORSICA MUDSLIDE,1,C01N01P04,CORSICA,FABRICUT,TELA,,,http://qrc.fabricut.com/?id=8183505,https://s3.amazonaws.com/fabricut.img/img/product_images/8183505.jpg,MUESTRA-025
+MILKWEED,CORSICA MILKWEED,1,C01N01P04,CORSICA,FABRICUT,TELA,,,http://qrc.fabricut.com/?id=8183511,https://s3.amazonaws.com/fabricut.img/img/product_images/8183511.jpg,MUESTRA-026
+MIDNIGHT,CORSICA MIDNIGHT,1,C01N01P04,CORSICA,FABRICUT,TELA,,,http://qrc.fabricut.com/?id=8183502,https://s3.amazonaws.com/fabricut.img/img/product_images/8183502.jpg,MUESTRA-027
+ASH,CORSICA ASH,1,C01N01P04,CORSICA,FABRICUT,TELA,,,http://qrc.fabricut.com/?id=8183507,https://s3.amazonaws.com/fabricut.img/img/product_images/8183507.jpg,MUESTRA-028
+HYDRANGEA,GLOURIOUS BOUQUET - WC HYDRANGEA,2,C01N01P05,GLOURIOUS BOUQUET - WC,FABRICUT,PAPEL TAPIZ,,,http://qrc.fabricut.com/?id=1542202,https://s3.amazonaws.com/fabricut.img/img/product_images/1542202.jpg,MUESTRA-029
+SMOKE,LITERATURE - WC SMOKE,2,C01N01P06,LITERATURE - WC,FABRICUT,PAPEL TAPIZ,,,http://qrc.fabricut.com/?id=8912706,https://s3.amazonaws.com/fabricut.img/img/product_images/8912706.jpg,MUESTRA-030
+CASTLE,LITERATURE - WC CASTLE,1,C01N01P06,LITERATURE - WC,FABRICUT,PAPEL TAPIZ,,,http://qrc.fabricut.com/?id=8912702,https://s3.amazonaws.com/fabricut.img/img/product_images/8912702.jpg,MUESTRA-031
+KONA,LITERATURE - WC KONA,2,C01N01P06,LITERATURE - WC,FABRICUT,PAPEL TAPIZ,,,http://qrc.fabricut.com/?id=8912703,https://s3.amazonaws.com/fabricut.img/img/product_images/8912703.jpg,MUESTRA-032
+COMET,LITERATURE - WC COMET,2,C01N01P06,LITERATURE - WC,FABRICUT,PAPEL TAPIZ,,,http://qrc.fabricut.com/?id=8912704,https://s3.amazonaws.com/fabricut.img/img/product_images/8912704.jpg,MUESTRA-033
+LEAF,LUSH RAINFOREST - WC LEAF,2,C01N02P01,LUSH RAINFOREST - WC,FABRICUT,PAPEL TAPIZ,,,http://qrc.fabricut.com/?id=1541501,https://s3.amazonaws.com/fabricut.img/img/product_images/1541501.jpg,MUESTRA-034
+DUSK,MIDNIGHT GARDEN - WC DUSK,2,C01N02P02,MIDNIGHT GARDEN - WC,FABRICUT,PAPEL TAPIZ,,,http://qrc.fabricut.com/?id=1542002,https://s3.amazonaws.com/fabricut.img/img/product_images/1542002.jpg,MUESTRA-035
+ADRIATIC,TROPICAL GARDEN - WC ADRIATIC,2,C01N02P03,TROPICAL GARDEN - WC,FABRICUT,PAPEL TAPIZ,,,http://qrc.fabricut.com/?id=1542101,https://s3.amazonaws.com/fabricut.img/img/product_images/1542101.jpg,MUESTRA-036
+NOUGAT-02,50086W MIETTE NOUGAT-02,2,C01N02P04,50086W MIETTE,FABRICUT,PAPEL TAPIZ,,,http://qr.fabricut.com/?id=5994702,https://s3.amazonaws.com/fabricut.img/img/product_images/5994702.jpg,MUESTRA-037
+NAVY-04,50086W MIETTE NAVY-04,2,C01N02P04,50086W MIETTE,FABRICUT,PAPEL TAPIZ,,,http://qr.fabricut.com/?id=5994704,https://s3.amazonaws.com/fabricut.img/img/product_images/5994704.jpg,MUESTRA-038
+NAVY-01,50370W PERTH NAVY-01,2,C01N02P04,50370W PERTH,FABRICUT,PAPEL TAPIZ,,,http://qr.fabricut.com/?id=6059801,https://s3.amazonaws.com/fabricut.img/img/product_images/6059801.jpg,MUESTRA-039
+ROSE GOLD-05,50086W MIETTE ROSE GOLD-05,2,C01N02P04,50086W MIETTE,FABRICUT,PAPEL TAPIZ,,,http://qr.fabricut.com/?id=5994705,https://s3.amazonaws.com/fabricut.img/img/product_images/5994705.jpg,MUESTRA-040
+QUARTZ,50308W MAXIS QUARTZ,4,C01N02P05,50308W MAXIS,FABRICUT,PAPEL TAPIZ,,,http://qr.fabricut.com/?id=4591915,https://s3.amazonaws.com/fabricut.img/img/product_images/0848215.jpg,MUESTRA-041
+PEARL,50308W MAXIS PEARL,4,C01N02P05,50308W MAXIS,FABRICUT,PAPEL TAPIZ,,,http://qr.fabricut.com/?id=4591911,https://s3.amazonaws.com/fabricut.img/img/product_images/0848211.jpg,MUESTRA-042
+COBALT,50308W MAXIS COBALT,4,C01N02P05,50308W MAXIS,FABRICUT,PAPEL TAPIZ,,,http://qr.fabricut.com/?id=4591905,https://s3.amazonaws.com/fabricut.img/img/product_images/0848205.jpg,MUESTRA-043
+METAL,50308W MAXIS METAL,3,C01N02P05,50308W MAXIS,FABRICUT,PAPEL TAPIZ,,,http://qr.fabricut.com/?id=4591909,https://s3.amazonaws.com/fabricut.img/img/product_images/0848209.jpg,MUESTRA-044
+METAL50314W,50314W ZARINA METAL50314W,2,C01N02P06,50314W ZARINA,FABRICUT,PAPEL TAPIZ,,,http://qr.fabricut.com/?id=4611407,https://s3.amazonaws.com/fabricut.img/img/product_images/0847207.jpg,MUESTRA-045
+MUSHROOM,50314W ZARINA MUSHROOM,5,C01N02P06,50314W ZARINA,FABRICUT,PAPEL TAPIZ,,,http://qr.fabricut.com/?id=4611403,https://s3.amazonaws.com/fabricut.img/img/product_images/0847203.jpg,MUESTRA-046
+PELICAN,50314W ZARINA PELICAN,4,C01N02P06,50314W ZARINA,FABRICUT,PAPEL TAPIZ,,,http://qr.fabricut.com/?id=4611405,https://s3.amazonaws.com/fabricut.img/img/product_images/0847205.jpg,MUESTRA-047
+GOLD-02,50371W HODAR GOLD-02,5,C01N03P01,50371W HODAR,FABRICUT,PAPEL TAPIZ,,,http://qr.fabricut.com/?id=6060002,https://s3.amazonaws.com/fabricut.img/img/product_images/6060002.jpg,MUESTRA-048
+SILVER-01,50371W HODAR SILVER-01,5,C01N03P01,50371W HODAR,FABRICUT,PAPEL TAPIZ,,,http://qr.fabricut.com/?id=6060001,https://s3.amazonaws.com/fabricut.img/img/product_images/6060001.jpg,MUESTRA-049
+AQUA-01,50376W PERCE AQUA-01,3,C01N03P02,50376W PERCE,FABRICUT,PAPEL TAPIZ,,,http://qr.fabricut.com/?id=6061301,https://s3.amazonaws.com/fabricut.img/img/product_images/6061301.jpg,MUESTRA-050
+GREY-02,50385W CILMA GREY-02,2,C01N03P02,50385W CILMA,FABRICUT,PAPEL TAPIZ,,,http://qr.fabricut.com/?id=6063202,https://s3.amazonaws.com/fabricut.img/img/product_images/6063202.jpg,MUESTRA-051
+AQUA-01 ELIDA,50388W  ELIDA AQUA-01 ELIDA,5,C01N03P03,50388W  ELIDA,FABRICUT,PAPEL TAPIZ,,,http://qr.fabricut.com/?id=6064101,https://s3.amazonaws.com/fabricut.img/img/product_images/6064101.jpg,MUESTRA-052
+GREY-02 ELIDA,50388W  ELIDA GREY-02 ELIDA,5,C01N03P03,50388W  ELIDA,FABRICUT,PAPEL TAPIZ,,,http://qr.fabricut.com/?id=6064102,https://s3.amazonaws.com/fabricut.img/img/product_images/6064102.jpg,MUESTRA-053
+CYPRESS-02,50391W SINYAR CYPRESS-02,5,C01N03P04,50391W SINYAR,FABRICUT,PAPEL TAPIZ,,,http://qr.fabricut.com/?id=6083002,https://s3.amazonaws.com/fabricut.img/img/product_images/6083002.jpg,MUESTRA-054
+MINERAL-03,50391W SINYAR MINERAL-03,5,C01N03P04,50391W SINYAR,FABRICUT,PAPEL TAPIZ,,,http://qr.fabricut.com/?id=6083003,https://s3.amazonaws.com/fabricut.img/img/product_images/6083003.jpg,MUESTRA-055
+INDIGO-04,50391W SINYAR INDIGO-04,4,C01N03P04,50391W SINYAR,FABRICUT,PAPEL TAPIZ,,,http://qr.fabricut.com/?id=6083004,https://s3.amazonaws.com/fabricut.img/img/product_images/6083004.jpg,MUESTRA-056
+BLUSH-05,50391W SINYAR BLUSH-05,5,C01N03P04,50391W SINYAR,FABRICUT,PAPEL TAPIZ,,,http://qr.fabricut.com/?id=6083005,https://s3.amazonaws.com/fabricut.img/img/product_images/6083005.jpg,MUESTRA-057
+OAK-01,50391W SINYAR OAK-01,5,C01N03P04,50391W SINYAR,FABRICUT,PAPEL TAPIZ,,,http://qr.fabricut.com/?id=6083001,https://s3.amazonaws.com/fabricut.img/img/product_images/6083001.jpg,MUESTRA-058
+GILT-01,50394W LATIF GILT-01,2,C01N03P05,50394W LATIF,FABRICUT,PAPEL TAPIZ,,,http://qr.fabricut.com/?id=6064301,https://s3.amazonaws.com/fabricut.img/img/product_images/6064301.jpg,MUESTRA-059
+INDIGO-02,50394W LATIF INDIGO-02,2,C01N03P05,50394W LATIF,FABRICUT,PAPEL TAPIZ,,,http://qr.fabricut.com/?id=6064302,https://s3.amazonaws.com/fabricut.img/img/product_images/6064302.jpg,MUESTRA-060
+SILVER-03,50394W LATIF SILVER-03,2,C01N03P05,50394W LATIF,FABRICUT,PAPEL TAPIZ,,,http://qr.fabricut.com/?id=6064303,https://s3.amazonaws.com/fabricut.img/img/product_images/6064303.jpg,MUESTRA-061
+GILT-01 SHRUB,50395W SHRUB GILT-01 SHRUB,2,C01N03P06,50395W SHRUB,FABRICUT,PAPEL TAPIZ,,,http://qr.fabricut.com/?id=6064501,https://s3.amazonaws.com/fabricut.img/img/product_images/6064501.jpg,MUESTRA-062
+INDIGO-02 SHRUB,50395W SHRUB INDIGO-02 SHRUB,2,C01N03P06,50395W SHRUB,FABRICUT,PAPEL TAPIZ,,,http://qr.fabricut.com/?id=6064502,https://s3.amazonaws.com/fabricut.img/img/product_images/6064502.jpg,MUESTRA-063
+SILVER-03 SHRUB,50395W SHRUB SILVER-03 SHRUB,2,C01N03P06,50395W SHRUB,FABRICUT,PAPEL TAPIZ,,,http://qr.fabricut.com/?id=6064503,https://s3.amazonaws.com/fabricut.img/img/product_images/6064503.jpg,MUESTRA-064
+ALLOY-02,50399W SHRUB ALLOY-02,2,C01N04P01,50399W SHRUB,FABRICUT,PAPEL TAPIZ,,,http://qr.fabricut.com/?id=6105202,https://s3.amazonaws.com/fabricut.img/img/product_images/6105202.jpg,MUESTRA-065
+INDIGO-01,50399W SHRUB INDIGO-01,2,C01N04P01,50399W SHRUB,FABRICUT,PAPEL TAPIZ,,,http://qr.fabricut.com/?id=6105201,https://s3.amazonaws.com/fabricut.img/img/product_images/6105201.jpg,MUESTRA-066
+ROSE-01,50400W ECCLES ROSE-01,2,C01N04P02,50400W ECCLES,FABRICUT,PAPEL TAPIZ,,,http://qr.fabricut.com/?id=6105501,https://s3.amazonaws.com/fabricut.img/img/product_images/6105501.jpg,MUESTRA-067
+PLATINUM-02,50400W ECCLES PLATINUM-02,2,C01N04P02,50400W ECCLES,FABRICUT,PAPEL TAPIZ,,,http://qr.fabricut.com/?id=6105502,https://s3.amazonaws.com/fabricut.img/img/product_images/6105502.jpg,MUESTRA-068
+MOONSTONE-01,50401W HOWTH MOONSTONE-01,5,C01N04P03,50401W HOWTH,FABRICUT,PAPEL TAPIZ,,,http://qr.fabricut.com/?id=6105801,https://s3.amazonaws.com/fabricut.img/img/product_images/6105801.jpg,MUESTRA-069
+PAINT,A LA CARTE  PAINT,1,C01N05P01,A LA CARTE,S. HARRIS,TELA,,,http://qr.fabricut.com/?id=2204201,https://s3.amazonaws.com/fabricut.img/img/product_images/2204201.jpg,MUESTRA-070
+REEF,ANKARA MOHAIR - HC REEF,1,C01N05P01,ANKARA MOHAIR - HC,S. HARRIS,TELA,,,http://qr.fabricut.com/?id=8529125,https://s3.amazonaws.com/fabricut.img/img/product_images/8529125.jpg,MUESTRA-071
+METALLO,BEATING HEARTS  METALLO,1,C01N05P02,BEATING HEARTS,S. HARRIS,TRIMMING,,,http://qr.fabricut.com/?id=2290202,https://s3.amazonaws.com/fabricut.img/img/product_images/2290202.jpg,MUESTRA-072
+GROTTO,BEATING HEARTS  GROTTO,1,C01N05P03,BEATING HEARTS,S. HARRIS,TRIMMING,,,http://qr.fabricut.com/?id=2290201,https://s3.amazonaws.com/fabricut.img/img/product_images/2290201.jpg,MUESTRA-073
+ROSETTA,BEATING HEARTS  ROSETTA,1,C01N05P04,BEATING HEARTS,S. HARRIS,TRIMMING,,,http://qr.fabricut.com/?id=2290203,https://s3.amazonaws.com/fabricut.img/img/product_images/2290203.jpg,MUESTRA-074
