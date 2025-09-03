@@ -46,10 +46,13 @@
     form.registro button:hover{ background:var(--brand-d);}
     ul.muestras{ list-style:disc; padding-left:20px; margin:0;}
 
-    /* Modal QR */
-    #qrModal{ display:none; position:fixed; inset:0; background:rgba(0,0,0,.6);
-      display:flex; justify-content:center; align-items:center; z-index:999;}
-    #qrModal .inner{ background:#fff; padding:20px; border-radius:12px; max-width:400px; width:90%;}
+    /* Modal QR (AHORA sí inicia oculto) */
+    #qrModal{
+      display:none;                  /* <--- solo una vez, inicia oculto */
+      position:fixed; inset:0; background:rgba(0,0,0,.6);
+      justify-content:center; align-items:center; z-index:999;
+    }
+    #qrModal .inner{ background:#fff; padding:20px; border-radius:12px; max-width:420px; width:92%;}
     #reader{ width:100%; }
   </style>
 </head>
@@ -85,10 +88,21 @@
     const btnLista   = document.getElementById('btnLista');
     const btnGrid    = document.getElementById('btnGrid');
     const params     = new URLSearchParams(window.location.search);
-    const singleId   = params.get('id');
+    const singleId   = params.get('id');           // para muestras
+    const ubicParam  = params.get('ubicacion');    // para ubicación/nivel
+    const viewParam  = params.get('view');         // opcional: ?view=grid|list
 
     let datos = [];
     let muestrasSeleccionadas = [];
+
+    // --- Persistencia en localStorage ---
+    function loadSel(){
+      try{ return JSON.parse(localStorage.getItem('muestrasSeleccionadas')) || []; }
+      catch(_){ return []; }
+    }
+    function saveSel(arr){
+      localStorage.setItem('muestrasSeleccionadas', JSON.stringify(arr));
+    }
 
     // Render
     function render(lista){
@@ -116,13 +130,13 @@
             <p class="meta"><b>Código:</b> ${CODIGO}</p>
             <p class="meta"><b>Ubicación:</b> ${UBICACION}</p>
             <p class="meta"><b>Proveedor:</b> ${PROVEEDOR}</p>
-            <p class="meta"><b>ID:</b> ${ID}</p>
+            ${ID ? `<p class="meta"><b>ID:</b> ${ID}</p>` : ''}
             ${WEB ? `<a class="link" href="${WEB}" target="_blank" rel="noopener">Ver más</a>` : ''}
           </div>
         `;
 
+        // Si venimos con ?id= y coincide, insertar formulario multi-muestra
         if (singleId && ID === singleId){
-          // Formulario
           const form = document.createElement('form');
           form.className = 'registro';
           form.action = "https://formspree.io/f/mjkegwag";
@@ -142,23 +156,27 @@
           `;
           card.appendChild(form);
 
-          // Inicializa lista con la muestra actual
-          if (!muestrasSeleccionadas.includes(ID)){
+          // Cargar selección desde localStorage y asegurar que singleId esté incluido
+          muestrasSeleccionadas = loadSel();
+          if (ID && !muestrasSeleccionadas.includes(ID)){
             muestrasSeleccionadas.push(ID);
-            actualizarLista();
+            saveSel(muestrasSeleccionadas);
           }
+          actualizarLista();
 
-          // Fecha antes de enviar
+          // Al enviar: adjuntar fecha y limpiar selección
           form.addEventListener('submit', e=>{
             const dateInput = document.createElement('input');
             dateInput.type = 'hidden';
             dateInput.name = 'fecha';
             dateInput.value = new Date().toLocaleString();
             form.appendChild(dateInput);
-            document.getElementById('inputMuestras').value = muestrasSeleccionadas.join(', ');
+            document.getElementById('inputMuestras').value = (loadSel()).join(', ');
+            // limpiar selección para próxima entrega
+            localStorage.removeItem('muestrasSeleccionadas');
           });
 
-          // Agregar muestra (abre modal)
+          // Botón de escaneo (abre modal)
           form.querySelector('#agregarBtn').addEventListener('click', abrirModal);
         }
 
@@ -171,7 +189,8 @@
     function actualizarLista(){
       const ul = document.getElementById('listaMuestras');
       if (!ul) return;
-      ul.innerHTML = muestrasSeleccionadas.map(id=>`<li>${id}</li>`).join('');
+      const sel = loadSel();
+      ul.innerHTML = sel.map(id=>`<li>${id}</li>`).join('');
     }
 
     // Buscador
@@ -207,18 +226,36 @@
       qrScanner.start({ facingMode:"environment" }, { fps:10, qrbox:250 }, qrSuccess);
     }
     function cerrar(){
+      if (qrScanner){
+        qrScanner.stop().then(()=>qrScanner.clear()).catch(()=>{});
+      }
       qrModal.style.display = 'none';
-      if (qrScanner){ qrScanner.stop(); }
     }
     cerrarModal.addEventListener('click', cerrar);
 
+    // Éxito de lectura QR
     function qrSuccess(decodedText){
       cerrar();
-      const url = new URL(decodedText);
-      const newId = url.searchParams.get("id");
-      if (newId && !muestrasSeleccionadas.includes(newId)){
-        muestrasSeleccionadas.push(newId);
+      let idLeido = null;
+      try{
+        const u = new URL(decodedText);
+        idLeido = u.searchParams.get('id');
+      }catch(_){
+        // Si no es URL válida, ignoramos
+      }
+
+      if (idLeido){
+        // QR con ?id= directo
+        const sel = loadSel();
+        if (!sel.includes(idLeido)){
+          sel.push(idLeido);
+          saveSel(sel);
+        }
         actualizarLista();
+      }else{
+        // QR es un link corto (sin ?id=). Navegamos y al recargar la página,
+        // tras el redirect, el ?id= será detectado y agregado a localStorage.
+        window.location.href = decodedText;
       }
     }
 
@@ -230,10 +267,32 @@
           (r['CODIGO'] && r['CODIGO'].trim()) ||
           (r['DESCRIPCION'] && r['DESCRIPCION'].trim())
         );
+
+        // Vista forzada por URL
+        if (viewParam === 'grid') setGridView();
+        if (viewParam === 'list') setListView();
+
         if (singleId){
+          // Modo ficha de muestra + formulario multi-muestra
           render(datos.filter(d => d['ID'] === singleId));
+
+          // Asegurar que la muestra actual quede en la selección persistente
+          let sel = loadSel();
+          if (singleId && !sel.includes(singleId)){
+            sel.push(singleId);
+            saveSel(sel);
+          }
+          actualizarLista();
+
         } else {
+          // Modo catálogo normal
           render(datos);
+
+          // Auto-filtro por ?ubicacion=
+          if (ubicParam){
+            buscador.value = ubicParam;
+            aplicarFiltroTexto();
+          }
         }
       }
     });
