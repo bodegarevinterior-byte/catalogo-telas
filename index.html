@@ -6,14 +6,9 @@
   <title>Catálogo de Telas</title>
   <style>
     :root{
-      --gap:14px;
-      --radius:12px;
-      --shadow:0 2px 6px rgba(0,0,0,.1);
-      --bg:#f4f4f4;
-      --ink:#333;
-      --ink2:#555;
-      --brand:#1f6feb;
-      --brand-d:#1756b8;
+      --gap:14px; --radius:12px; --shadow:0 2px 6px rgba(0,0,0,.1);
+      --bg:#f4f4f4; --ink:#333; --ink2:#555;
+      --brand:#1f6feb; --brand-d:#1756b8;
     }
     *{box-sizing:border-box}
     body{ margin:0; font-family:system-ui, Arial, sans-serif; background:var(--bg); color:var(--ink);}
@@ -26,11 +21,10 @@
     .btn.alt{ background:#666;}
     .btn.alt:hover{ background:#4d4d4d;}
 
-    /* Contenedor de resultados */
+    /* Resultados */
     #resultados{ display:grid; gap:var(--gap); padding:var(--gap); align-items:start;}
     #resultados.lista-view{ grid-template-columns:1fr;}
     #resultados.grid-view{ grid-template-columns: repeat(auto-fill, minmax(90px,1fr)); }
-
     .card{ background:#fff; border-radius:var(--radius); box-shadow:var(--shadow);
       overflow:hidden; display:flex; flex-direction:column; transition:transform .15s ease;}
     .card:hover{ transform:translateY(-2px);}
@@ -40,17 +34,23 @@
     .meta{ margin:4px 0; font-size:14px; color:var(--ink2);}
     .link{ margin-top:6px; display:inline-block; text-decoration:none; color:#fff; background:var(--brand);
       padding:6px 10px; border-radius:8px; font-size:13px;}
-
     #resultados.grid-view .thumb{ height:120px;}
     #resultados.grid-view .title{ font-size:12px;}
     #resultados.grid-view .meta{ font-size:11px;}
 
-    /* Formulario de préstamo */
+    /* Formulario */
     form.registro{ display:flex; flex-direction:column; gap:10px; margin-top:12px;}
-    form.registro input[type="text"]{ padding:8px; border:1px solid #ccc; border-radius:6px;}
+    form.registro input[type="text"], form.registro input[type="email"]{ padding:8px; border:1px solid #ccc; border-radius:6px;}
     form.registro button{ padding:10px; background:var(--brand); border:none; color:#fff;
       font-weight:600; border-radius:8px; cursor:pointer;}
     form.registro button:hover{ background:var(--brand-d);}
+    ul.muestras{ list-style:disc; padding-left:20px; margin:0;}
+
+    /* Modal QR */
+    #qrModal{ display:none; position:fixed; inset:0; background:rgba(0,0,0,.6);
+      display:flex; justify-content:center; align-items:center; z-index:999;}
+    #qrModal .inner{ background:#fff; padding:20px; border-radius:12px; max-width:400px; width:90%;}
+    #reader{ width:100%; }
   </style>
 </head>
 <body>
@@ -64,37 +64,33 @@
 
   <div id="resultados" class="lista-view"></div>
 
+  <!-- Modal QR -->
+  <div id="qrModal">
+    <div class="inner">
+      <h3>Escanea otra muestra</h3>
+      <div id="reader"></div>
+      <button class="btn alt" id="cerrarModal" type="button">Cerrar</button>
+    </div>
+  </div>
+
+  <!-- PapaParse -->
   <script src="https://cdn.jsdelivr.net/npm/papaparse@5.4.1/papaparse.min.js"></script>
+  <!-- QR Scanner -->
+  <script src="https://unpkg.com/html5-qrcode/minified/html5-qrcode.min.js"></script>
+
   <script>
     const CSV_URL = './datos.csv';
     const resultados = document.getElementById('resultados');
     const buscador   = document.getElementById('buscador');
     const btnLista   = document.getElementById('btnLista');
     const btnGrid    = document.getElementById('btnGrid');
-
-    // Lee parámetros de forma tolerante (ignora acentos y mayúsculas)
-    const params = new URLSearchParams(window.location.search);
-    function normalize(str){
-      return (str||'')
-        .toString()
-        .trim()
-        .normalize('NFD').replace(/\p{Diacritic}/gu,'') // quita acentos
-        .toLowerCase();
-    }
-    function getParamInsensitive(name){ // name sin acentos y en minúsculas
-      const target = normalize(name);
-      for (const [k,v] of params.entries()){
-        if (normalize(decodeURIComponent(k)) === target) return v;
-      }
-      return null;
-    }
-
-    const singleId   = getParamInsensitive('id');         // ?id=MUESTRA-001
-    const ubicacionQ = getParamInsensitive('ubicacion');  // ?ubicacion=C01N01P01 (o ?Ubicación=...)
+    const params     = new URLSearchParams(window.location.search);
+    const singleId   = params.get('id');
 
     let datos = [];
+    let muestrasSeleccionadas = [];
 
-    // ---- Render ----
+    // Render
     function render(lista){
       resultados.innerHTML = '';
       if (!lista || !lista.length){
@@ -106,11 +102,10 @@
         const ID = item['ID'] || '';
         const CODIGO = item['CODIGO'] || '';
         const DESCRIPCION = item['DESCRIPCION'] || '';
-        const UBICACION = item['UBICACION'] || item['Ubicación'] || item['ubicacion'] || '';
+        const UBICACION = item['UBICACION'] || '';
         const PROVEEDOR = item['PROVEEDOR'] || '';
         const WEB = item['WEB SITE'] || '';
         const IMG = item['IMAGEN'] || '';
-        if (!CODIGO && !DESCRIPCION) continue;
 
         const card = document.createElement('div');
         card.className = 'card';
@@ -126,19 +121,45 @@
           </div>
         `;
 
-        // Formulario solo cuando se abre por ?id=
-        if (singleId && normalize(ID) === normalize(singleId)){
+        if (singleId && ID === singleId){
+          // Formulario
           const form = document.createElement('form');
           form.className = 'registro';
           form.action = "https://formspree.io/f/mjkegwag";
           form.method = "POST";
           form.innerHTML = `
-            <input type="hidden" name="ID_MUESTRA" value="${ID}">
+            <button type="button" class="btn" id="agregarBtn">➕ Agregar muestra</button>
+            <input type="hidden" name="ID_MUESTRAS" id="inputMuestras">
             <label>Prestado a:</label>
-            <input type="text" name="cliente" placeholder="Nombre del cliente" required>
+            <input type="text" name="cliente" required>
+            <label>Correo:</label>
+            <input type="email" name="correo" required>
+            <div>
+              <b>Muestras seleccionadas:</b>
+              <ul class="muestras" id="listaMuestras"></ul>
+            </div>
             <button type="submit">Registrar salida</button>
           `;
           card.appendChild(form);
+
+          // Inicializa lista con la muestra actual
+          if (!muestrasSeleccionadas.includes(ID)){
+            muestrasSeleccionadas.push(ID);
+            actualizarLista();
+          }
+
+          // Fecha antes de enviar
+          form.addEventListener('submit', e=>{
+            const dateInput = document.createElement('input');
+            dateInput.type = 'hidden';
+            dateInput.name = 'fecha';
+            dateInput.value = new Date().toLocaleString();
+            form.appendChild(dateInput);
+            document.getElementById('inputMuestras').value = muestrasSeleccionadas.join(', ');
+          });
+
+          // Agregar muestra (abre modal)
+          form.querySelector('#agregarBtn').addEventListener('click', abrirModal);
         }
 
         frag.appendChild(card);
@@ -146,21 +167,28 @@
       resultados.appendChild(frag);
     }
 
-    // ---- Buscador ----
+    // Actualiza UL
+    function actualizarLista(){
+      const ul = document.getElementById('listaMuestras');
+      if (!ul) return;
+      ul.innerHTML = muestrasSeleccionadas.map(id=>`<li>${id}</li>`).join('');
+    }
+
+    // Buscador
     function aplicarFiltroTexto(){
-      const t = normalize(buscador.value);
+      const t = (buscador.value || '').toLowerCase().trim();
       if (!t){ render(datos); return; }
       const filtrados = datos.filter(it =>
-        normalize(it['CODIGO']).includes(t) ||
-        normalize(it['DESCRIPCION']).includes(t) ||
-        normalize(it['PROVEEDOR']).includes(t) ||
-        normalize(it['UBICACION'] || it['Ubicación'] || it['ubicacion']).includes(t) ||
-        normalize(it['ID']).includes(t)
+        (it['CODIGO']||'').toLowerCase().includes(t) ||
+        (it['DESCRIPCION']||'').toLowerCase().includes(t) ||
+        (it['PROVEEDOR']||'').toLowerCase().includes(t) ||
+        (it['UBICACION']||'').toLowerCase().includes(t) ||
+        (it['ID']||'').toLowerCase().includes(t)
       );
       render(filtrados);
     }
 
-    // ---- Vistas ----
+    // Vistas
     function setListView(){ resultados.classList.remove('grid-view'); resultados.classList.add('lista-view'); }
     function setGridView(){ resultados.classList.remove('lista-view'); resultados.classList.add('grid-view'); }
 
@@ -168,47 +196,45 @@
     btnGrid .addEventListener('click', setGridView);
     buscador.addEventListener('input', aplicarFiltroTexto);
 
-    // ---- Autoinsert fecha antes de enviar ----
-    document.addEventListener('submit', function(e) {
-      if (e.target.matches('form[action="https://formspree.io/f/mjkegwag"]')) {
-        const f = e.target;
-        const dateInput = document.createElement('input');
-        dateInput.type = 'hidden';
-        dateInput.name = 'fecha';
-        dateInput.value = new Date().toLocaleString();
-        f.appendChild(dateInput);
-      }
-    });
+    // QR Modal
+    const qrModal = document.getElementById('qrModal');
+    const cerrarModal = document.getElementById('cerrarModal');
+    let qrScanner;
 
-    // ---- Cargar CSV ----
+    function abrirModal(){
+      qrModal.style.display = 'flex';
+      qrScanner = new Html5Qrcode("reader");
+      qrScanner.start({ facingMode:"environment" }, { fps:10, qrbox:250 }, qrSuccess);
+    }
+    function cerrar(){
+      qrModal.style.display = 'none';
+      if (qrScanner){ qrScanner.stop(); }
+    }
+    cerrarModal.addEventListener('click', cerrar);
+
+    function qrSuccess(decodedText){
+      cerrar();
+      const url = new URL(decodedText);
+      const newId = url.searchParams.get("id");
+      if (newId && !muestrasSeleccionadas.includes(newId)){
+        muestrasSeleccionadas.push(newId);
+        actualizarLista();
+      }
+    }
+
+    // Cargar CSV
     Papa.parse(CSV_URL, {
-      download: true,
-      header: true,
-      skipEmptyLines: true,
+      download: true, header: true, skipEmptyLines: true,
       complete: function(res){
         datos = (res.data || []).filter(r =>
           (r['CODIGO'] && r['CODIGO'].trim()) ||
           (r['DESCRIPCION'] && r['DESCRIPCION'].trim())
         );
-
-        // 1) Si hay ?id=, mostrar SOLO esa muestra + form
         if (singleId){
-          const lista = datos.filter(d => normalize(d['ID']) === normalize(singleId));
-          render(lista);
-          return;
+          render(datos.filter(d => d['ID'] === singleId));
+        } else {
+          render(datos);
         }
-
-        // 2) Si hay ?ubicacion=, prellenar buscador y filtrar (tolerante)
-        if (ubicacionQ){
-          buscador.value = ubicacionQ;                 // lo ves en el input
-          const q = normalize(ubicacionQ);
-          const lista = datos.filter(d => normalize(d['UBICACION'] || d['Ubicación'] || d['ubicacion']).includes(q));
-          render(lista);
-          return;
-        }
-
-        // 3) Sin parámetros: mostrar todo
-        render(datos);
       }
     });
   </script>
