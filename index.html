@@ -129,12 +129,16 @@
           (r['CODIGO'] && r['CODIGO'].trim()) ||
           (r['DESCRIPCION'] && r['DESCRIPCION'].trim())
         );
+
         // Parámetros
         const ide = params.get('id');
         const ubic = params.get('ubicacion');
+
         if (ide){
+          buscador.value = ide; // 👈 deja escrito en la caja
           render(datos.filter(d => (d['ID']||'').toLowerCase() === ide.toLowerCase()));
         } else if (ubic){
+          buscador.value = ubic; // 👈 deja escrito en la caja
           render(datos.filter(d => (d['UBICACION']||'').toLowerCase().startsWith(ubic.toLowerCase())));
         } else {
           render(datos);
