@@ -1,301 +1,78 @@
-<!DOCTYPE html>
-<html lang="es">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Catálogo de Telas</title>
-  <style>
-    :root{
-      --gap:14px; --radius:12px; --shadow:0 2px 6px rgba(0,0,0,.1);
-      --bg:#f4f4f4; --ink:#333; --ink2:#555;
-      --brand:#1f6feb; --brand-d:#1756b8;
+<script>
+  // Guardamos las muestras escaneadas en localStorage
+  let carrito = JSON.parse(localStorage.getItem('carrito')) || [];
+
+  function agregarMuestra(id) {
+    if (!carrito.includes(id)) {
+      carrito.push(id);
+      localStorage.setItem('carrito', JSON.stringify(carrito));
     }
-    *{box-sizing:border-box}
-    body{ margin:0; font-family:system-ui, Arial, sans-serif; background:var(--bg); color:var(--ink);}
-    header{ background:#222; color:#fff; padding:16px; text-align:center;}
-    #controls{ display:flex; gap:8px; justify-content:center; align-items:center; padding:12px var(--gap);
-      flex-wrap:wrap; background:#fff; box-shadow:var(--shadow);}
-    #buscador{ flex:1 1 360px; max-width:520px; padding:10px 12px; border:1px solid #ddd; border-radius:8px; font-size:16px;}
-    .btn{ padding:10px 14px; border:none; border-radius:8px; font-weight:600; cursor:pointer; color:#fff; background:var(--brand);}
-    .btn:hover{ background:var(--brand-d);}
-    .btn.alt{ background:#666;}
-    .btn.alt:hover{ background:#4d4d4d;}
+    renderFormulario();
+  }
 
-    /* Resultados */
-    #resultados{ display:grid; gap:var(--gap); padding:var(--gap); align-items:start;}
-    #resultados.lista-view{ grid-template-columns:1fr;}
-    #resultados.grid-view{ grid-template-columns: repeat(auto-fill, minmax(90px,1fr)); }
-    .card{ background:#fff; border-radius:var(--radius); box-shadow:var(--shadow);
-      overflow:hidden; display:flex; flex-direction:column; transition:transform .15s ease;}
-    .card:hover{ transform:translateY(-2px);}
-    .thumb{ width:100%; height:200px; object-fit:cover; display:block; background:#eee;}
-    .content{ padding:10px 12px;}
-    .title{ margin:0 0 6px; font-size:16px; line-height:1.2;}
-    .meta{ margin:4px 0; font-size:14px; color:var(--ink2);}
-    .link{ margin-top:6px; display:inline-block; text-decoration:none; color:#fff; background:var(--brand);
-      padding:6px 10px; border-radius:8px; font-size:13px;}
-    #resultados.grid-view .thumb{ height:120px;}
-    #resultados.grid-view .title{ font-size:12px;}
-    #resultados.grid-view .meta{ font-size:11px;}
+  function renderFormulario() {
+    const cont = document.getElementById('formulario');
+    if (!cont) return;
 
-    /* Formulario */
-    form.registro{ display:flex; flex-direction:column; gap:10px; margin-top:12px;}
-    form.registro input[type="text"], form.registro input[type="email"]{ padding:8px; border:1px solid #ccc; border-radius:6px;}
-    form.registro button{ padding:10px; background:var(--brand); border:none; color:#fff;
-      font-weight:600; border-radius:8px; cursor:pointer;}
-    form.registro button:hover{ background:var(--brand-d);}
-    ul.muestras{ list-style:disc; padding-left:20px; margin:0;}
-
-    /* Modal QR (AHORA sí inicia oculto) */
-    #qrModal{
-      display:none;                  /* <--- solo una vez, inicia oculto */
-      position:fixed; inset:0; background:rgba(0,0,0,.6);
-      justify-content:center; align-items:center; z-index:999;
-    }
-    #qrModal .inner{ background:#fff; padding:20px; border-radius:12px; max-width:420px; width:92%;}
-    #reader{ width:100%; }
-  </style>
-</head>
-<body>
-  <header><h1>Catálogo de Telas</h1></header>
-
-  <div id="controls">
-    <input id="buscador" type="text" placeholder="Buscar por código, descripción, proveedor o ubicación…" />
-    <button class="btn alt" id="btnLista" type="button">☰ Lista</button>
-    <button class="btn" id="btnGrid" type="button">🔲 Cuadrícula</button>
-  </div>
-
-  <div id="resultados" class="lista-view"></div>
-
-  <!-- Modal QR -->
-  <div id="qrModal">
-    <div class="inner">
-      <h3>Escanea otra muestra</h3>
-      <div id="reader"></div>
-      <button class="btn alt" id="cerrarModal" type="button">Cerrar</button>
-    </div>
-  </div>
-
-  <!-- PapaParse -->
-  <script src="https://cdn.jsdelivr.net/npm/papaparse@5.4.1/papaparse.min.js"></script>
-  <!-- QR Scanner -->
-  <script src="https://unpkg.com/html5-qrcode/minified/html5-qrcode.min.js"></script>
-
-  <script>
-    const CSV_URL = './datos.csv';
-    const resultados = document.getElementById('resultados');
-    const buscador   = document.getElementById('buscador');
-    const btnLista   = document.getElementById('btnLista');
-    const btnGrid    = document.getElementById('btnGrid');
-    const params     = new URLSearchParams(window.location.search);
-    const singleId   = params.get('id');           // para muestras
-    const ubicParam  = params.get('ubicacion');    // para ubicación/nivel
-    const viewParam  = params.get('view');         // opcional: ?view=grid|list
-
-    let datos = [];
-    let muestrasSeleccionadas = [];
-
-    // --- Persistencia en localStorage ---
-    function loadSel(){
-      try{ return JSON.parse(localStorage.getItem('muestrasSeleccionadas')) || []; }
-      catch(_){ return []; }
-    }
-    function saveSel(arr){
-      localStorage.setItem('muestrasSeleccionadas', JSON.stringify(arr));
+    if (carrito.length === 0) {
+      cont.innerHTML = "<p>No hay muestras seleccionadas.</p>";
+      return;
     }
 
-    // Render
-    function render(lista){
-      resultados.innerHTML = '';
-      if (!lista || !lista.length){
-        resultados.innerHTML = '<p style="text-align:center;color:#666;margin:24px 0">No se encontraron resultados</p>';
-        return;
-      }
-      const frag = document.createDocumentFragment();
-      for (const item of lista){
-        const ID = item['ID'] || '';
-        const CODIGO = item['CODIGO'] || '';
-        const DESCRIPCION = item['DESCRIPCION'] || '';
-        const UBICACION = item['UBICACION'] || '';
-        const PROVEEDOR = item['PROVEEDOR'] || '';
-        const WEB = item['WEB SITE'] || '';
-        const IMG = item['IMAGEN'] || '';
+    // Armamos listado
+    let listado = carrito.map(m => `<li>${m}</li>`).join("");
 
-        const card = document.createElement('div');
-        card.className = 'card';
-        card.innerHTML = `
-          <img class="thumb" src="${IMG}" alt="${DESCRIPCION}" loading="lazy" />
-          <div class="content">
-            <h3 class="title">${DESCRIPCION || CODIGO}</h3>
-            <p class="meta"><b>Código:</b> ${CODIGO}</p>
-            <p class="meta"><b>Ubicación:</b> ${UBICACION}</p>
-            <p class="meta"><b>Proveedor:</b> ${PROVEEDOR}</p>
-            ${ID ? `<p class="meta"><b>ID:</b> ${ID}</p>` : ''}
-            ${WEB ? `<a class="link" href="${WEB}" target="_blank" rel="noopener">Ver más</a>` : ''}
-          </div>
-        `;
+    cont.innerHTML = `
+      <h2>Registrar salida</h2>
+      <ul>${listado}</ul>
+      <form id="salidaForm" action="https://formspree.io/f/mjkegwag" method="POST">
+        <label>Prestado a:</label>
+        <input type="text" name="cliente" required>
+        <label>Correo del cliente:</label>
+        <input type="email" name="correo" required>
+        <input type="hidden" name="muestras" value="${carrito.join(", ")}">
+        <button type="submit">Registrar salida</button>
+      </form>
+      <button onclick="agregarOtra()">➕ Agregar muestra</button>
+    `;
+    
+    // Manejo del envío
+    document.getElementById('salidaForm').addEventListener('submit', function(e) {
+      e.preventDefault();
+      const form = e.target;
 
-        // Si venimos con ?id= y coincide, insertar formulario multi-muestra
-        if (singleId && ID === singleId){
-          const form = document.createElement('form');
-          form.className = 'registro';
-          form.action = "https://formspree.io/f/mjkegwag";
-          form.method = "POST";
-          form.innerHTML = `
-            <button type="button" class="btn" id="agregarBtn">➕ Agregar muestra</button>
-            <input type="hidden" name="ID_MUESTRAS" id="inputMuestras">
-            <label>Prestado a:</label>
-            <input type="text" name="cliente" required>
-            <label>Correo:</label>
-            <input type="email" name="correo" required>
-            <div>
-              <b>Muestras seleccionadas:</b>
-              <ul class="muestras" id="listaMuestras"></ul>
-            </div>
-            <button type="submit">Registrar salida</button>
-          `;
-          card.appendChild(form);
+      // Adjuntamos la fecha automáticamente
+      const dateInput = document.createElement('input');
+      dateInput.type = 'hidden';
+      dateInput.name = 'fecha';
+      dateInput.value = new Date().toLocaleString();
+      form.appendChild(dateInput);
 
-          // Cargar selección desde localStorage y asegurar que singleId esté incluido
-          muestrasSeleccionadas = loadSel();
-          if (ID && !muestrasSeleccionadas.includes(ID)){
-            muestrasSeleccionadas.push(ID);
-            saveSel(muestrasSeleccionadas);
-          }
-          actualizarLista();
-
-          // Al enviar: adjuntar fecha y limpiar selección
-          form.addEventListener('submit', e=>{
-            const dateInput = document.createElement('input');
-            dateInput.type = 'hidden';
-            dateInput.name = 'fecha';
-            dateInput.value = new Date().toLocaleString();
-            form.appendChild(dateInput);
-            document.getElementById('inputMuestras').value = (loadSel()).join(', ');
-            // limpiar selección para próxima entrega
-            localStorage.removeItem('muestrasSeleccionadas');
-          });
-
-          // Botón de escaneo (abre modal)
-          form.querySelector('#agregarBtn').addEventListener('click', abrirModal);
-        }
-
-        frag.appendChild(card);
-      }
-      resultados.appendChild(frag);
-    }
-
-    // Actualiza UL
-    function actualizarLista(){
-      const ul = document.getElementById('listaMuestras');
-      if (!ul) return;
-      const sel = loadSel();
-      ul.innerHTML = sel.map(id=>`<li>${id}</li>`).join('');
-    }
-
-    // Buscador
-    function aplicarFiltroTexto(){
-      const t = (buscador.value || '').toLowerCase().trim();
-      if (!t){ render(datos); return; }
-      const filtrados = datos.filter(it =>
-        (it['CODIGO']||'').toLowerCase().includes(t) ||
-        (it['DESCRIPCION']||'').toLowerCase().includes(t) ||
-        (it['PROVEEDOR']||'').toLowerCase().includes(t) ||
-        (it['UBICACION']||'').toLowerCase().includes(t) ||
-        (it['ID']||'').toLowerCase().includes(t)
-      );
-      render(filtrados);
-    }
-
-    // Vistas
-    function setListView(){ resultados.classList.remove('grid-view'); resultados.classList.add('lista-view'); }
-    function setGridView(){ resultados.classList.remove('lista-view'); resultados.classList.add('grid-view'); }
-
-    btnLista.addEventListener('click', setListView);
-    btnGrid .addEventListener('click', setGridView);
-    buscador.addEventListener('input', aplicarFiltroTexto);
-
-    // QR Modal
-    const qrModal = document.getElementById('qrModal');
-    const cerrarModal = document.getElementById('cerrarModal');
-    let qrScanner;
-
-    function abrirModal(){
-      qrModal.style.display = 'flex';
-      qrScanner = new Html5Qrcode("reader");
-      qrScanner.start({ facingMode:"environment" }, { fps:10, qrbox:250 }, qrSuccess);
-    }
-    function cerrar(){
-      if (qrScanner){
-        qrScanner.stop().then(()=>qrScanner.clear()).catch(()=>{});
-      }
-      qrModal.style.display = 'none';
-    }
-    cerrarModal.addEventListener('click', cerrar);
-
-    // Éxito de lectura QR
-    function qrSuccess(decodedText){
-      cerrar();
-      let idLeido = null;
-      try{
-        const u = new URL(decodedText);
-        idLeido = u.searchParams.get('id');
-      }catch(_){
-        // Si no es URL válida, ignoramos
-      }
-
-      if (idLeido){
-        // QR con ?id= directo
-        const sel = loadSel();
-        if (!sel.includes(idLeido)){
-          sel.push(idLeido);
-          saveSel(sel);
-        }
-        actualizarLista();
-      }else{
-        // QR es un link corto (sin ?id=). Navegamos y al recargar la página,
-        // tras el redirect, el ?id= será detectado y agregado a localStorage.
-        window.location.href = decodedText;
-      }
-    }
-
-    // Cargar CSV
-    Papa.parse(CSV_URL, {
-      download: true, header: true, skipEmptyLines: true,
-      complete: function(res){
-        datos = (res.data || []).filter(r =>
-          (r['CODIGO'] && r['CODIGO'].trim()) ||
-          (r['DESCRIPCION'] && r['DESCRIPCION'].trim())
-        );
-
-        // Vista forzada por URL
-        if (viewParam === 'grid') setGridView();
-        if (viewParam === 'list') setListView();
-
-        if (singleId){
-          // Modo ficha de muestra + formulario multi-muestra
-          render(datos.filter(d => d['ID'] === singleId));
-
-          // Asegurar que la muestra actual quede en la selección persistente
-          let sel = loadSel();
-          if (singleId && !sel.includes(singleId)){
-            sel.push(singleId);
-            saveSel(sel);
-          }
-          actualizarLista();
-
-        } else {
-          // Modo catálogo normal
-          render(datos);
-
-          // Auto-filtro por ?ubicacion=
-          if (ubicParam){
-            buscador.value = ubicParam;
-            aplicarFiltroTexto();
-          }
-        }
-      }
+      // Enviamos
+      fetch(form.action, {
+        method: form.method,
+        body: new FormData(form),
+        headers: { 'Accept': 'application/json' }
+      }).then(() => {
+        alert("Salida registrada con éxito ✅");
+        localStorage.removeItem('carrito');  // limpiar
+        window.location.href = "index.html"; // volver limpio
+      }).catch(() => {
+        alert("Error al registrar la salida ❌");
+      });
     });
-  </script>
-</body>
-</html>
+  }
+
+  function agregarOtra() {
+    alert("Escanea otra muestra para agregarla 📷");
+  }
+
+  // --- Al cargar página ---
+  const params = new URLSearchParams(window.location.search);
+  const singleId = params.get('id');
+  if (singleId) {
+    agregarMuestra(singleId);
+  } else {
+    renderFormulario();
+  }
+</script>
