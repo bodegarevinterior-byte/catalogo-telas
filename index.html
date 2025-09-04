@@ -16,43 +16,38 @@
       --brand-d: #1756b8;
       --danger:#c00;
       --danger-d:#900;
-      --success:#28a745;
     }
     * { box-sizing: border-box; }
     body { margin:0; font-family:system-ui, Arial, sans-serif; background:var(--bg); color:var(--ink);}
-    header { background:#222; color:#fff; padding:16px; text-align:center; position: sticky; top: 0; z-index: 100;}
+    header { background:#222; color:#fff; padding:16px; text-align:center;}
 
     #controls { display:flex; gap:8px; justify-content:center; align-items:center; padding:12px var(--gap);
-      flex-wrap:wrap; background:#fff; box-shadow:var(--shadow); position: sticky; top: 68px; z-index: 99;}
+      flex-wrap:wrap; background:#fff; box-shadow:var(--shadow);}
     #buscador { flex:1 1 360px; max-width:520px; padding:10px 12px; border:1px solid #ddd; border-radius:8px; font-size:16px;}
-    .btn { padding:10px 14px; border:none; border-radius:8px; font-weight:600; cursor:pointer; color:#fff; background:var(--brand); transition: background 0.2s;}
+    .btn { padding:10px 14px; border:none; border-radius:8px; font-weight:600; cursor:pointer; color:#fff; background:var(--brand);}
     .btn:hover { background:var(--brand-d);}
     .btn.alt { background:#666;}
     .btn.alt:hover { background:#4d4d4d;}
     .btn.danger { background:var(--danger); }
     .btn.danger:hover { background:var(--danger-d); }
-    .btn.success { background:var(--success); }
-    .btn:disabled { background: #ccc; cursor: not-allowed; }
 
     #resultados { display:grid; gap:var(--gap); padding:var(--gap); align-items:start;}
     #resultados.lista-view { grid-template-columns:1fr;}
-    #resultados.grid-view { grid-template-columns: repeat(auto-fill, minmax(160px,1fr)); }
+    #resultados.grid-view { grid-template-columns: repeat(auto-fill, minmax(90px,1fr)); }
 
     .card { background:#fff; border-radius:var(--radius); box-shadow:var(--shadow);
       overflow:hidden; display:flex; flex-direction:column; transition:transform .15s ease;}
     .card:hover { transform:translateY(-2px);}
-    .thumb-container { width:100%; height:200px; position: relative; background:#eee;}
-    .thumb { width:100%; height:100%; object-fit:cover; display:block;}
-    .thumb-error { display: flex; align-items: center; justify-content: center; color: #777; font-size: 14px; }
-    .content { padding:10px 12px; flex-grow: 1;}
+    .thumb { width:100%; height:200px; object-fit:cover; display:block; background:#eee;}
+    .content { padding:10px 12px;}
     .title { margin:0 0 6px; font-size:16px; line-height:1.2;}
     .meta { margin:4px 0; font-size:14px; color:var(--ink2);}
     .link { margin-top:6px; display:inline-block; text-decoration:none; color:#fff; background:var(--brand);
       padding:6px 10px; border-radius:8px; font-size:13px;}
 
-    #resultados.grid-view .thumb-container { height:120px;}
-    #resultados.grid-view .title { font-size:14px;}
-    #resultados.grid-view .meta { font-size:12px;}
+    #resultados.grid-view .thumb { height:120px;}
+    #resultados.grid-view .title { font-size:12px;}
+    #resultados.grid-view .meta { font-size:11px;}
 
     /* Panel formulario / carrito */
     #panel-form {
@@ -79,42 +74,11 @@
     .modal {
       position: fixed; inset: 0; background: rgba(0,0,0,.55);
       display:none; align-items:center; justify-content:center; padding:20px;
-      z-index: 1000;
     }
     .modal .box {
       background:#fff; border-radius:12px; padding:14px; width:min(520px, 100%); box-shadow:var(--shadow);
     }
     #qr-reader { width:100%; }
-    
-    /* Loader y estados */
-    .loader { 
-      display: inline-block; width: 20px; height: 20px; border: 3px solid rgba(255,255,255,.3); 
-      border-radius: 50%; border-top-color: #fff; animation: spin 1s ease-in-out infinite; 
-      margin-right: 8px;
-    }
-    @keyframes spin { to { transform: rotate(360deg); } }
-    #loading { text-align: center; padding: 40px; color: #666; }
-    .notification {
-      position: fixed; bottom: 20px; right: 20px; padding: 12px 16px; border-radius: var(--radius);
-      background: #333; color: white; box-shadow: var(--shadow); z-index: 1000; display: none;
-    }
-    
-    /* Responsive */
-    @media (max-width: 768px) {
-      #controls { top: 60px; }
-      #resultados.grid-view { grid-template-columns: repeat(auto-fill, minmax(130px,1fr)); }
-      .tabla-muestras { font-size: 13px; }
-      .tabla-muestras th, .tabla-muestras td { padding: 4px 6px; }
-    }
-    
-    @media (max-width: 480px) {
-      header { padding: 12px; }
-      #controls { padding: 8px; position: static; }
-      #buscador { flex: 1 1 100%; }
-      .btn { padding: 8px 12px; font-size: 14px; }
-      #resultados { padding: 10px; }
-      #resultados.grid-view { grid-template-columns: repeat(auto-fill, minmax(110px,1fr)); }
-    }
   </style>
 </head>
 <body>
@@ -125,7 +89,6 @@
     <button class="btn alt" id="btnLista" type="button">☰ Lista</button>
     <button class="btn" id="btnGrid" type="button">🔲 Cuadrícula</button>
     <button class="btn" id="btnScan" type="button">📷 Escanear QR</button>
-    <button class="btn success" id="btnAddManual" type="button">➕ Agregar manual</button>
   </div>
 
   <!-- Panel formulario / carrito -->
@@ -152,7 +115,7 @@
           </thead>
           <tbody><!-- filas dinámicas --></tbody>
         </table>
-        <p class="helper">Escanea otra muestra con el botón "📷 Escanear QR", o escribe el ID en el buscador y presiona Enter.</p>
+        <p class="helper">Escanea otra muestra con el botón “📷 Escanear QR”, o escribe el ID en el buscador y presiona Enter.</p>
       </div>
 
       <!-- Campo oculto con todas las muestras concatenadas -->
@@ -166,26 +129,7 @@
   </section>
 
   <!-- Catálogo -->
-  <div id="resultados" class="lista-view">
-    <div id="loading">Cargando catálogo...</div>
-  </div>
-  
-  <!-- Notificación -->
-  <div class="notification" id="notification"></div>
-
-  <!-- Modal para agregar manualmente -->
-  <div class="modal" id="modalManual">
-    <div class="box">
-      <h3>Agregar muestra manualmente</h3>
-      <div style="margin-bottom: 15px;">
-        <input type="text" id="inputIdManual" placeholder="ID de la muestra (ej: MUESTRA-001)" style="width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 8px;">
-      </div>
-      <div style="display: flex; gap: 8px; justify-content: flex-end;">
-        <button class="btn alt" id="btnCancelarManual">Cancelar</button>
-        <button class="btn" id="btnConfirmarManual">Agregar</button>
-      </div>
-    </div>
-  </div>
+  <div id="resultados" class="lista-view"></div>
 
   <!-- Libs -->
   <script src="https://cdn.jsdelivr.net/npm/papaparse@5.4.1/papaparse.min.js"></script>
@@ -193,18 +137,9 @@
 
   <script>
     // ====== CONFIG ======
-    // Esta es la URL por defecto, se ajustará automáticamente según la ubicación del HTML
-    let CSV_URL = 'datos.csv';
+    const CSV_URL = './datos.csv';
     const FORMSPREE_ACTION = 'https://formspree.io/f/mjkegwag';
-    
-    // Ajustar la URL del CSV según la ubicación actual
-    const currentPath = window.location.pathname;
-    if (currentPath.includes('/')) {
-      const pathParts = currentPath.split('/');
-      pathParts.pop(); // Eliminar el nombre del archivo HTML
-      const basePath = pathParts.join('/');
-      CSV_URL = basePath ? `${basePath}/datos.csv` : 'datos.csv';
-    }
+    const TINYURL_API_KEY = ''; // opcional
 
     // ====== DOM ======
     const resultados = document.getElementById('resultados');
@@ -212,37 +147,17 @@
     const btnLista   = document.getElementById('btnLista');
     const btnGrid    = document.getElementById('btnGrid');
     const btnScan    = document.getElementById('btnScan');
-    const btnAddManual = document.getElementById('btnAddManual');
-    const loading    = document.getElementById('loading');
-    const notification = document.getElementById('notification');
-    const modalManual = document.getElementById('modalManual');
-    const inputIdManual = document.getElementById('inputIdManual');
-    const btnCancelarManual = document.getElementById('btnCancelarManual');
-    const btnConfirmarManual = document.getElementById('btnConfirmarManual');
-
     const panelForm  = document.getElementById('panel-form');
     const formPrestamo = document.getElementById('formPrestamo');
     const tablaBody  = document.querySelector('#tablaMuestras tbody');
     const muestrasHidden = document.getElementById('muestrasHidden');
     const btnSalir   = document.getElementById('btnSalir');
-
     const params     = new URLSearchParams(window.location.search);
-
-    // ====== Utilidades ======
-    function showNotification(message, isError = false) {
-      notification.textContent = message;
-      notification.style.background = isError ? 'var(--danger)' : 'var(--success)';
-      notification.style.display = 'block';
-      
-      setTimeout(() => {
-        notification.style.display = 'none';
-      }, 3000);
-    }
 
     // ====== Estado ======
     let datos = [];
-    let carrito = []; // array de IDs (MUESTRA-001, etc.)
-    // persistir durante la sesión por si navegan atrás/adelante
+    let carrito = [];
+
     function guardarCarrito(){ sessionStorage.setItem('carrito_muestras', JSON.stringify(carrito)); }
     function cargarCarrito(){
       try {
@@ -272,55 +187,17 @@
 
         const card = document.createElement('div');
         card.className = 'card';
-        
-        // Contenedor de imagen con manejo de errores
-        const thumbContainer = document.createElement('div');
-        thumbContainer.className = 'thumb-container';
-        
-        if (IMG) {
-          const img = document.createElement('img');
-          img.className = 'thumb';
-          img.src = IMG;
-          img.alt = DESCRIPCION;
-          img.loading = 'lazy';
-          img.onerror = function() {
-            this.style.display = 'none';
-            const errorDiv = document.createElement('div');
-            errorDiv.className = 'thumb thumb-error';
-            errorDiv.textContent = 'Imagen no disponible';
-            thumbContainer.appendChild(errorDiv);
-          };
-          thumbContainer.appendChild(img);
-        } else {
-          const noImageDiv = document.createElement('div');
-          noImageDiv.className = 'thumb thumb-error';
-          noImageDiv.textContent = 'Sin imagen';
-          thumbContainer.appendChild(noImageDiv);
-        }
-        
-        card.appendChild(thumbContainer);
-        
-        const contentDiv = document.createElement('div');
-        contentDiv.className = 'content';
-        contentDiv.innerHTML = `
-          <h3 class="title">${DESCRIPCION || CODIGO}</h3>
-          <p class="meta"><b>Código:</b> ${CODIGO}</p>
-          <p class="meta"><b>Ubicación:</b> ${UBICACION}</p>
-          <p class="meta"><b>Proveedor:</b> ${PROVEEDOR}</p>
-          <p class="meta"><b>ID:</b> ${ID}</p>
-          ${WEB ? `<a class="link" href="${WEB}" target="_blank" rel="noopener">Ver más</a>` : ''}
-          <button class="link" style="margin-top: 8px; cursor: pointer;" data-id="${ID}">Agregar a préstamo</button>
+        card.innerHTML = `
+          <img class="thumb" src="${IMG}" alt="${DESCRIPCION}" loading="lazy" />
+          <div class="content">
+            <h3 class="title">${DESCRIPCION || CODIGO}</h3>
+            <p class="meta"><b>Código:</b> ${CODIGO}</p>
+            <p class="meta"><b>Ubicación:</b> ${UBICACION}</p>
+            <p class="meta"><b>Proveedor:</b> ${PROVEEDOR}</p>
+            <p class="meta"><b>ID:</b> ${ID}</p>
+            ${WEB ? `<a class="link" href="${WEB}" target="_blank" rel="noopener">Ver más</a>` : ''}
+          </div>
         `;
-        card.appendChild(contentDiv);
-        
-        // Añadir evento al botón de agregar
-        const addButton = contentDiv.querySelector('[data-id]');
-        addButton.addEventListener('click', () => {
-          addMuestraToCarrito(ID);
-          mostrarFormulario();
-          showNotification(`Muestra ${ID} agregada al préstamo`);
-        });
-        
         frag.appendChild(card);
       }
       resultados.appendChild(frag);
@@ -341,156 +218,121 @@
     }
 
     // ====== Vistas ======
-    function setListView(){ 
-      resultados.classList.remove('grid-view'); 
-      resultados.classList.add('lista-view'); 
-      btnLista.classList.add('alt');
-      btnGrid.classList.remove('alt');
-    }
-    
-    function setGridView(){ 
-      resultados.classList.remove('lista-view'); 
-      resultados.classList.add('grid-view'); 
-      btnGrid.classList.add('alt');
-      btnLista.classList.remove('alt');
-    }
-    
+    function setListView(){ resultados.classList.remove('grid-view'); resultados.classList.add('lista-view'); }
+    function setGridView(){ resultados.classList.remove('lista-view'); resultados.classList.add('grid-view'); }
     btnLista.addEventListener('click', setListView);
-    btnGrid.addEventListener('click', setGridView);
+    btnGrid .addEventListener('click', setGridView);
     buscador.addEventListener('input', aplicarFiltroTexto);
 
-    // Permitir Enter en buscador para intentar agregar al carrito si coincide con un ID
     buscador.addEventListener('keydown', (e)=>{
       if (e.key === 'Enter'){
         e.preventDefault();
         const val = (buscador.value || '').trim();
         if (!val) return aplicarFiltroTexto();
-        // Si parece ID de muestra, intentar agregar a carrito
         const id = val.toUpperCase();
         const item = datos.find(d => (d['ID']||'').toUpperCase() === id);
         if (item){
           addMuestraToCarrito(id);
           mostrarFormulario();
-          showNotification(`Muestra ${id} agregada al préstamo`);
         } else {
-          showNotification('No se encontró ninguna muestra con ese ID', true);
           aplicarFiltroTexto();
         }
       }
     });
 
-    // ====== Resolución de TinyURLs ======
-    async function resolveTinyURL(tinyURL) {
-      try {
-        showNotification('Resolviendo URL acortada...');
-        
-        // Para TinyURL, podemos intentar hacer una solicitud y seguir las redirecciones
-        const response = await fetch(tinyURL, { 
-          method: 'HEAD', 
-          redirect: 'manual',
-          headers: {
-            'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36'
+    // ====== TinyURL: resolver a URL final ======
+    async function resolveFinalURL(url){
+      // Si es TinyURL, usar el truco de ".txt"
+      if (/tinyurl\.com/i.test(url)) {
+        try {
+          const resp = await fetch(url + ".txt");
+          if (resp.ok) {
+            const longUrl = await resp.text();
+            return longUrl.trim();
           }
-        });
-        
-        // Si hay una ubicación de redirección, la devolvemos
-        if (response.status === 301 || response.status === 302) {
-          return response.headers.get('Location');
+        } catch(e) {
+          console.warn("No se pudo expandir con .txt:", e);
         }
-        
-        // Si no, intentamos con una solicitud GET (más lento pero más efectivo)
-        const getResponse = await fetch(tinyURL, {
-          redirect: 'manual',
-          headers: {
-            'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36'
-          }
-        });
-        
-        if (getResponse.status === 301 || getResponse.status === 302) {
-          return getResponse.headers.get('Location');
-        }
-        
-        // Si todo falla, devolvemos la URL original
-        return tinyURL;
-      } catch (error) {
-        console.error('Error resolviendo TinyURL:', error);
-        return tinyURL;
       }
+
+      // Intentar seguir redirección con fetch
+      try {
+        const resp = await fetch(url, { redirect: "follow" });
+        if (resp && resp.url) return resp.url;
+      } catch(e){}
+
+      // API oficial si tienes KEY
+      try {
+        if (TINYURL_API_KEY && /tinyurl\.com/i.test(url)) {
+          const r = await fetch('https://api.tinyurl.com/expand', {
+            method:'POST',
+            headers:{
+              'Content-Type':'application/json',
+              'Authorization': `Bearer ${TINYURL_API_KEY}`
+            },
+            body: JSON.stringify({ url })
+          });
+          if (r.ok){
+            const j = await r.json();
+            if (j?.data?.long_url) return j.data.long_url;
+          }
+        }
+      } catch(e){}
+
+      return url;
     }
 
-    // ====== Procesar URL (larga o corta) para extraer filtros/ID ======
+    // ====== Procesar URL o ID ======
     async function procesarURLPosiblementeCorta(raw){
       let finalUrlStr = raw;
-      
-      // Si es una TinyURL, intentamos resolverla
-      if (raw.includes('tinyurl.com') || raw.includes('bit.ly') || raw.includes('t.co')) {
-        finalUrlStr = await resolveTinyURL(raw);
-      }
-      
       try {
-        // si es texto plano tipo "MUESTRA-001", construir URL fake para parser
         if (!/^https?:\/\//i.test(finalUrlStr)) {
           finalUrlStr = window.location.origin + window.location.pathname + '?id=' + encodeURIComponent(raw);
         }
-        
-        const u = new URL(finalUrlStr);
-        const id = u.searchParams.get('id');
-        const ubic = u.searchParams.get('ubicacion');
-
-        if (id){
-          return { type:'id', value:id.toUpperCase() };
-        } else if (ubic){
-          return { type:'ubic', value:ubic.toUpperCase() };
-        } else {
-          // si viene como ?MUESTRA-001 sin clave
-          if (u.search && u.search.length > 1){
-            const rawKey = u.search.slice(1).toUpperCase();
-            if (/^MUESTRA-\d+$/i.test(rawKey)) return { type:'id', value:rawKey };
-            if (/^C\d{2}N\d{2}(P\d{2})?$/i.test(rawKey)) return { type:'ubic', value:rawKey };
-          }
+        const maybe = new URL(finalUrlStr);
+        if (!maybe.searchParams.get('id') && !maybe.searchParams.get('ubicacion')){
+          finalUrlStr = await resolveFinalURL(finalUrlStr);
         }
-      } catch (error) {
-        console.error('Error procesando URL:', error);
-        // Si hay un error, intentamos extraer un ID directamente del texto
-        const idMatch = raw.match(/(MUESTRA-\d+)/i);
-        if (idMatch) {
-          return { type: 'id', value: idMatch[1].toUpperCase() };
+      } catch {
+        finalUrlStr = await resolveFinalURL(finalUrlStr);
+      }
+
+      let u;
+      try { u = new URL(finalUrlStr); } catch { return { type:'none' }; }
+
+      const id = u.searchParams.get('id');
+      const ubic = u.searchParams.get('ubicacion');
+
+      if (id){
+        return { type:'id', value:id.toUpperCase() };
+      } else if (ubic){
+        return { type:'ubic', value:ubic.toUpperCase() };
+      } else {
+        if (u.search && u.search.length > 1){
+          const rawKey = u.search.slice(1).toUpperCase();
+          if (/^MUESTRA-\d+$/i.test(rawKey)) return { type:'id', value:rawKey };
+          if (/^C\d{2}N\d{2}(P\d{2})?$/i.test(rawKey)) return { type:'ubic', value:rawKey };
         }
       }
-      
       return { type:'none' };
     }
 
-    // ====== Carrito / Formulario ======
+    // ====== Carrito ======
     function mostrarFormulario(){
       panelForm.style.display = 'block';
       renderTablaCarrito();
       window.scrollTo({ top: panelForm.offsetTop - 8, behavior:'smooth' });
     }
 
-    function ocultarFormulario(){
-      panelForm.style.display = 'none';
-    }
+    function ocultarFormulario(){ panelForm.style.display = 'none'; }
 
     function addMuestraToCarrito(id){
       const up = (id||'').toUpperCase();
-      if (!up) return false;
-      
-      // Verificar si existe en los datos
-      const itemExists = datos.find(d => (d['ID']||'').toUpperCase() === up);
-      if (!itemExists) {
-        showNotification(`No se encontró la muestra con ID: ${up}`, true);
-        return false;
-      }
-      
+      if (!up) return;
       if (!carrito.includes(up)){
         carrito.push(up);
         guardarCarrito();
         renderTablaCarrito();
-        return true;
-      } else {
-        showNotification('Esta muestra ya está en el préstamo', true);
-        return false;
       }
     }
 
@@ -498,7 +340,6 @@
       carrito = carrito.filter(x => x !== id);
       guardarCarrito();
       renderTablaCarrito();
-      showNotification('Muestra removida del préstamo');
     }
 
     function renderTablaCarrito(){
@@ -510,7 +351,6 @@
       }
       mostrarFormulario();
 
-      // construir filas con datos enriquecidos
       carrito.forEach((id, idx) => {
         const item = datos.find(d => (d['ID']||'').toUpperCase() === id);
         const desc = item?.['DESCRIPCION'] || '';
@@ -531,7 +371,6 @@
         tablaBody.appendChild(tr);
       });
 
-      // preparar campo oculto para Formspree
       const lines = carrito.map(id => {
         const it = datos.find(d => (d['ID']||'').toUpperCase() === id);
         return [
@@ -544,231 +383,20 @@
       });
       muestrasHidden.value = lines.join('\n');
 
-      // listeners de quitar
       tablaBody.querySelectorAll('button[data-remove]').forEach(btn=>{
         btn.addEventListener('click', ()=> removeMuestraFromCarrito(btn.getAttribute('data-remove')));
       });
     }
 
     btnSalir.addEventListener('click', ()=>{
-      if (carrito.length > 0 && !confirm('¿Estás seguro de que quieres salir? Se perderán todas las muestras agregadas.')) {
-        return;
-      }
-      
       carrito = [];
       guardarCarrito();
       muestrasHidden.value = '';
       formPrestamo.reset();
       ocultarFormulario();
-      // volver al catálogo limpio
       window.history.replaceState({}, '', window.location.pathname);
       render(datos);
-      showNotification('Préstamo cancelado');
     });
 
-    // Insertar fecha automática antes de enviar
     document.addEventListener('submit', function(e) {
-      if (e.target === formPrestamo) {
-        // agregar fecha/hora
-        const dateInput = document.createElement('input');
-        dateInput.type = 'hidden';
-        dateInput.name = 'fecha';
-        dateInput.value = new Date().toLocaleString();
-        formPrestamo.appendChild(dateInput);
-      }
-    });
-
-    // Limpiar carrito al enviar OK (best-effort)
-    formPrestamo.addEventListener('submit', ()=>{
-      // Después de enviar, la navegación de Formspree recarga/dirige; por si vuelve:
-      sessionStorage.removeItem('carrito_muestras');
-      showNotification('Registro de préstamo enviado correctamente');
-    });
-
-    // ====== Modal de escáner ======
-    let html5QrCode = null;
-    let modalScanner;
-    function crearModalScanner(){
-      modalScanner = document.createElement('div');
-      modalScanner.className = 'modal';
-      modalScanner.innerHTML = `
-        <div class="box">
-          <h3>Escanear código</h3>
-          <div id="qr-reader"></div>
-          <div style="margin-top:10px; display:flex; gap:8px; justify-content:flex-end;">
-            <button class="btn alt" id="btnCerrarScan" type="button">Cerrar</button>
-          </div>
-        </div>
-      `;
-      document.body.appendChild(modalScanner);
-      const qrDiv = modalScanner.querySelector('#qr-reader');
-      modalScanner.querySelector('#btnCerrarScan').addEventListener('click', cerrarScanner);
-      modalScanner.addEventListener('click', (e)=>{ if(e.target===modalScanner) cerrarScanner(); });
-    }
-
-    async function abrirScanner(){
-      if (!modalScanner) crearModalScanner();
-      modalScanner.style.display = 'flex';
-      btnScan.disabled = true;
-      btnScan.innerHTML = '<span class="loader"></span> Iniciando cámara...';
-
-      if (!html5QrCode){
-        html5QrCode = new Html5Qrcode("qr-reader");
-      }
-      try {
-        await html5QrCode.start(
-          { facingMode: "environment" },
-          { fps: 10, qrbox: 250 },
-          async (decodedText) => {
-            // Al leer algo, intentar procesarlo
-            try {
-              showNotification('Procesando código escaneado...');
-              const result = await procesarURLPosiblementeCorta(decodedText);
-              if (result.type === 'id'){
-                if (addMuestraToCarrito(result.value)) {
-                  showNotification(`Muestra ${result.value} agregada correctamente`);
-                  cerrarScanner();
-                }
-              } else if (result.type === 'ubic'){
-                buscador.value = result.value;
-                aplicarFiltroTexto();
-                showNotification(`Filtrando por ubicación: ${result.value}`);
-                cerrarScanner();
-              } else {
-                showNotification('QR leído, pero no contiene ID ni UBICACIÓN reconocibles.', true);
-              }
-            } catch(err){
-              console.error(err);
-              showNotification('No se pudo procesar el QR.', true);
-            }
-          },
-          () => {} // verbose
-        ).catch(e => {
-          console.error("Error iniciando escáner:", e);
-          if (e && e.message && e.message.includes('Permission')) {
-            showNotification('Permiso de cámara denegado. Por favor, habilita los permisos de cámara en tu navegador.', true);
-          } else {
-            showNotification('No se pudo acceder a la cámara. Verifica los permisos.', true);
-          }
-          cerrarScanner();
-        });
-      } catch (e){
-        console.error("Error iniciando cámara:", e);
-        showNotification('No se pudo abrir la cámara. Verifica permisos del navegador.', true);
-        cerrarScanner();
-      }
-    }
-
-    async function cerrarScanner(){
-      if (html5QrCode){
-        try { await html5QrCode.stop(); } catch {}
-        try { await html5QrCode.clear(); } catch {}
-      }
-      if (modalScanner) modalScanner.style.display = 'none';
-      btnScan.disabled = false;
-      btnScan.innerHTML = '📷 Escanear QR';
-    }
-
-    btnScan.addEventListener('click', abrirScanner);
-
-    // ====== Modal para agregar manualmente ======
-    btnAddManual.addEventListener('click', () => {
-      modalManual.style.display = 'flex';
-      inputIdManual.value = '';
-      inputIdManual.focus();
-    });
-
-    btnCancelarManual.addEventListener('click', () => {
-      modalManual.style.display = 'none';
-    });
-
-    btnConfirmarManual.addEventListener('click', () => {
-      const id = inputIdManual.value.trim().toUpperCase();
-      if (!id) {
-        showNotification('Por favor, ingresa un ID de muestra', true);
-        return;
-      }
-      
-      if (addMuestraToCarrito(id)) {
-        modalManual.style.display = 'none';
-        mostrarFormulario();
-      }
-    });
-
-    inputIdManual.addEventListener('keydown', (e) => {
-      if (e.key === 'Enter') {
-        btnConfirmarManual.click();
-      }
-    });
-
-    // Cerrar modal al hacer clic fuera
-    modalManual.addEventListener('click', (e) => {
-      if (e.target === modalManual) {
-        modalManual.style.display = 'none';
-      }
-    });
-
-    // ====== Carga CSV ======
-    function cargarDatos() {
-      Papa.parse(CSV_URL, {
-        download: true,
-        header: true,
-        skipEmptyLines: true,
-        complete: async function(res){
-          loading.style.display = 'none';
-          datos = (res.data || []).filter(r =>
-            (r['CODIGO'] && r['CODIGO'].trim()) ||
-            (r['DESCRIPCION'] && r['DESCRIPCION'].trim())
-          );
-
-          if (datos.length === 0) {
-            resultados.innerHTML = `
-              <div style="text-align:center; padding: 40px; color: #666;">
-                <p>No se pudieron cargar los datos del catálogo.</p>
-                <p>Verifica que el archivo datos.csv exista en la misma ubicación que este archivo HTML.</p>
-                <p>URL intentada: ${CSV_URL}</p>
-              </div>
-            `;
-            return;
-          }
-
-          // Render inicial
-          render(datos);
-
-          // restaurar carrito de sesión si existe
-          cargarCarrito();
-          if (carrito.length) mostrarFormulario();
-
-          // Soporte de entrada por parámetros
-          const singleId = params.get('id');
-          const ubic = params.get('ubicacion');
-
-          if (singleId){
-            buscador.value = singleId;
-            aplicarFiltroTexto();
-            addMuestraToCarrito(singleId.toUpperCase());
-            mostrarFormulario();
-          } else if (ubic){
-            buscador.value = ubic;
-            aplicarFiltroTexto();
-          }
-        },
-        error: function(err) {
-          console.error("Error cargando CSV:", err);
-          loading.style.display = 'none';
-          resultados.innerHTML = `
-            <div style="text-align:center; padding: 40px; color: #666;">
-              <p>Error cargando el catálogo: ${err.message || 'Error desconocido'}</p>
-              <p>Verifica que el archivo datos.csv esté disponible en: ${CSV_URL}</p>
-              <p>Si estás usando GitHub Pages, asegúrate de que ambos archivos estén en la misma carpeta del repositorio.</p>
-            </div>
-          `;
-        }
-      });
-    }
-
-    // Iniciar carga de datos
-    cargarDatos();
-  </script>
-</body>
-</html>
+      if (e.target
