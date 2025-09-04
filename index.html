@@ -16,18 +16,18 @@
       --brand-d: #1756b8;
     }
     * { box-sizing: border-box; }
-    body { margin:0; font-family: system-ui, Arial, sans-serif; background:var(--bg); color:var(--ink);}
+    body { margin:0; font-family:system-ui, Arial, sans-serif; background:var(--bg); color:var(--ink);}
     header { background:#222; color:#fff; padding:16px; text-align:center;}
     #controls { display:flex; gap:8px; justify-content:center; align-items:center; padding:12px var(--gap);
       flex-wrap:wrap; background:#fff; box-shadow:var(--shadow);}
     #buscador { flex:1 1 360px; max-width:520px; padding:10px 12px; border:1px solid #ddd; border-radius:8px; font-size:16px;}
     .btn { padding:10px 14px; border:none; border-radius:8px; font-weight:600; cursor:pointer; color:#fff; background:var(--brand);}
-    .btn:hover { background:var(--brand-d); }
-    .btn.alt { background:#666; }
-    .btn.alt:hover { background:#4d4d4d; }
+    .btn:hover { background:var(--brand-d);}
+    .btn.alt { background:#666;}
+    .btn.alt:hover { background:#4d4d4d;}
 
     #resultados { display:grid; gap:var(--gap); padding:var(--gap); align-items:start;}
-    #resultados.lista-view { grid-template-columns: 1fr;}
+    #resultados.lista-view { grid-template-columns:1fr;}
     #resultados.grid-view { grid-template-columns: repeat(auto-fill, minmax(90px,1fr)); }
 
     .card { background:#fff; border-radius:var(--radius); box-shadow:var(--shadow);
@@ -40,39 +40,33 @@
     .link { margin-top:6px; display:inline-block; text-decoration:none; color:#fff; background:var(--brand);
       padding:6px 10px; border-radius:8px; font-size:13px;}
 
-    #resultados.grid-view .thumb{ height:120px;}
-    #resultados.grid-view .title{ font-size:12px;}
-    #resultados.grid-view .meta{ font-size:11px;}
+    #resultados.grid-view .thumb { height:120px;}
+    #resultados.grid-view .title { font-size:12px;}
+    #resultados.grid-view .meta { font-size:11px;}
 
-    /* Formulario */
-    form.registro { display:flex; flex-direction:column; gap:10px; margin:20px; padding:15px; background:#fff; border-radius:12px; box-shadow:var(--shadow);}
+    form.registro { display:flex; flex-direction:column; gap:10px; margin-top:12px;}
     form.registro input[type="text"], form.registro input[type="email"] {
       padding:8px; border:1px solid #ccc; border-radius:6px;
     }
     form.registro button { padding:10px; background:var(--brand); border:none; color:#fff;
       font-weight:600; border-radius:8px; cursor:pointer;}
-    form.registro button:hover { background:var(--brand-d); }
-    ul#muestras-list { list-style:none; padding:0; margin:0;}
-    ul#muestras-list li { padding:6px; border-bottom:1px solid #eee; font-size:14px;}
-    .scanner { margin:15px 0; }
+    form.registro button:hover { background:var(--brand-d);}
+    .btn-salir { background:#c00; margin-top:8px; }
+    .btn-salir:hover { background:#900; }
   </style>
 </head>
 <body>
   <header><h1>Catálogo de Telas</h1></header>
 
   <div id="controls">
-    <input id="buscador" type="text" placeholder="Buscar por código, descripción, proveedor o ubicación…" />
+    <input id="buscador" type="text" placeholder="Buscar por código, descripción, proveedor, ubicación o ID…" />
     <button class="btn alt" id="btnLista" type="button">☰ Lista</button>
     <button class="btn" id="btnGrid" type="button">🔲 Cuadrícula</button>
   </div>
 
   <div id="resultados" class="lista-view"></div>
-  <div id="formulario"></div>
 
-  <!-- Librerías -->
   <script src="https://cdn.jsdelivr.net/npm/papaparse@5.4.1/papaparse.min.js"></script>
-  <script src="https://unpkg.com/html5-qrcode" type="text/javascript"></script>
-
   <script>
     const CSV_URL = './datos.csv';
     const resultados = document.getElementById('resultados');
@@ -80,14 +74,11 @@
     const btnLista   = document.getElementById('btnLista');
     const btnGrid    = document.getElementById('btnGrid');
     const params     = new URLSearchParams(window.location.search);
-    const singleId   = params.get('id');
-    const ubic       = params.get('ubicacion');
-    const formDiv    = document.getElementById('formulario');
 
     let datos = [];
-    let muestrasSeleccionadas = [];
 
-    function render(lista){
+    // ---- Render ----
+    function render(lista, singleId=null){
       resultados.innerHTML = '';
       if (!lista || !lista.length){
         resultados.innerHTML = '<p style="text-align:center;color:#666;margin:24px 0">No se encontraron resultados</p>';
@@ -103,6 +94,8 @@
         const WEB = item['WEB SITE'] || '';
         const IMG = item['IMAGEN'] || '';
 
+        if (!CODIGO && !DESCRIPCION) continue;
+
         const card = document.createElement('div');
         card.className = 'card';
         card.innerHTML = `
@@ -116,11 +109,31 @@
             ${WEB ? `<a class="link" href="${WEB}" target="_blank" rel="noopener">Ver más</a>` : ''}
           </div>
         `;
+
+        // --- Si es un acceso directo con ?id= se agrega formulario ---
+        if (singleId && ID === singleId){
+          const form = document.createElement('form');
+          form.className = 'registro';
+          form.action = "https://formspree.io/f/mjkegwag";
+          form.method = "POST";
+          form.innerHTML = `
+            <input type="hidden" name="ID_MUESTRA" value="${ID}">
+            <label>Prestado a:</label>
+            <input type="text" name="cliente" placeholder="Nombre del cliente" required>
+            <label>Correo:</label>
+            <input type="email" name="correo" placeholder="Correo del cliente" required>
+            <button type="submit">Registrar salida</button>
+            <button type="button" class="btn btn-salir" onclick="salirFormulario()">Salir</button>
+          `;
+          card.appendChild(form);
+        }
+
         frag.appendChild(card);
       }
       resultados.appendChild(frag);
     }
 
+    // ---- Buscador ----
     function aplicarFiltroTexto(){
       const t = (buscador.value || '').toLowerCase().trim();
       if (!t){ render(datos); return; }
@@ -134,6 +147,7 @@
       render(filtrados);
     }
 
+    // ---- Vistas ----
     function setListView(){ resultados.classList.remove('grid-view'); resultados.classList.add('lista-view'); }
     function setGridView(){ resultados.classList.remove('lista-view'); resultados.classList.add('grid-view'); }
 
@@ -141,58 +155,45 @@
     btnGrid .addEventListener('click', setGridView);
     buscador.addEventListener('input', aplicarFiltroTexto);
 
-    // ---- Formulario acumulador ----
-    function mostrarFormulario(){
-      formDiv.innerHTML = `
-        <form class="registro" action="https://formspree.io/f/mjkegwag" method="POST">
-          <label>Prestado a:</label>
-          <input type="text" name="cliente" required>
-          <label>Correo del cliente:</label>
-          <input type="email" name="correo" required>
-          <h4>Muestras seleccionadas:</h4>
-          <ul id="muestras-list">${muestrasSeleccionadas.map(m => `<li>${m}</li>`).join('')}</ul>
-          <input type="hidden" name="muestras" value="${muestrasSeleccionadas.join(', ')}">
-          <button type="button" id="btnAdd">➕ Agregar muestra</button>
-          <button type="submit">Registrar salida</button>
-          <button type="button" id="btnSalir">Salir sin registrar</button>
-        </form>
-        <div class="scanner" id="reader" style="width:100%"></div>
-      `;
+    // ---- Resolver redirecciones de TinyURL ----
+    async function resolveFinalURL(url){
+      try {
+        const resp = await fetch(url, { redirect: "follow" });
+        return resp.url;
+      } catch(e){
+        console.error("Error resolviendo TinyURL:", e);
+        return url;
+      }
+    }
 
-      // Escanear nueva muestra
-      document.getElementById('btnAdd').addEventListener('click', () => {
-        const reader = new Html5Qrcode("reader");
-        reader.start(
-          { facingMode: "environment" },
-          { fps: 10, qrbox: 250 },
-          qrCodeMessage => {
-            reader.stop();
-            const url = new URL(qrCodeMessage);
-            const newId = url.searchParams.get("id");
-            if (newId && !muestrasSeleccionadas.includes(newId)){
-              muestrasSeleccionadas.push(newId);
-              mostrarFormulario();
-            }
-          }
-        );
-      });
+    // ---- Procesar QR (desde escáner externo que abre la URL) ----
+    async function procesarQR(qrValue){
+      const finalUrl = await resolveFinalURL(qrValue);
+      const u = new URL(finalUrl);
+      if (u.searchParams.get("id")){
+        buscador.value = u.searchParams.get("id");
+      }
+      if (u.searchParams.get("ubicacion")){
+        buscador.value = u.searchParams.get("ubicacion");
+      }
+      aplicarFiltroTexto();
+    }
 
-      // Salir y limpiar
-      document.getElementById('btnSalir').addEventListener('click', () => {
-        muestrasSeleccionadas = [];
-        formDiv.innerHTML = '';
-        window.location.href = window.location.pathname; // volver limpio
-      });
-
-      // Antes de enviar -> añadir fecha y listado
-      document.querySelector("form.registro").addEventListener("submit", e => {
+    // ---- Autoinsert fecha antes de enviar ----
+    document.addEventListener('submit', function(e) {
+      if (e.target.matches('form[action*="formspree.io"]')) {
         const f = e.target;
         const dateInput = document.createElement('input');
         dateInput.type = 'hidden';
         dateInput.name = 'fecha';
         dateInput.value = new Date().toLocaleString();
         f.appendChild(dateInput);
-      });
+      }
+    });
+
+    // ---- Salir del formulario ----
+    function salirFormulario(){
+      window.location.href = window.location.pathname; // recarga sin parámetros
     }
 
     // ---- Cargar CSV ----
@@ -205,19 +206,18 @@
           (r['CODIGO'] && r['CODIGO'].trim()) ||
           (r['DESCRIPCION'] && r['DESCRIPCION'].trim())
         );
-        render(datos);
 
-        if (ubic){
-          buscador.value = ubic;
-          aplicarFiltroTexto();
-        }
+        const singleId = params.get('id');
+        const ubic = params.get('ubicacion');
+
         if (singleId){
           buscador.value = singleId;
+          render(datos.filter(d => d['ID'] === singleId), singleId);
+        } else if (ubic){
+          buscador.value = ubic;
           aplicarFiltroTexto();
-          if (!muestrasSeleccionadas.includes(singleId)){
-            muestrasSeleccionadas.push(singleId);
-          }
-          mostrarFormulario();
+        } else {
+          render(datos);
         }
       }
     });
