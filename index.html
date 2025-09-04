@@ -5,80 +5,50 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Catálogo de Telas</title>
   <style>
-    :root {
-      --gap: 14px;
-      --radius: 12px;
-      --shadow: 0 2px 6px rgba(0,0,0,.1);
-      --bg: #f4f4f4;
-      --ink: #333;
-      --ink2: #555;
-      --brand: #1f6feb;
-      --brand-d: #1756b8;
-      --danger:#c00;
-      --danger-d:#900;
+    :root{
+      --gap:14px;
+      --radius:12px;
+      --shadow:0 2px 6px rgba(0,0,0,.1);
+      --bg:#f4f4f4;
+      --ink:#333;
+      --ink2:#555;
+      --brand:#1f6feb;
+      --brand-d:#1756b8;
     }
-    * { box-sizing: border-box; }
-    body { margin:0; font-family:system-ui, Arial, sans-serif; background:var(--bg); color:var(--ink);}
-    header { background:#222; color:#fff; padding:16px; text-align:center;}
-
-    #controls { display:flex; gap:8px; justify-content:center; align-items:center; padding:12px var(--gap);
+    *{box-sizing:border-box}
+    body{ margin:0; font-family:system-ui, Arial, sans-serif; background:var(--bg); color:var(--ink);}
+    header{ background:#222; color:#fff; padding:16px; text-align:center;}
+    #controls{ display:flex; gap:8px; justify-content:center; align-items:center; padding:12px var(--gap);
       flex-wrap:wrap; background:#fff; box-shadow:var(--shadow);}
-    #buscador { flex:1 1 360px; max-width:520px; padding:10px 12px; border:1px solid #ddd; border-radius:8px; font-size:16px;}
-    .btn { padding:10px 14px; border:none; border-radius:8px; font-weight:600; cursor:pointer; color:#fff; background:var(--brand);}
-    .btn:hover { background:var(--brand-d);}
-    .btn.alt { background:#666;}
-    .btn.alt:hover { background:#4d4d4d;}
-    .btn.danger { background:var(--danger); }
-    .btn.danger:hover { background:var(--danger-d); }
+    #buscador{ flex:1 1 360px; max-width:520px; padding:10px 12px; border:1px solid #ddd; border-radius:8px; font-size:16px;}
+    .btn{ padding:10px 14px; border:none; border-radius:8px; font-weight:600; cursor:pointer; color:#fff; background:var(--brand);}
+    .btn:hover{ background:var(--brand-d);}
+    .btn.alt{ background:#666;}
+    .btn.alt:hover{ background:#4d4d4d;}
 
-    #resultados { display:grid; gap:var(--gap); padding:var(--gap); align-items:start;}
-    #resultados.lista-view { grid-template-columns:1fr;}
-    #resultados.grid-view { grid-template-columns: repeat(auto-fill, minmax(90px,1fr)); }
+    #resultados{ display:grid; gap:var(--gap); padding:var(--gap); align-items:start;}
+    #resultados.lista-view{ grid-template-columns:1fr;}
+    #resultados.grid-view{ grid-template-columns: repeat(auto-fill, minmax(120px,1fr)); }
 
-    .card { background:#fff; border-radius:var(--radius); box-shadow:var(--shadow);
+    .card{ background:#fff; border-radius:var(--radius); box-shadow:var(--shadow);
       overflow:hidden; display:flex; flex-direction:column; transition:transform .15s ease;}
-    .card:hover { transform:translateY(-2px);}
-    .thumb { width:100%; height:200px; object-fit:cover; display:block; background:#eee;}
-    .content { padding:10px 12px;}
-    .title { margin:0 0 6px; font-size:16px; line-height:1.2;}
-    .meta { margin:4px 0; font-size:14px; color:var(--ink2);}
-    .link { margin-top:6px; display:inline-block; text-decoration:none; color:#fff; background:var(--brand);
+    .card:hover{ transform:translateY(-2px);}
+    .thumb{ width:100%; height:200px; object-fit:cover; display:block; background:#eee;}
+    .content{ padding:10px 12px;}
+    .title{ margin:0 0 6px; font-size:16px; line-height:1.2;}
+    .meta{ margin:4px 0; font-size:14px; color:var(--ink2);}
+    .link{ margin-top:6px; display:inline-block; text-decoration:none; color:#fff; background:var(--brand);
       padding:6px 10px; border-radius:8px; font-size:13px;}
 
-    #resultados.grid-view .thumb { height:120px;}
-    #resultados.grid-view .title { font-size:12px;}
-    #resultados.grid-view .meta { font-size:11px;}
+    #resultados.grid-view .thumb{ height:120px;}
+    #resultados.grid-view .title{ font-size:12px;}
+    #resultados.grid-view .meta{ font-size:11px;}
 
-    /* Panel formulario / carrito */
-    #panel-form {
-      max-width: 860px; margin: 8px auto; padding: 12px; background:#fff; border-radius:var(--radius); box-shadow:var(--shadow);
-      display:none;
-    }
-    #panel-form h2 { margin: 0 0 10px; }
-    form.registro { display:flex; flex-direction:column; gap:10px; }
-    form.registro input[type="text"], form.registro input[type="email"] {
-      padding:10px; border:1px solid #ccc; border-radius:8px;
-    }
-    form.registro .row { display:flex; gap:10px; flex-wrap:wrap; }
-    form.registro .row > * { flex:1 1 240px; }
-    .tabla-muestras{
-      width:100%; border-collapse: collapse; margin-top:8px; font-size:14px;
-    }
-    .tabla-muestras th, .tabla-muestras td{
-      border:1px solid #e5e5e5; padding:6px 8px; text-align:left; vertical-align:top;
-    }
-    .tabla-actions { display:flex; gap:6px; flex-wrap:wrap; }
-    .helper { color:#666; font-size:13px; margin:6px 0 0; }
-
-    /* Modal escáner */
-    .modal {
-      position: fixed; inset: 0; background: rgba(0,0,0,.55);
-      display:none; align-items:center; justify-content:center; padding:20px;
-    }
-    .modal .box {
-      background:#fff; border-radius:12px; padding:14px; width:min(520px, 100%); box-shadow:var(--shadow);
-    }
-    #qr-reader { width:100%; }
+    form.registro{ display:flex; flex-direction:column; gap:10px; margin:16px;}
+    form.registro input[type="text"], form.registro input[type="email"]{ padding:8px; border:1px solid #ccc; border-radius:6px;}
+    form.registro button{ padding:10px; background:var(--brand); border:none; color:#fff;
+      font-weight:600; border-radius:8px; cursor:pointer;}
+    form.registro button:hover{ background:var(--brand-d);}
   </style>
 </head>
 <body>
@@ -88,88 +58,36 @@
     <input id="buscador" type="text" placeholder="Buscar por código, descripción, proveedor, ubicación o ID…" />
     <button class="btn alt" id="btnLista" type="button">☰ Lista</button>
     <button class="btn" id="btnGrid" type="button">🔲 Cuadrícula</button>
-    <button class="btn" id="btnScan" type="button">📷 Escanear QR</button>
   </div>
 
-  <!-- Panel formulario / carrito -->
-  <section id="panel-form">
-    <h2>Registro de préstamo</h2>
-    <form id="formPrestamo" class="registro" action="https://formspree.io/f/mjkegwag" method="POST">
-      <div class="row">
-        <input type="text" name="cliente" id="cliente" placeholder="Prestado a (nombre del cliente)" required>
-        <input type="email" name="correo" id="correo" placeholder="Correo del cliente" required>
-      </div>
-
-      <div class="tabla-wrap">
-        <table class="tabla-muestras" id="tablaMuestras">
-          <thead>
-            <tr>
-              <th>#</th>
-              <th>ID Muestra</th>
-              <th>Descripción</th>
-              <th>Proveedor</th>
-              <th>Código</th>
-              <th>Ubicación</th>
-              <th>Acciones</th>
-            </tr>
-          </thead>
-          <tbody><!-- filas dinámicas --></tbody>
-        </table>
-        <p class="helper">Escanea otra muestra con el botón “📷 Escanear QR”, o escribe el ID en el buscador y presiona Enter.</p>
-      </div>
-
-      <!-- Campo oculto con todas las muestras concatenadas -->
-      <input type="hidden" name="muestras" id="muestrasHidden">
-
-      <div class="tabla-actions">
-        <button type="submit" class="btn">Enviar registro</button>
-        <button type="button" class="btn danger" id="btnSalir">Salir (limpiar)</button>
-      </div>
-    </form>
-  </section>
-
-  <!-- Catálogo -->
   <div id="resultados" class="lista-view"></div>
 
-  <!-- Libs -->
+  <form class="registro" id="formRegistro" action="https://formspree.io/f/mjkegwag" method="POST">
+    <h3>Registro de préstamo</h3>
+    <label>Prestado a:</label>
+    <input type="text" name="cliente" placeholder="Nombre del cliente" required>
+    <label>Correo del cliente:</label>
+    <input type="email" name="correo" placeholder="cliente@ejemplo.com" required>
+    <input type="hidden" name="muestras" id="muestrasInput">
+    <button type="submit">Enviar registro</button>
+    <button type="button" onclick="limpiarSeleccion()">Cancelar / Nueva salida</button>
+  </form>
+
   <script src="https://cdn.jsdelivr.net/npm/papaparse@5.4.1/papaparse.min.js"></script>
-  <script src="https://unpkg.com/html5-qrcode" type="text/javascript"></script>
-
+  <script src="https://unpkg.com/html5-qrcode"></script>
   <script>
-    // ====== CONFIG ======
     const CSV_URL = './datos.csv';
-    const FORMSPREE_ACTION = 'https://formspree.io/f/mjkegwag';
-    // Si quieres usar la expansión por API de TinyURL (opcional), pega tu key:
-    const TINYURL_API_KEY = ''; // <-- opcional: pega aquí tu key (si no, déjalo vacío)
-
-    // ====== DOM ======
     const resultados = document.getElementById('resultados');
     const buscador   = document.getElementById('buscador');
     const btnLista   = document.getElementById('btnLista');
     const btnGrid    = document.getElementById('btnGrid');
-    const btnScan    = document.getElementById('btnScan');
+    const formRegistro = document.getElementById('formRegistro');
+    const muestrasInput = document.getElementById('muestrasInput');
 
-    const panelForm  = document.getElementById('panel-form');
-    const formPrestamo = document.getElementById('formPrestamo');
-    const tablaBody  = document.querySelector('#tablaMuestras tbody');
-    const muestrasHidden = document.getElementById('muestrasHidden');
-    const btnSalir   = document.getElementById('btnSalir');
-
-    const params     = new URLSearchParams(window.location.search);
-
-    // ====== Estado ======
     let datos = [];
-    let carrito = []; // array de IDs (MUESTRA-001, etc.)
-    // persistir durante la sesión por si navegan atrás/adelante
-    function guardarCarrito(){ sessionStorage.setItem('carrito_muestras', JSON.stringify(carrito)); }
-    function cargarCarrito(){
-      try {
-        const raw = sessionStorage.getItem('carrito_muestras');
-        carrito = raw ? JSON.parse(raw) : [];
-      } catch { carrito = []; }
-    }
+    let seleccionadas = [];
 
-    // ====== Render catálogo ======
+    // ---- Render ----
     function render(lista){
       resultados.innerHTML = '';
       if (!lista || !lista.length){
@@ -185,8 +103,6 @@
         const PROVEEDOR = item['PROVEEDOR'] || '';
         const WEB = item['WEB SITE'] || '';
         const IMG = item['IMAGEN'] || '';
-
-        if (!CODIGO && !DESCRIPCION) continue;
 
         const card = document.createElement('div');
         card.className = 'card';
@@ -206,7 +122,7 @@
       resultados.appendChild(frag);
     }
 
-    // ====== Filtro texto ======
+    // ---- Filtros ----
     function aplicarFiltroTexto(){
       const t = (buscador.value || '').toLowerCase().trim();
       if (!t){ render(datos); return; }
@@ -220,306 +136,76 @@
       render(filtrados);
     }
 
-    // ====== Vistas ======
+    // ---- Vistas ----
     function setListView(){ resultados.classList.remove('grid-view'); resultados.classList.add('lista-view'); }
     function setGridView(){ resultados.classList.remove('lista-view'); resultados.classList.add('grid-view'); }
     btnLista.addEventListener('click', setListView);
     btnGrid .addEventListener('click', setGridView);
     buscador.addEventListener('input', aplicarFiltroTexto);
 
-    // Permitir Enter en buscador para intentar agregar al carrito si coincide con un ID
-    buscador.addEventListener('keydown', (e)=>{
-      if (e.key === 'Enter'){
-        e.preventDefault();
-        const val = (buscador.value || '').trim();
-        if (!val) return aplicarFiltroTexto();
-        // Si parece ID de muestra, intentar agregar a carrito
-        const id = val.toUpperCase();
-        const item = datos.find(d => (d['ID']||'').toUpperCase() === id);
-        if (item){
-          addMuestraToCarrito(id);
-          mostrarFormulario();
-        } else {
-          aplicarFiltroTexto();
-        }
+    // ---- Registro de muestras ----
+    function agregarMuestra(item){
+      if (!seleccionadas.find(m => m.ID === item.ID)){
+        seleccionadas.push(item);
+        actualizarCampoMuestras();
+        alert("Muestra agregada: " + item.ID);
       }
-    });
-
-    // ====== TinyURL: resolver a URL final ======
-    async function resolveFinalURL(url){
-      // 1) Intentar seguir redirección con fetch (si CORS lo permite)
-      try {
-        const resp = await fetch(url, { redirect: "follow" });
-        if (resp && resp.url) return resp.url;
-      } catch(e){ /* ignorar y probar plan B */ }
-
-      // 2) Si tienes API key de TinyURL, usar el endpoint de expandir
-      try {
-        if (TINYURL_API_KEY && /tinyurl\.com/i.test(url)) {
-          const r = await fetch('https://api.tinyurl.com/expand', {
-            method:'POST',
-            headers:{
-              'Content-Type':'application/json',
-              'Authorization': `Bearer ${TINYURL_API_KEY}`
-            },
-            body: JSON.stringify({ url })
-          });
-          if (r.ok){
-            const j = await r.json();
-            if (j?.data?.long_url) return j.data.long_url;
-          }
-        }
-      } catch(e){ /* ignorar */ }
-
-      // 3) Último recurso: devolver tal cual
-      return url;
+    }
+    function actualizarCampoMuestras(){
+      muestrasInput.value = seleccionadas.map(m => m.ID).join(", ");
+    }
+    function limpiarSeleccion(){
+      seleccionadas = [];
+      actualizarCampoMuestras();
+      alert("Selección limpiada");
     }
 
-    // ====== Procesar URL (larga o corta) para extraer filtros/ID ======
-    async function procesarURLPosiblementeCorta(raw){
-      let finalUrlStr = raw;
-      try {
-        // si es texto plano tipo "MUESTRA-001", construir URL fake para parser
-        if (!/^https?:\/\//i.test(finalUrlStr)) {
-          finalUrlStr = window.location.origin + window.location.pathname + '?id=' + encodeURIComponent(raw);
-        }
-        const maybe = new URL(finalUrlStr);
-        if (!maybe.searchParams.get('id') && !maybe.searchParams.get('ubicacion')){
-          // intentar expandir si es acortador
-          finalUrlStr = await resolveFinalURL(finalUrlStr);
-        }
-      } catch {
-        // si no parsea, intentar expandir igual
-        finalUrlStr = await resolveFinalURL(finalUrlStr);
-      }
+    // ---- Procesar QR con URL corta ----
+    async function procesarQR(urlCorta){
+      try{
+        let res = await fetch(urlCorta, {redirect:"follow"});
+        let urlLarga = res.url;
+        let params = new URLSearchParams(new URL(urlLarga).search);
+        let idMuestra = params.get("id");
 
-      let u;
-      try { u = new URL(finalUrlStr); } catch { return { type:'none' }; }
+        if (!idMuestra){ alert("QR inválido"); return; }
 
-      const id = u.searchParams.get('id');
-      const ubic = u.searchParams.get('ubicacion');
+        let item = datos.find(d => d["ID"] === idMuestra);
+        if (!item){ alert("Muestra no encontrada en base"); return; }
 
-      if (id){
-        return { type:'id', value:id.toUpperCase() };
-      } else if (ubic){
-        return { type:'ubic', value:ubic.toUpperCase() };
-      } else {
-        // si viene como ?MUESTRA-001 sin clave
-        if (u.search && u.search.length > 1){
-          const rawKey = u.search.slice(1).toUpperCase();
-          if (/^MUESTRA-\d+$/i.test(rawKey)) return { type:'id', value:rawKey };
-          if (/^C\d{2}N\d{2}(P\d{2})?$/i.test(rawKey)) return { type:'ubic', value:rawKey };
-        }
-      }
-      return { type:'none' };
-    }
-
-    // ====== Carrito / Formulario ======
-    function mostrarFormulario(){
-      panelForm.style.display = 'block';
-      renderTablaCarrito();
-      window.scrollTo({ top: panelForm.offsetTop - 8, behavior:'smooth' });
-    }
-
-    function ocultarFormulario(){
-      panelForm.style.display = 'none';
-    }
-
-    function addMuestraToCarrito(id){
-      const up = (id||'').toUpperCase();
-      if (!up) return;
-      if (!carrito.includes(up)){
-        carrito.push(up);
-        guardarCarrito();
-        renderTablaCarrito();
+        agregarMuestra(item);
+        buscador.value = idMuestra; // mostrar en la caja de búsqueda
+        aplicarFiltroTexto();
+      } catch(e){
+        console.error(e);
+        alert("No se pudo procesar el QR");
       }
     }
 
-    function removeMuestraFromCarrito(id){
-      carrito = carrito.filter(x => x !== id);
-      guardarCarrito();
-      renderTablaCarrito();
-    }
-
-    function renderTablaCarrito(){
-      tablaBody.innerHTML = '';
-      if (!carrito.length){
-        tablaBody.innerHTML = '<tr><td colspan="7" style="text-align:center;color:#777">Sin muestras aún. Escanee un QR o escriba el ID.</td></tr>';
-        ocultarFormulario();
-        return;
-      }
-      mostrarFormulario();
-
-      // construir filas con datos enriquecidos
-      carrito.forEach((id, idx) => {
-        const item = datos.find(d => (d['ID']||'').toUpperCase() === id);
-        const desc = item?.['DESCRIPCION'] || '';
-        const prov = item?.['PROVEEDOR'] || '';
-        const cod  = item?.['CODIGO'] || '';
-        const ubic = item?.['UBICACION'] || '';
-
-        const tr = document.createElement('tr');
-        tr.innerHTML = `
-          <td>${idx+1}</td>
-          <td>${id}</td>
-          <td>${desc}</td>
-          <td>${prov}</td>
-          <td>${cod}</td>
-          <td>${ubic}</td>
-          <td><button type="button" class="btn danger" data-remove="${id}">Quitar</button></td>
-        `;
-        tablaBody.appendChild(tr);
-      });
-
-      // preparar campo oculto para Formspree
-      const lines = carrito.map(id => {
-        const it = datos.find(d => (d['ID']||'').toUpperCase() === id);
-        return [
-          `ID: ${id}`,
-          `Descripción: ${it?.['DESCRIPCION']||''}`,
-          `Proveedor: ${it?.['PROVEEDOR']||''}`,
-          `Código: ${it?.['CODIGO']||''}`,
-          `Ubicación: ${it?.['UBICACION']||''}`
-        ].join(' | ');
-      });
-      muestrasHidden.value = lines.join('\n');
-
-      // listeners de quitar
-      tablaBody.querySelectorAll('button[data-remove]').forEach(btn=>{
-        btn.addEventListener('click', ()=> removeMuestraFromCarrito(btn.getAttribute('data-remove')));
-      });
-    }
-
-    btnSalir.addEventListener('click', ()=>{
-      carrito = [];
-      guardarCarrito();
-      muestrasHidden.value = '';
-      formPrestamo.reset();
-      ocultarFormulario();
-      // volver al catálogo limpio
-      window.history.replaceState({}, '', window.location.pathname);
-      render(datos);
-    });
-
-    // Insertar fecha automática antes de enviar
-    document.addEventListener('submit', function(e) {
-      if (e.target === formPrestamo) {
-        // agregar fecha/hora
-        const dateInput = document.createElement('input');
-        dateInput.type = 'hidden';
-        dateInput.name = 'fecha';
-        dateInput.value = new Date().toLocaleString();
-        formPrestamo.appendChild(dateInput);
-      }
-    });
-
-    // Limpiar carrito al enviar OK (best-effort)
-    formPrestamo.addEventListener('submit', ()=>{
-      // Después de enviar, la navegación de Formspree recarga/dirige; por si vuelve:
-      sessionStorage.removeItem('carrito_muestras');
-    });
-
-    // ====== Modal de escáner ======
-    let html5QrCode = null;
-    let modal, box, qrDiv;
-    function crearModalScanner(){
-      modal = document.createElement('div');
-      modal.className = 'modal';
-      modal.innerHTML = `
-        <div class="box">
-          <h3>Escanear código</h3>
-          <div id="qr-reader"></div>
-          <div style="margin-top:10px; display:flex; gap:8px; justify-content:flex-end;">
-            <button class="btn alt" id="btnCerrarScan" type="button">Cerrar</button>
-          </div>
-        </div>
-      `;
-      document.body.appendChild(modal);
-      qrDiv = modal.querySelector('#qr-reader');
-      modal.querySelector('#btnCerrarScan').addEventListener('click', cerrarScanner);
-      modal.addEventListener('click', (e)=>{ if(e.target===modal) cerrarScanner(); });
-    }
-
-    async function abrirScanner(){
-      if (!modal) crearModalScanner();
-      modal.style.display = 'flex';
-
-      if (!html5QrCode){
-        html5QrCode = new Html5Qrcode("qr-reader");
-      }
-      try {
-        await html5QrCode.start(
-          { facingMode: "environment" },
-          { fps: 10, qrbox: 250 },
-          async (decodedText) => {
-            // Al leer algo, intentar procesarlo
-            try {
-              const result = await procesarURLPosiblementeCorta(decodedText);
-              if (result.type === 'id'){
-                addMuestraToCarrito(result.value);
-                mostrarFormulario();
-              } else if (result.type === 'ubic'){
-                buscador.value = result.value;
-                aplicarFiltroTexto();
-              } else {
-                alert('QR leído, pero no contiene ID ni UBICACIÓN reconocibles.');
-              }
-            } catch(err){
-              console.error(err);
-              alert('No se pudo procesar el QR.');
-            }
-          }
-        );
-      } catch (e){
-        console.error("Error iniciando cámara:", e);
-        alert('No se pudo abrir la cámara. Verifica permisos del navegador.');
-        cerrarScanner();
-      }
-    }
-
-    async function cerrarScanner(){
-      if (html5QrCode){
-        try { await html5QrCode.stop(); } catch {}
-        try { await html5QrCode.clear(); } catch {}
-      }
-      if (modal) modal.style.display = 'none';
-    }
-
-    btnScan.addEventListener('click', abrirScanner);
-
-    // ====== Carga CSV ======
+    // ---- Inicializar ----
     Papa.parse(CSV_URL, {
       download: true,
       header: true,
       skipEmptyLines: true,
-      complete: async function(res){
-        datos = (res.data || []).filter(r =>
-          (r['CODIGO'] && r['CODIGO'].trim()) ||
-          (r['DESCRIPCION'] && r['DESCRIPCION'].trim())
-        );
-
-        // Render inicial
+      complete: function(res){
+        datos = res.data || [];
         render(datos);
-
-        // restaurar carrito de sesión si existe
-        cargarCarrito();
-        if (carrito.length) mostrarFormulario();
-
-        // Soporte de entrada por parámetros
-        const singleId = params.get('id');
-        const ubic = params.get('ubicacion');
-
-        if (singleId){
-          buscador.value = singleId;
-          aplicarFiltroTexto();
-          addMuestraToCarrito(singleId.toUpperCase());
-          mostrarFormulario();
-        } else if (ubic){
-          buscador.value = ubic;
-          aplicarFiltroTexto();
-        }
       }
     });
+
+    // ---- Hook para Formspree (fecha automática) ----
+    document.addEventListener('submit', function(e) {
+      if (e.target === formRegistro) {
+        const dateInput = document.createElement('input');
+        dateInput.type = 'hidden';
+        dateInput.name = 'fecha';
+        dateInput.value = new Date().toLocaleString();
+        e.target.appendChild(dateInput);
+      }
+    });
+
+    // ---- Demo: simular lectura de QR (cámbialo al integrar la cámara) ----
+    window.simularQR = function(url){ procesarQR(url); }
   </script>
 </body>
 </html>
