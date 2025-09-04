@@ -118,7 +118,6 @@
         <p class="helper">Escanea otra muestra con el botón “📷 Escanear QR”, o escribe el ID en el buscador y presiona Enter.</p>
       </div>
 
-      <!-- Campo oculto con todas las muestras concatenadas -->
       <input type="hidden" name="muestras" id="muestrasHidden">
 
       <div class="tabla-actions">
@@ -137,8 +136,7 @@
 
   <script>
     // ====== CONFIG ======
-    const CSV_URL = './datos.csv';
-    const FORMSPREE_ACTION = 'https://formspree.io/f/mjkegwag';
+    const CSV_URL = 'https://raw.githubusercontent.com/bodegarevinterior-byte/catalogo-telas/main/datos.csv';
     const TINYURL_API_KEY = ''; // opcional
 
     // ====== DOM ======
@@ -157,7 +155,6 @@
     // ====== Estado ======
     let datos = [];
     let carrito = [];
-
     function guardarCarrito(){ sessionStorage.setItem('carrito_muestras', JSON.stringify(carrito)); }
     function cargarCarrito(){
       try {
@@ -182,7 +179,6 @@
         const PROVEEDOR = item['PROVEEDOR'] || '';
         const WEB = item['WEB SITE'] || '';
         const IMG = item['IMAGEN'] || '';
-
         if (!CODIGO && !DESCRIPCION) continue;
 
         const card = document.createElement('div');
@@ -203,7 +199,7 @@
       resultados.appendChild(frag);
     }
 
-    // ====== Filtro texto ======
+    // ====== Filtro ======
     function aplicarFiltroTexto(){
       const t = (buscador.value || '').toLowerCase().trim();
       if (!t){ render(datos); return; }
@@ -216,14 +212,11 @@
       );
       render(filtrados);
     }
-
-    // ====== Vistas ======
-    function setListView(){ resultados.classList.remove('grid-view'); resultados.classList.add('lista-view'); }
-    function setGridView(){ resultados.classList.remove('lista-view'); resultados.classList.add('grid-view'); }
-    btnLista.addEventListener('click', setListView);
-    btnGrid .addEventListener('click', setGridView);
+    btnLista.addEventListener('click', ()=>{ resultados.classList.remove('grid-view'); resultados.classList.add('lista-view'); });
+    btnGrid.addEventListener('click', ()=>{ resultados.classList.remove('lista-view'); resultados.classList.add('grid-view'); });
     buscador.addEventListener('input', aplicarFiltroTexto);
 
+    // Enter en buscador -> agregar a carrito si coincide
     buscador.addEventListener('keydown', (e)=>{
       if (e.key === 'Enter'){
         e.preventDefault();
@@ -231,58 +224,30 @@
         if (!val) return aplicarFiltroTexto();
         const id = val.toUpperCase();
         const item = datos.find(d => (d['ID']||'').toUpperCase() === id);
-        if (item){
-          addMuestraToCarrito(id);
-          mostrarFormulario();
-        } else {
-          aplicarFiltroTexto();
-        }
+        if (item){ addMuestraToCarrito(id); mostrarFormulario(); }
+        else { aplicarFiltroTexto(); }
       }
     });
 
-    // ====== TinyURL: resolver a URL final ======
+    // ====== TinyURL resolver ======
     async function resolveFinalURL(url){
-      // Si es TinyURL, usar el truco de ".txt"
-      if (/tinyurl\.com/i.test(url)) {
-        try {
-          const resp = await fetch(url + ".txt");
-          if (resp.ok) {
-            const longUrl = await resp.text();
-            return longUrl.trim();
-          }
-        } catch(e) {
-          console.warn("No se pudo expandir con .txt:", e);
-        }
-      }
-
-      // Intentar seguir redirección con fetch
       try {
         const resp = await fetch(url, { redirect: "follow" });
         if (resp && resp.url) return resp.url;
       } catch(e){}
-
-      // API oficial si tienes KEY
       try {
         if (TINYURL_API_KEY && /tinyurl\.com/i.test(url)) {
           const r = await fetch('https://api.tinyurl.com/expand', {
             method:'POST',
-            headers:{
-              'Content-Type':'application/json',
-              'Authorization': `Bearer ${TINYURL_API_KEY}`
-            },
+            headers:{ 'Content-Type':'application/json','Authorization': `Bearer ${TINYURL_API_KEY}` },
             body: JSON.stringify({ url })
           });
-          if (r.ok){
-            const j = await r.json();
-            if (j?.data?.long_url) return j.data.long_url;
-          }
+          if (r.ok){ const j = await r.json(); if (j?.data?.long_url) return j.data.long_url; }
         }
       } catch(e){}
-
       return url;
     }
 
-    // ====== Procesar URL o ID ======
     async function procesarURLPosiblementeCorta(raw){
       let finalUrlStr = raw;
       try {
@@ -293,110 +258,114 @@
         if (!maybe.searchParams.get('id') && !maybe.searchParams.get('ubicacion')){
           finalUrlStr = await resolveFinalURL(finalUrlStr);
         }
-      } catch {
-        finalUrlStr = await resolveFinalURL(finalUrlStr);
-      }
+      } catch { finalUrlStr = await resolveFinalURL(finalUrlStr); }
 
       let u;
       try { u = new URL(finalUrlStr); } catch { return { type:'none' }; }
-
       const id = u.searchParams.get('id');
       const ubic = u.searchParams.get('ubicacion');
-
-      if (id){
-        return { type:'id', value:id.toUpperCase() };
-      } else if (ubic){
-        return { type:'ubic', value:ubic.toUpperCase() };
-      } else {
-        if (u.search && u.search.length > 1){
-          const rawKey = u.search.slice(1).toUpperCase();
-          if (/^MUESTRA-\d+$/i.test(rawKey)) return { type:'id', value:rawKey };
-          if (/^C\d{2}N\d{2}(P\d{2})?$/i.test(rawKey)) return { type:'ubic', value:rawKey };
-        }
+      if (id) return { type:'id', value:id.toUpperCase() };
+      if (ubic) return { type:'ubic', value:ubic.toUpperCase() };
+      if (u.search && u.search.length > 1){
+        const rawKey = u.search.slice(1).toUpperCase();
+        if (/^MUESTRA-\d+$/i.test(rawKey)) return { type:'id', value:rawKey };
+        if (/^C\d{2}N\d{2}(P\d{2})?$/i.test(rawKey)) return { type:'ubic', value:rawKey };
       }
       return { type:'none' };
     }
 
     // ====== Carrito ======
-    function mostrarFormulario(){
-      panelForm.style.display = 'block';
-      renderTablaCarrito();
-      window.scrollTo({ top: panelForm.offsetTop - 8, behavior:'smooth' });
-    }
-
+    function mostrarFormulario(){ panelForm.style.display = 'block'; renderTablaCarrito(); window.scrollTo({ top: panelForm.offsetTop - 8, behavior:'smooth' }); }
     function ocultarFormulario(){ panelForm.style.display = 'none'; }
-
-    function addMuestraToCarrito(id){
-      const up = (id||'').toUpperCase();
-      if (!up) return;
-      if (!carrito.includes(up)){
-        carrito.push(up);
-        guardarCarrito();
-        renderTablaCarrito();
-      }
-    }
-
-    function removeMuestraFromCarrito(id){
-      carrito = carrito.filter(x => x !== id);
-      guardarCarrito();
-      renderTablaCarrito();
-    }
+    function addMuestraToCarrito(id){ const up = id.toUpperCase(); if (!carrito.includes(up)){ carrito.push(up); guardarCarrito(); renderTablaCarrito(); } }
+    function removeMuestraFromCarrito(id){ carrito = carrito.filter(x => x !== id); guardarCarrito(); renderTablaCarrito(); }
 
     function renderTablaCarrito(){
       tablaBody.innerHTML = '';
-      if (!carrito.length){
-        tablaBody.innerHTML = '<tr><td colspan="7" style="text-align:center;color:#777">Sin muestras aún. Escanee un QR o escriba el ID.</td></tr>';
-        ocultarFormulario();
-        return;
-      }
+      if (!carrito.length){ tablaBody.innerHTML = '<tr><td colspan="7" style="text-align:center;color:#777">Sin muestras aún.</td></tr>'; ocultarFormulario(); return; }
       mostrarFormulario();
-
       carrito.forEach((id, idx) => {
         const item = datos.find(d => (d['ID']||'').toUpperCase() === id);
-        const desc = item?.['DESCRIPCION'] || '';
-        const prov = item?.['PROVEEDOR'] || '';
-        const cod  = item?.['CODIGO'] || '';
-        const ubic = item?.['UBICACION'] || '';
-
         const tr = document.createElement('tr');
         tr.innerHTML = `
           <td>${idx+1}</td>
           <td>${id}</td>
-          <td>${desc}</td>
-          <td>${prov}</td>
-          <td>${cod}</td>
-          <td>${ubic}</td>
+          <td>${item?.['DESCRIPCION']||''}</td>
+          <td>${item?.['PROVEEDOR']||''}</td>
+          <td>${item?.['CODIGO']||''}</td>
+          <td>${item?.['UBICACION']||''}</td>
           <td><button type="button" class="btn danger" data-remove="${id}">Quitar</button></td>
         `;
         tablaBody.appendChild(tr);
       });
-
-      const lines = carrito.map(id => {
+      muestrasHidden.value = carrito.map(id=>{
         const it = datos.find(d => (d['ID']||'').toUpperCase() === id);
-        return [
-          `ID: ${id}`,
-          `Descripción: ${it?.['DESCRIPCION']||''}`,
-          `Proveedor: ${it?.['PROVEEDOR']||''}`,
-          `Código: ${it?.['CODIGO']||''}`,
-          `Ubicación: ${it?.['UBICACION']||''}`
-        ].join(' | ');
-      });
-      muestrasHidden.value = lines.join('\n');
-
-      tablaBody.querySelectorAll('button[data-remove]').forEach(btn=>{
-        btn.addEventListener('click', ()=> removeMuestraFromCarrito(btn.getAttribute('data-remove')));
-      });
+        return `ID:${id} | Desc:${it?.['DESCRIPCION']||''} | Prov:${it?.['PROVEEDOR']||''} | Código:${it?.['CODIGO']||''} | Ubic:${it?.['UBICACION']||''}`;
+      }).join('\n');
+      tablaBody.querySelectorAll('button[data-remove]').forEach(btn=> btn.addEventListener('click', ()=> removeMuestraFromCarrito(btn.getAttribute('data-remove'))));
     }
 
-    btnSalir.addEventListener('click', ()=>{
-      carrito = [];
-      guardarCarrito();
-      muestrasHidden.value = '';
-      formPrestamo.reset();
-      ocultarFormulario();
-      window.history.replaceState({}, '', window.location.pathname);
-      render(datos);
-    });
+    btnSalir.addEventListener('click', ()=>{ carrito=[]; guardarCarrito(); muestrasHidden.value=''; formPrestamo.reset(); ocultarFormulario(); window.history.replaceState({}, '', window.location.pathname); render(datos); });
+    document.addEventListener('submit', e => { if (e.target === formPrestamo){ const dateInput = document.createElement('input'); dateInput.type='hidden'; dateInput.name='fecha'; dateInput.value=new Date().toLocaleString(); formPrestamo.appendChild(dateInput); } });
+    formPrestamo.addEventListener('submit', ()=>{ sessionStorage.removeItem('carrito_muestras'); });
 
-    document.addEventListener('submit', function(e) {
-      if (e.target
+    // ====== Escáner QR ======
+    let html5QrCode=null, modal=null, qrDiv=null;
+    function crearModalScanner(){
+      modal=document.createElement('div'); modal.className='modal';
+      modal.innerHTML=`
+        <div class="box">
+          <h3>Escanear código</h3>
+          <div id="qr-reader"></div>
+          <div style="margin-top:10px; display:flex; gap:8px; justify-content:flex-end;">
+            <button class="btn alt" id="btnCerrarScan" type="button">Cerrar</button>
+          </div>
+        </div>`;
+      document.body.appendChild(modal); qrDiv=modal.querySelector('#qr-reader');
+      modal.querySelector('#btnCerrarScan').onclick=()=>cerrarScanner();
+    }
+    function abrirScanner(){
+      if (!modal) crearModalScanner(); modal.style.display='flex';
+      html5QrCode=new Html5Qrcode("qr-reader");
+      Html5Qrcode.getCameras().then(devs=>{
+        if(devs&&devs.length){ html5QrCode.start({ facingMode:"environment" },{fps:10,qrbox:250}, async (decoded)=>{
+          await manejarCodigo(decoded);
+          cerrarScanner();
+        }); }
+      });
+    }
+    function cerrarScanner(){ if(html5QrCode){ html5QrCode.stop().catch(()=>{}).then(()=>{ html5QrCode.clear(); html5QrCode=null; }); } if(modal){ modal.style.display='none'; } }
+    btnScan.addEventListener('click', abrirScanner);
+
+    async function manejarCodigo(decoded){
+      const res=await procesarURLPosiblementeCorta(decoded);
+      if(res.type==='id'){ addMuestraToCarrito(res.value); mostrarFormulario(); }
+      else if(res.type==='ubic'){ const filtrados=datos.filter(d=>(d['UBICACION']||'').toUpperCase()===res.value); render(filtrados); }
+      else{ alert("Código no reconocido"); }
+    }
+
+    // ====== Inicio ======
+    Papa.parse(CSV_URL, {
+      download: true,
+      header: true,
+      complete: function(results) {
+        datos = results.data;
+        console.log("CSV cargado:", datos);
+        render(datos);
+        cargarCarrito(); renderTablaCarrito();
+
+        if (params.has('id')){
+          const id=params.get('id').toUpperCase();
+          addMuestraToCarrito(id); mostrarFormulario();
+        }
+        else if(params.has('ubicacion')){
+          const u=params.get('ubicacion').toUpperCase();
+          const filtrados=datos.filter(d=>(d['UBICACION']||'').toUpperCase()===u);
+          render(filtrados);
+        }
+      },
+      error: function(err){ console.error("Error CSV:", err); }
+    });
+  </script>
+</body>
+</html>
