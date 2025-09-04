@@ -5,50 +5,116 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Catálogo de Telas</title>
   <style>
-    :root{
-      --gap:14px;
-      --radius:12px;
-      --shadow:0 2px 6px rgba(0,0,0,.1);
-      --bg:#f4f4f4;
-      --ink:#333;
-      --ink2:#555;
-      --brand:#1f6feb;
-      --brand-d:#1756b8;
+    :root {
+      --gap: 14px;
+      --radius: 12px;
+      --shadow: 0 2px 6px rgba(0,0,0,.1);
+      --bg: #f4f4f4;
+      --ink: #333;
+      --ink2: #555;
+      --brand: #1f6feb;
+      --brand-d: #1756b8;
+      --danger:#c00;
+      --danger-d:#900;
+      --success:#28a745;
     }
-    *{box-sizing:border-box}
-    body{ margin:0; font-family:system-ui, Arial, sans-serif; background:var(--bg); color:var(--ink);}
-    header{ background:#222; color:#fff; padding:16px; text-align:center;}
-    #controls{ display:flex; gap:8px; justify-content:center; align-items:center; padding:12px var(--gap);
-      flex-wrap:wrap; background:#fff; box-shadow:var(--shadow);}
-    #buscador{ flex:1 1 360px; max-width:520px; padding:10px 12px; border:1px solid #ddd; border-radius:8px; font-size:16px;}
-    .btn{ padding:10px 14px; border:none; border-radius:8px; font-weight:600; cursor:pointer; color:#fff; background:var(--brand);}
-    .btn:hover{ background:var(--brand-d);}
-    .btn.alt{ background:#666;}
-    .btn.alt:hover{ background:#4d4d4d;}
+    * { box-sizing: border-box; }
+    body { margin:0; font-family:system-ui, Arial, sans-serif; background:var(--bg); color:var(--ink);}
+    header { background:#222; color:#fff; padding:16px; text-align:center; position: sticky; top: 0; z-index: 100;}
 
-    #resultados{ display:grid; gap:var(--gap); padding:var(--gap); align-items:start;}
-    #resultados.lista-view{ grid-template-columns:1fr;}
-    #resultados.grid-view{ grid-template-columns: repeat(auto-fill, minmax(120px,1fr)); }
+    #controls { display:flex; gap:8px; justify-content:center; align-items:center; padding:12px var(--gap);
+      flex-wrap:wrap; background:#fff; box-shadow:var(--shadow); position: sticky; top: 68px; z-index: 99;}
+    #buscador { flex:1 1 360px; max-width:520px; padding:10px 12px; border:1px solid #ddd; border-radius:8px; font-size:16px;}
+    .btn { padding:10px 14px; border:none; border-radius:8px; font-weight:600; cursor:pointer; color:#fff; background:var(--brand); transition: background 0.2s;}
+    .btn:hover { background:var(--brand-d);}
+    .btn.alt { background:#666;}
+    .btn.alt:hover { background:#4d4d4d;}
+    .btn.danger { background:var(--danger); }
+    .btn.danger:hover { background:var(--danger-d); }
+    .btn.success { background:var(--success); }
+    .btn:disabled { background: #ccc; cursor: not-allowed; }
 
-    .card{ background:#fff; border-radius:var(--radius); box-shadow:var(--shadow);
+    #resultados { display:grid; gap:var(--gap); padding:var(--gap); align-items:start;}
+    #resultados.lista-view { grid-template-columns:1fr;}
+    #resultados.grid-view { grid-template-columns: repeat(auto-fill, minmax(160px,1fr)); }
+
+    .card { background:#fff; border-radius:var(--radius); box-shadow:var(--shadow);
       overflow:hidden; display:flex; flex-direction:column; transition:transform .15s ease;}
-    .card:hover{ transform:translateY(-2px);}
-    .thumb{ width:100%; height:200px; object-fit:cover; display:block; background:#eee;}
-    .content{ padding:10px 12px;}
-    .title{ margin:0 0 6px; font-size:16px; line-height:1.2;}
-    .meta{ margin:4px 0; font-size:14px; color:var(--ink2);}
-    .link{ margin-top:6px; display:inline-block; text-decoration:none; color:#fff; background:var(--brand);
+    .card:hover { transform:translateY(-2px);}
+    .thumb-container { width:100%; height:200px; position: relative; background:#eee;}
+    .thumb { width:100%; height:100%; object-fit:cover; display:block;}
+    .thumb-error { display: flex; align-items: center; justify-content: center; color: #777; font-size: 14px; }
+    .content { padding:10px 12px; flex-grow: 1;}
+    .title { margin:0 0 6px; font-size:16px; line-height:1.2;}
+    .meta { margin:4px 0; font-size:14px; color:var(--ink2);}
+    .link { margin-top:6px; display:inline-block; text-decoration:none; color:#fff; background:var(--brand);
       padding:6px 10px; border-radius:8px; font-size:13px;}
 
-    #resultados.grid-view .thumb{ height:120px;}
-    #resultados.grid-view .title{ font-size:12px;}
-    #resultados.grid-view .meta{ font-size:11px;}
+    #resultados.grid-view .thumb-container { height:120px;}
+    #resultados.grid-view .title { font-size:14px;}
+    #resultados.grid-view .meta { font-size:12px;}
 
-    form.registro{ display:flex; flex-direction:column; gap:10px; margin:16px;}
-    form.registro input[type="text"], form.registro input[type="email"]{ padding:8px; border:1px solid #ccc; border-radius:6px;}
-    form.registro button{ padding:10px; background:var(--brand); border:none; color:#fff;
-      font-weight:600; border-radius:8px; cursor:pointer;}
-    form.registro button:hover{ background:var(--brand-d);}
+    /* Panel formulario / carrito */
+    #panel-form {
+      max-width: 860px; margin: 8px auto; padding: 12px; background:#fff; border-radius:var(--radius); box-shadow:var(--shadow);
+      display:none;
+    }
+    #panel-form h2 { margin: 0 0 10px; }
+    form.registro { display:flex; flex-direction:column; gap:10px; }
+    form.registro input[type="text"], form.registro input[type="email"] {
+      padding:10px; border:1px solid #ccc; border-radius:8px;
+    }
+    form.registro .row { display:flex; gap:10px; flex-wrap:wrap; }
+    form.registro .row > * { flex:1 1 240px; }
+    .tabla-muestras{
+      width:100%; border-collapse: collapse; margin-top:8px; font-size:14px;
+    }
+    .tabla-muestras th, .tabla-muestras td{
+      border:1px solid #e5e5e5; padding:6px 8px; text-align:left; vertical-align:top;
+    }
+    .tabla-actions { display:flex; gap:6px; flex-wrap:wrap; }
+    .helper { color:#666; font-size:13px; margin:6px 0 0; }
+
+    /* Modal escáner */
+    .modal {
+      position: fixed; inset: 0; background: rgba(0,0,0,.55);
+      display:none; align-items:center; justify-content:center; padding:20px;
+      z-index: 1000;
+    }
+    .modal .box {
+      background:#fff; border-radius:12px; padding:14px; width:min(520px, 100%); box-shadow:var(--shadow);
+    }
+    #qr-reader { width:100%; }
+    
+    /* Loader y estados */
+    .loader { 
+      display: inline-block; width: 20px; height: 20px; border: 3px solid rgba(255,255,255,.3); 
+      border-radius: 50%; border-top-color: #fff; animation: spin 1s ease-in-out infinite; 
+      margin-right: 8px;
+    }
+    @keyframes spin { to { transform: rotate(360deg); } }
+    #loading { text-align: center; padding: 40px; color: #666; }
+    .notification {
+      position: fixed; bottom: 20px; right: 20px; padding: 12px 16px; border-radius: var(--radius);
+      background: #333; color: white; box-shadow: var(--shadow); z-index: 1000; display: none;
+    }
+    
+    /* Responsive */
+    @media (max-width: 768px) {
+      #controls { top: 60px; }
+      #resultados.grid-view { grid-template-columns: repeat(auto-fill, minmax(130px,1fr)); }
+      .tabla-muestras { font-size: 13px; }
+      .tabla-muestras th, .tabla-muestras td { padding: 4px 6px; }
+    }
+    
+    @media (max-width: 480px) {
+      header { padding: 12px; }
+      #controls { padding: 8px; position: static; }
+      #buscador { flex: 1 1 100%; }
+      .btn { padding: 8px 12px; font-size: 14px; }
+      #resultados { padding: 10px; }
+      #resultados.grid-view { grid-template-columns: repeat(auto-fill, minmax(110px,1fr)); }
+    }
   </style>
 </head>
 <body>
@@ -58,36 +124,134 @@
     <input id="buscador" type="text" placeholder="Buscar por código, descripción, proveedor, ubicación o ID…" />
     <button class="btn alt" id="btnLista" type="button">☰ Lista</button>
     <button class="btn" id="btnGrid" type="button">🔲 Cuadrícula</button>
+    <button class="btn" id="btnScan" type="button">📷 Escanear QR</button>
+    <button class="btn success" id="btnAddManual" type="button">➕ Agregar manual</button>
   </div>
 
-  <div id="resultados" class="lista-view"></div>
+  <!-- Panel formulario / carrito -->
+  <section id="panel-form">
+    <h2>Registro de préstamo</h2>
+    <form id="formPrestamo" class="registro" action="https://formspree.io/f/mjkegwag" method="POST">
+      <div class="row">
+        <input type="text" name="cliente" id="cliente" placeholder="Prestado a (nombre del cliente)" required>
+        <input type="email" name="correo" id="correo" placeholder="Correo del cliente" required>
+      </div>
 
-  <form class="registro" id="formRegistro" action="https://formspree.io/f/mjkegwag" method="POST">
-    <h3>Registro de préstamo</h3>
-    <label>Prestado a:</label>
-    <input type="text" name="cliente" placeholder="Nombre del cliente" required>
-    <label>Correo del cliente:</label>
-    <input type="email" name="correo" placeholder="cliente@ejemplo.com" required>
-    <input type="hidden" name="muestras" id="muestrasInput">
-    <button type="submit">Enviar registro</button>
-    <button type="button" onclick="limpiarSeleccion()">Cancelar / Nueva salida</button>
-  </form>
+      <div class="tabla-wrap">
+        <table class="tabla-muestras" id="tablaMuestras">
+          <thead>
+            <tr>
+              <th>#</th>
+              <th>ID Muestra</th>
+              <th>Descripción</th>
+              <th>Proveedor</th>
+              <th>Código</th>
+              <th>Ubicación</th>
+              <th>Acciones</th>
+            </tr>
+          </thead>
+          <tbody><!-- filas dinámicas --></tbody>
+        </table>
+        <p class="helper">Escanea otra muestra con el botón "📷 Escanear QR", o escribe el ID en el buscador y presiona Enter.</p>
+      </div>
 
+      <!-- Campo oculto con todas las muestras concatenadas -->
+      <input type="hidden" name="muestras" id="muestrasHidden">
+
+      <div class="tabla-actions">
+        <button type="submit" class="btn">Enviar registro</button>
+        <button type="button" class="btn danger" id="btnSalir">Salir (limpiar)</button>
+      </div>
+    </form>
+  </section>
+
+  <!-- Catálogo -->
+  <div id="resultados" class="lista-view">
+    <div id="loading">Cargando catálogo...</div>
+  </div>
+  
+  <!-- Notificación -->
+  <div class="notification" id="notification"></div>
+
+  <!-- Modal para agregar manualmente -->
+  <div class="modal" id="modalManual">
+    <div class="box">
+      <h3>Agregar muestra manualmente</h3>
+      <div style="margin-bottom: 15px;">
+        <input type="text" id="inputIdManual" placeholder="ID de la muestra (ej: MUESTRA-001)" style="width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 8px;">
+      </div>
+      <div style="display: flex; gap: 8px; justify-content: flex-end;">
+        <button class="btn alt" id="btnCancelarManual">Cancelar</button>
+        <button class="btn" id="btnConfirmarManual">Agregar</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Libs -->
   <script src="https://cdn.jsdelivr.net/npm/papaparse@5.4.1/papaparse.min.js"></script>
-  <script src="https://unpkg.com/html5-qrcode"></script>
+  <script src="https://unpkg.com/html5-qrcode" type="text/javascript"></script>
+
   <script>
-    const CSV_URL = './datos.csv';
+    // ====== CONFIG ======
+    // Esta es la URL por defecto, se ajustará automáticamente según la ubicación del HTML
+    let CSV_URL = 'datos.csv';
+    const FORMSPREE_ACTION = 'https://formspree.io/f/mjkegwag';
+    
+    // Ajustar la URL del CSV según la ubicación actual
+    const currentPath = window.location.pathname;
+    if (currentPath.includes('/')) {
+      const pathParts = currentPath.split('/');
+      pathParts.pop(); // Eliminar el nombre del archivo HTML
+      const basePath = pathParts.join('/');
+      CSV_URL = basePath ? `${basePath}/datos.csv` : 'datos.csv';
+    }
+
+    // ====== DOM ======
     const resultados = document.getElementById('resultados');
     const buscador   = document.getElementById('buscador');
     const btnLista   = document.getElementById('btnLista');
     const btnGrid    = document.getElementById('btnGrid');
-    const formRegistro = document.getElementById('formRegistro');
-    const muestrasInput = document.getElementById('muestrasInput');
+    const btnScan    = document.getElementById('btnScan');
+    const btnAddManual = document.getElementById('btnAddManual');
+    const loading    = document.getElementById('loading');
+    const notification = document.getElementById('notification');
+    const modalManual = document.getElementById('modalManual');
+    const inputIdManual = document.getElementById('inputIdManual');
+    const btnCancelarManual = document.getElementById('btnCancelarManual');
+    const btnConfirmarManual = document.getElementById('btnConfirmarManual');
 
+    const panelForm  = document.getElementById('panel-form');
+    const formPrestamo = document.getElementById('formPrestamo');
+    const tablaBody  = document.querySelector('#tablaMuestras tbody');
+    const muestrasHidden = document.getElementById('muestrasHidden');
+    const btnSalir   = document.getElementById('btnSalir');
+
+    const params     = new URLSearchParams(window.location.search);
+
+    // ====== Utilidades ======
+    function showNotification(message, isError = false) {
+      notification.textContent = message;
+      notification.style.background = isError ? 'var(--danger)' : 'var(--success)';
+      notification.style.display = 'block';
+      
+      setTimeout(() => {
+        notification.style.display = 'none';
+      }, 3000);
+    }
+
+    // ====== Estado ======
     let datos = [];
-    let seleccionadas = [];
+    let carrito = []; // array de IDs (MUESTRA-001, etc.)
+    // persistir durante la sesión por si navegan atrás/adelante
+    function guardarCarrito(){ sessionStorage.setItem('carrito_muestras', JSON.stringify(carrito)); }
+    function cargarCarrito(){
+      try {
+        const raw = sessionStorage.getItem('carrito_muestras');
+        carrito = raw ? JSON.parse(raw) : [];
+      } catch { carrito = []; }
+    }
 
-    // ---- Render ----
+    // ====== Render catálogo ======
     function render(lista){
       resultados.innerHTML = '';
       if (!lista || !lista.length){
@@ -104,25 +268,65 @@
         const WEB = item['WEB SITE'] || '';
         const IMG = item['IMAGEN'] || '';
 
+        if (!CODIGO && !DESCRIPCION) continue;
+
         const card = document.createElement('div');
         card.className = 'card';
-        card.innerHTML = `
-          <img class="thumb" src="${IMG}" alt="${DESCRIPCION}" loading="lazy" />
-          <div class="content">
-            <h3 class="title">${DESCRIPCION || CODIGO}</h3>
-            <p class="meta"><b>Código:</b> ${CODIGO}</p>
-            <p class="meta"><b>Ubicación:</b> ${UBICACION}</p>
-            <p class="meta"><b>Proveedor:</b> ${PROVEEDOR}</p>
-            <p class="meta"><b>ID:</b> ${ID}</p>
-            ${WEB ? `<a class="link" href="${WEB}" target="_blank" rel="noopener">Ver más</a>` : ''}
-          </div>
+        
+        // Contenedor de imagen con manejo de errores
+        const thumbContainer = document.createElement('div');
+        thumbContainer.className = 'thumb-container';
+        
+        if (IMG) {
+          const img = document.createElement('img');
+          img.className = 'thumb';
+          img.src = IMG;
+          img.alt = DESCRIPCION;
+          img.loading = 'lazy';
+          img.onerror = function() {
+            this.style.display = 'none';
+            const errorDiv = document.createElement('div');
+            errorDiv.className = 'thumb thumb-error';
+            errorDiv.textContent = 'Imagen no disponible';
+            thumbContainer.appendChild(errorDiv);
+          };
+          thumbContainer.appendChild(img);
+        } else {
+          const noImageDiv = document.createElement('div');
+          noImageDiv.className = 'thumb thumb-error';
+          noImageDiv.textContent = 'Sin imagen';
+          thumbContainer.appendChild(noImageDiv);
+        }
+        
+        card.appendChild(thumbContainer);
+        
+        const contentDiv = document.createElement('div');
+        contentDiv.className = 'content';
+        contentDiv.innerHTML = `
+          <h3 class="title">${DESCRIPCION || CODIGO}</h3>
+          <p class="meta"><b>Código:</b> ${CODIGO}</p>
+          <p class="meta"><b>Ubicación:</b> ${UBICACION}</p>
+          <p class="meta"><b>Proveedor:</b> ${PROVEEDOR}</p>
+          <p class="meta"><b>ID:</b> ${ID}</p>
+          ${WEB ? `<a class="link" href="${WEB}" target="_blank" rel="noopener">Ver más</a>` : ''}
+          <button class="link" style="margin-top: 8px; cursor: pointer;" data-id="${ID}">Agregar a préstamo</button>
         `;
+        card.appendChild(contentDiv);
+        
+        // Añadir evento al botón de agregar
+        const addButton = contentDiv.querySelector('[data-id]');
+        addButton.addEventListener('click', () => {
+          addMuestraToCarrito(ID);
+          mostrarFormulario();
+          showNotification(`Muestra ${ID} agregada al préstamo`);
+        });
+        
         frag.appendChild(card);
       }
       resultados.appendChild(frag);
     }
 
-    // ---- Filtros ----
+    // ====== Filtro texto ======
     function aplicarFiltroTexto(){
       const t = (buscador.value || '').toLowerCase().trim();
       if (!t){ render(datos); return; }
@@ -136,77 +340,435 @@
       render(filtrados);
     }
 
-    // ---- Vistas ----
-    function setListView(){ resultados.classList.remove('grid-view'); resultados.classList.add('lista-view'); }
-    function setGridView(){ resultados.classList.remove('lista-view'); resultados.classList.add('grid-view'); }
+    // ====== Vistas ======
+    function setListView(){ 
+      resultados.classList.remove('grid-view'); 
+      resultados.classList.add('lista-view'); 
+      btnLista.classList.add('alt');
+      btnGrid.classList.remove('alt');
+    }
+    
+    function setGridView(){ 
+      resultados.classList.remove('lista-view'); 
+      resultados.classList.add('grid-view'); 
+      btnGrid.classList.add('alt');
+      btnLista.classList.remove('alt');
+    }
+    
     btnLista.addEventListener('click', setListView);
-    btnGrid .addEventListener('click', setGridView);
+    btnGrid.addEventListener('click', setGridView);
     buscador.addEventListener('input', aplicarFiltroTexto);
 
-    // ---- Registro de muestras ----
-    function agregarMuestra(item){
-      if (!seleccionadas.find(m => m.ID === item.ID)){
-        seleccionadas.push(item);
-        actualizarCampoMuestras();
-        alert("Muestra agregada: " + item.ID);
-      }
-    }
-    function actualizarCampoMuestras(){
-      muestrasInput.value = seleccionadas.map(m => m.ID).join(", ");
-    }
-    function limpiarSeleccion(){
-      seleccionadas = [];
-      actualizarCampoMuestras();
-      alert("Selección limpiada");
-    }
-
-    // ---- Procesar QR con URL corta ----
-    async function procesarQR(urlCorta){
-      try{
-        let res = await fetch(urlCorta, {redirect:"follow"});
-        let urlLarga = res.url;
-        let params = new URLSearchParams(new URL(urlLarga).search);
-        let idMuestra = params.get("id");
-
-        if (!idMuestra){ alert("QR inválido"); return; }
-
-        let item = datos.find(d => d["ID"] === idMuestra);
-        if (!item){ alert("Muestra no encontrada en base"); return; }
-
-        agregarMuestra(item);
-        buscador.value = idMuestra; // mostrar en la caja de búsqueda
-        aplicarFiltroTexto();
-      } catch(e){
-        console.error(e);
-        alert("No se pudo procesar el QR");
-      }
-    }
-
-    // ---- Inicializar ----
-    Papa.parse(CSV_URL, {
-      download: true,
-      header: true,
-      skipEmptyLines: true,
-      complete: function(res){
-        datos = res.data || [];
-        render(datos);
+    // Permitir Enter en buscador para intentar agregar al carrito si coincide con un ID
+    buscador.addEventListener('keydown', (e)=>{
+      if (e.key === 'Enter'){
+        e.preventDefault();
+        const val = (buscador.value || '').trim();
+        if (!val) return aplicarFiltroTexto();
+        // Si parece ID de muestra, intentar agregar a carrito
+        const id = val.toUpperCase();
+        const item = datos.find(d => (d['ID']||'').toUpperCase() === id);
+        if (item){
+          addMuestraToCarrito(id);
+          mostrarFormulario();
+          showNotification(`Muestra ${id} agregada al préstamo`);
+        } else {
+          showNotification('No se encontró ninguna muestra con ese ID', true);
+          aplicarFiltroTexto();
+        }
       }
     });
 
-    // ---- Hook para Formspree (fecha automática) ----
+    // ====== Resolución de TinyURLs ======
+    async function resolveTinyURL(tinyURL) {
+      try {
+        showNotification('Resolviendo URL acortada...');
+        
+        // Para TinyURL, podemos intentar hacer una solicitud y seguir las redirecciones
+        const response = await fetch(tinyURL, { 
+          method: 'HEAD', 
+          redirect: 'manual',
+          headers: {
+            'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36'
+          }
+        });
+        
+        // Si hay una ubicación de redirección, la devolvemos
+        if (response.status === 301 || response.status === 302) {
+          return response.headers.get('Location');
+        }
+        
+        // Si no, intentamos con una solicitud GET (más lento pero más efectivo)
+        const getResponse = await fetch(tinyURL, {
+          redirect: 'manual',
+          headers: {
+            'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36'
+          }
+        });
+        
+        if (getResponse.status === 301 || getResponse.status === 302) {
+          return getResponse.headers.get('Location');
+        }
+        
+        // Si todo falla, devolvemos la URL original
+        return tinyURL;
+      } catch (error) {
+        console.error('Error resolviendo TinyURL:', error);
+        return tinyURL;
+      }
+    }
+
+    // ====== Procesar URL (larga o corta) para extraer filtros/ID ======
+    async function procesarURLPosiblementeCorta(raw){
+      let finalUrlStr = raw;
+      
+      // Si es una TinyURL, intentamos resolverla
+      if (raw.includes('tinyurl.com') || raw.includes('bit.ly') || raw.includes('t.co')) {
+        finalUrlStr = await resolveTinyURL(raw);
+      }
+      
+      try {
+        // si es texto plano tipo "MUESTRA-001", construir URL fake para parser
+        if (!/^https?:\/\//i.test(finalUrlStr)) {
+          finalUrlStr = window.location.origin + window.location.pathname + '?id=' + encodeURIComponent(raw);
+        }
+        
+        const u = new URL(finalUrlStr);
+        const id = u.searchParams.get('id');
+        const ubic = u.searchParams.get('ubicacion');
+
+        if (id){
+          return { type:'id', value:id.toUpperCase() };
+        } else if (ubic){
+          return { type:'ubic', value:ubic.toUpperCase() };
+        } else {
+          // si viene como ?MUESTRA-001 sin clave
+          if (u.search && u.search.length > 1){
+            const rawKey = u.search.slice(1).toUpperCase();
+            if (/^MUESTRA-\d+$/i.test(rawKey)) return { type:'id', value:rawKey };
+            if (/^C\d{2}N\d{2}(P\d{2})?$/i.test(rawKey)) return { type:'ubic', value:rawKey };
+          }
+        }
+      } catch (error) {
+        console.error('Error procesando URL:', error);
+        // Si hay un error, intentamos extraer un ID directamente del texto
+        const idMatch = raw.match(/(MUESTRA-\d+)/i);
+        if (idMatch) {
+          return { type: 'id', value: idMatch[1].toUpperCase() };
+        }
+      }
+      
+      return { type:'none' };
+    }
+
+    // ====== Carrito / Formulario ======
+    function mostrarFormulario(){
+      panelForm.style.display = 'block';
+      renderTablaCarrito();
+      window.scrollTo({ top: panelForm.offsetTop - 8, behavior:'smooth' });
+    }
+
+    function ocultarFormulario(){
+      panelForm.style.display = 'none';
+    }
+
+    function addMuestraToCarrito(id){
+      const up = (id||'').toUpperCase();
+      if (!up) return false;
+      
+      // Verificar si existe en los datos
+      const itemExists = datos.find(d => (d['ID']||'').toUpperCase() === up);
+      if (!itemExists) {
+        showNotification(`No se encontró la muestra con ID: ${up}`, true);
+        return false;
+      }
+      
+      if (!carrito.includes(up)){
+        carrito.push(up);
+        guardarCarrito();
+        renderTablaCarrito();
+        return true;
+      } else {
+        showNotification('Esta muestra ya está en el préstamo', true);
+        return false;
+      }
+    }
+
+    function removeMuestraFromCarrito(id){
+      carrito = carrito.filter(x => x !== id);
+      guardarCarrito();
+      renderTablaCarrito();
+      showNotification('Muestra removida del préstamo');
+    }
+
+    function renderTablaCarrito(){
+      tablaBody.innerHTML = '';
+      if (!carrito.length){
+        tablaBody.innerHTML = '<tr><td colspan="7" style="text-align:center;color:#777">Sin muestras aún. Escanee un QR o escriba el ID.</td></tr>';
+        ocultarFormulario();
+        return;
+      }
+      mostrarFormulario();
+
+      // construir filas con datos enriquecidos
+      carrito.forEach((id, idx) => {
+        const item = datos.find(d => (d['ID']||'').toUpperCase() === id);
+        const desc = item?.['DESCRIPCION'] || '';
+        const prov = item?.['PROVEEDOR'] || '';
+        const cod  = item?.['CODIGO'] || '';
+        const ubic = item?.['UBICACION'] || '';
+
+        const tr = document.createElement('tr');
+        tr.innerHTML = `
+          <td>${idx+1}</td>
+          <td>${id}</td>
+          <td>${desc}</td>
+          <td>${prov}</td>
+          <td>${cod}</td>
+          <td>${ubic}</td>
+          <td><button type="button" class="btn danger" data-remove="${id}">Quitar</button></td>
+        `;
+        tablaBody.appendChild(tr);
+      });
+
+      // preparar campo oculto para Formspree
+      const lines = carrito.map(id => {
+        const it = datos.find(d => (d['ID']||'').toUpperCase() === id);
+        return [
+          `ID: ${id}`,
+          `Descripción: ${it?.['DESCRIPCION']||''}`,
+          `Proveedor: ${it?.['PROVEEDOR']||''}`,
+          `Código: ${it?.['CODIGO']||''}`,
+          `Ubicación: ${it?.['UBICACION']||''}`
+        ].join(' | ');
+      });
+      muestrasHidden.value = lines.join('\n');
+
+      // listeners de quitar
+      tablaBody.querySelectorAll('button[data-remove]').forEach(btn=>{
+        btn.addEventListener('click', ()=> removeMuestraFromCarrito(btn.getAttribute('data-remove')));
+      });
+    }
+
+    btnSalir.addEventListener('click', ()=>{
+      if (carrito.length > 0 && !confirm('¿Estás seguro de que quieres salir? Se perderán todas las muestras agregadas.')) {
+        return;
+      }
+      
+      carrito = [];
+      guardarCarrito();
+      muestrasHidden.value = '';
+      formPrestamo.reset();
+      ocultarFormulario();
+      // volver al catálogo limpio
+      window.history.replaceState({}, '', window.location.pathname);
+      render(datos);
+      showNotification('Préstamo cancelado');
+    });
+
+    // Insertar fecha automática antes de enviar
     document.addEventListener('submit', function(e) {
-      if (e.target === formRegistro) {
+      if (e.target === formPrestamo) {
+        // agregar fecha/hora
         const dateInput = document.createElement('input');
         dateInput.type = 'hidden';
         dateInput.name = 'fecha';
         dateInput.value = new Date().toLocaleString();
-        e.target.appendChild(dateInput);
+        formPrestamo.appendChild(dateInput);
       }
     });
 
-    // ---- Demo: simular lectura de QR (cámbialo al integrar la cámara) ----
-    window.simularQR = function(url){ procesarQR(url); }
+    // Limpiar carrito al enviar OK (best-effort)
+    formPrestamo.addEventListener('submit', ()=>{
+      // Después de enviar, la navegación de Formspree recarga/dirige; por si vuelve:
+      sessionStorage.removeItem('carrito_muestras');
+      showNotification('Registro de préstamo enviado correctamente');
+    });
+
+    // ====== Modal de escáner ======
+    let html5QrCode = null;
+    let modalScanner;
+    function crearModalScanner(){
+      modalScanner = document.createElement('div');
+      modalScanner.className = 'modal';
+      modalScanner.innerHTML = `
+        <div class="box">
+          <h3>Escanear código</h3>
+          <div id="qr-reader"></div>
+          <div style="margin-top:10px; display:flex; gap:8px; justify-content:flex-end;">
+            <button class="btn alt" id="btnCerrarScan" type="button">Cerrar</button>
+          </div>
+        </div>
+      `;
+      document.body.appendChild(modalScanner);
+      const qrDiv = modalScanner.querySelector('#qr-reader');
+      modalScanner.querySelector('#btnCerrarScan').addEventListener('click', cerrarScanner);
+      modalScanner.addEventListener('click', (e)=>{ if(e.target===modalScanner) cerrarScanner(); });
+    }
+
+    async function abrirScanner(){
+      if (!modalScanner) crearModalScanner();
+      modalScanner.style.display = 'flex';
+      btnScan.disabled = true;
+      btnScan.innerHTML = '<span class="loader"></span> Iniciando cámara...';
+
+      if (!html5QrCode){
+        html5QrCode = new Html5Qrcode("qr-reader");
+      }
+      try {
+        await html5QrCode.start(
+          { facingMode: "environment" },
+          { fps: 10, qrbox: 250 },
+          async (decodedText) => {
+            // Al leer algo, intentar procesarlo
+            try {
+              showNotification('Procesando código escaneado...');
+              const result = await procesarURLPosiblementeCorta(decodedText);
+              if (result.type === 'id'){
+                if (addMuestraToCarrito(result.value)) {
+                  showNotification(`Muestra ${result.value} agregada correctamente`);
+                  cerrarScanner();
+                }
+              } else if (result.type === 'ubic'){
+                buscador.value = result.value;
+                aplicarFiltroTexto();
+                showNotification(`Filtrando por ubicación: ${result.value}`);
+                cerrarScanner();
+              } else {
+                showNotification('QR leído, pero no contiene ID ni UBICACIÓN reconocibles.', true);
+              }
+            } catch(err){
+              console.error(err);
+              showNotification('No se pudo procesar el QR.', true);
+            }
+          },
+          () => {} // verbose
+        ).catch(e => {
+          console.error("Error iniciando escáner:", e);
+          if (e && e.message && e.message.includes('Permission')) {
+            showNotification('Permiso de cámara denegado. Por favor, habilita los permisos de cámara en tu navegador.', true);
+          } else {
+            showNotification('No se pudo acceder a la cámara. Verifica los permisos.', true);
+          }
+          cerrarScanner();
+        });
+      } catch (e){
+        console.error("Error iniciando cámara:", e);
+        showNotification('No se pudo abrir la cámara. Verifica permisos del navegador.', true);
+        cerrarScanner();
+      }
+    }
+
+    async function cerrarScanner(){
+      if (html5QrCode){
+        try { await html5QrCode.stop(); } catch {}
+        try { await html5QrCode.clear(); } catch {}
+      }
+      if (modalScanner) modalScanner.style.display = 'none';
+      btnScan.disabled = false;
+      btnScan.innerHTML = '📷 Escanear QR';
+    }
+
+    btnScan.addEventListener('click', abrirScanner);
+
+    // ====== Modal para agregar manualmente ======
+    btnAddManual.addEventListener('click', () => {
+      modalManual.style.display = 'flex';
+      inputIdManual.value = '';
+      inputIdManual.focus();
+    });
+
+    btnCancelarManual.addEventListener('click', () => {
+      modalManual.style.display = 'none';
+    });
+
+    btnConfirmarManual.addEventListener('click', () => {
+      const id = inputIdManual.value.trim().toUpperCase();
+      if (!id) {
+        showNotification('Por favor, ingresa un ID de muestra', true);
+        return;
+      }
+      
+      if (addMuestraToCarrito(id)) {
+        modalManual.style.display = 'none';
+        mostrarFormulario();
+      }
+    });
+
+    inputIdManual.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter') {
+        btnConfirmarManual.click();
+      }
+    });
+
+    // Cerrar modal al hacer clic fuera
+    modalManual.addEventListener('click', (e) => {
+      if (e.target === modalManual) {
+        modalManual.style.display = 'none';
+      }
+    });
+
+    // ====== Carga CSV ======
+    function cargarDatos() {
+      Papa.parse(CSV_URL, {
+        download: true,
+        header: true,
+        skipEmptyLines: true,
+        complete: async function(res){
+          loading.style.display = 'none';
+          datos = (res.data || []).filter(r =>
+            (r['CODIGO'] && r['CODIGO'].trim()) ||
+            (r['DESCRIPCION'] && r['DESCRIPCION'].trim())
+          );
+
+          if (datos.length === 0) {
+            resultados.innerHTML = `
+              <div style="text-align:center; padding: 40px; color: #666;">
+                <p>No se pudieron cargar los datos del catálogo.</p>
+                <p>Verifica que el archivo datos.csv exista en la misma ubicación que este archivo HTML.</p>
+                <p>URL intentada: ${CSV_URL}</p>
+              </div>
+            `;
+            return;
+          }
+
+          // Render inicial
+          render(datos);
+
+          // restaurar carrito de sesión si existe
+          cargarCarrito();
+          if (carrito.length) mostrarFormulario();
+
+          // Soporte de entrada por parámetros
+          const singleId = params.get('id');
+          const ubic = params.get('ubicacion');
+
+          if (singleId){
+            buscador.value = singleId;
+            aplicarFiltroTexto();
+            addMuestraToCarrito(singleId.toUpperCase());
+            mostrarFormulario();
+          } else if (ubic){
+            buscador.value = ubic;
+            aplicarFiltroTexto();
+          }
+        },
+        error: function(err) {
+          console.error("Error cargando CSV:", err);
+          loading.style.display = 'none';
+          resultados.innerHTML = `
+            <div style="text-align:center; padding: 40px; color: #666;">
+              <p>Error cargando el catálogo: ${err.message || 'Error desconocido'}</p>
+              <p>Verifica que el archivo datos.csv esté disponible en: ${CSV_URL}</p>
+              <p>Si estás usando GitHub Pages, asegúrate de que ambos archivos estén en la misma carpeta del repositorio.</p>
+            </div>
+          `;
+        }
+      });
+    }
+
+    // Iniciar carga de datos
+    cargarDatos();
   </script>
 </body>
 </html>
-
