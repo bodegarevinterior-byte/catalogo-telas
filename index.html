@@ -1,149 +1,165 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Catálogo de Telas</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sistema Integrado de Inventario</title>
   <style>
-    :root {
-      --gap: 14px;
-      --radius: 12px;
-      --shadow: 0 2px 6px rgba(0,0,0,.1);
-      --bg: #f4f4f4;
-      --ink: #333;
-      --ink2: #555;
-      --brand: #1f6feb;
-      --brand-d: #1756b8;
-    }
-    * { box-sizing: border-box; }
-    body { margin:0; font-family:system-ui, Arial, sans-serif; background:var(--bg); color:var(--ink);}
-    header { background:#222; color:#fff; padding:16px; text-align:center;}
-    #controls { display:flex; gap:8px; justify-content:center; align-items:center; padding:12px var(--gap);
-      flex-wrap:wrap; background:#fff; box-shadow:var(--shadow);}
-    #buscador { flex:1 1 360px; max-width:520px; padding:10px 12px; border:1px solid #ddd; border-radius:8px; font-size:16px;}
-    .btn { padding:10px 14px; border:none; border-radius:8px; font-weight:600; cursor:pointer; color:#fff; background:var(--brand);}
-    .btn:hover { background:var(--brand-d);}
-    .btn.alt { background:#666;}
-    .btn.alt:hover { background:#4d4d4d;}
-    #resultados { display:grid; gap:var(--gap); padding:var(--gap); align-items:start;}
-    #resultados.lista-view { grid-template-columns:1fr;}
-    #resultados.grid-view { grid-template-columns: repeat(auto-fill, minmax(90px,1fr)); }
-    .card { background:#fff; border-radius:var(--radius); box-shadow:var(--shadow);
-      overflow:hidden; display:flex; flex-direction:column; transition:transform .15s ease;}
-    .card:hover { transform:translateY(-2px);}
-    .thumb { width:100%; height:200px; object-fit:cover; display:block; background:#eee;}
-    .content { padding:10px 12px;}
-    .title { margin:0 0 6px; font-size:16px; line-height:1.2;}
-    .meta { margin:4px 0; font-size:14px; color:var(--ink2);}
-    .link { margin-top:6px; display:inline-block; text-decoration:none; color:#fff; background:var(--brand);
-      padding:6px 10px; border-radius:8px; font-size:13px;}
-    #resultados.grid-view .thumb { height:120px;}
-    #resultados.grid-view .title { font-size:12px;}
-    #resultados.grid-view .meta { font-size:11px;}
+    body { margin:0; font-family: system-ui, Arial, sans-serif; background:#f4f4f4; color:#333; text-align:center; }
+    header { background:#222; color:#fff; padding:16px; font-size:20px; }
+    .menu, .muestras, .consultas, .orden { display:none; padding:20px; }
+    .active { display:block; }
+    .card { display:inline-block; width:200px; height:150px; margin:20px; background:#fff; border-radius:12px; box-shadow:0 2px 6px rgba(0,0,0,.1); cursor:pointer; transition:transform .2s; }
+    .card:hover { transform:scale(1.05); }
+    .card h2 { margin-top:50px; }
+    input, select { padding:10px; margin:6px 0; font-size:15px; border:1px solid #ccc; border-radius:8px; width:250px; }
+    button { padding:10px 14px; margin:10px; border:none; border-radius:8px; background:#1f6feb; color:#fff; cursor:pointer; }
+    button:hover { background:#1756b8; }
+    #resultadosMuestras, #resultadosInv { display:grid; gap:12px; padding:12px; grid-template-columns: repeat(auto-fill,minmax(180px,1fr)); }
+    .card-item { background:#fff; border-radius:12px; box-shadow:0 2px 6px rgba(0,0,0,.1); overflow:hidden; display:flex; flex-direction:column; }
+    .thumb { width:100%; height:150px; object-fit:cover; background:#eee; }
+    .content { padding:10px; text-align:left; }
   </style>
 </head>
 <body>
-  <header>
-    <h1>Catálogo de Telas</h1>
-    <a href="formulario.html" class="btn" style="margin-top:10px; display:inline-block;">📋 Crear formulario de muestras</a>
-  </header>
+  <header>Sistema Integrado de Inventario</header>
 
-  <div id="controls">
-    <input id="buscador" type="text" placeholder="Buscar por código, descripción, proveedor, ubicación o ID…" />
-    <button class="btn alt" id="btnLista" type="button">☰ Lista</button>
-    <button class="btn" id="btnGrid" type="button">🔲 Cuadrícula</button>
+  <!-- Menú principal -->
+  <div id="menu" class="menu active">
+    <div class="card" onclick="showSection('muestras')"><h2>Muestras</h2></div>
+    <div class="card" onclick="showSection('consultas')"><h2>Consultas</h2></div>
+    <div class="card" onclick="showSection('orden')"><h2>Orden de Salida</h2></div>
   </div>
 
-  <div id="resultados" class="lista-view"></div>
+  <!-- Muestras -->
+  <div id="muestras" class="muestras">
+    <h2>Catálogo de Muestras</h2>
+    <a href="formulario.html" class="btn" style="margin-top:10px; display:inline-block;">📋 Crear formulario de muestras</a>
+    <input id="buscadorMuestras" type="text" placeholder="Buscar muestras...">
+    <div id="resultadosMuestras"></div>
+    <button onclick="goHome()">Menú Inicial</button>
+  </div>
 
-  <!-- Libs -->
+  <!-- Consultas -->
+  <div id="consultas" class="consultas">
+    <h2>Consultas de Inventario</h2>
+    <input id="buscadorInv" type="text" placeholder="Código o descripción...">
+    <div id="resultadosInv"></div>
+    <button onclick="goHome()">Menú Inicial</button>
+  </div>
+
+  <!-- Orden de salida -->
+  <div id="orden" class="orden">
+    <h2>Crear Orden de Salida</h2>
+    <form id="ordenForm">
+      <label>Cliente:</label><br>
+      <input type="text" id="cliente" required><br>
+      <label>Fecha:</label><br>
+      <input type="text" id="fecha" readonly><br>
+      <label>Usuario:</label><br>
+      <select id="usuario">
+        <option value="Juan">Juan</option>
+        <option value="Ana">Ana</option>
+        <option value="Pedro">Pedro</option>
+      </select><br>
+    </form>
+    <button onclick="goHome()">Menú Inicial</button>
+  </div>
+
+  <!-- Scripts -->
   <script src="https://cdn.jsdelivr.net/npm/papaparse@5.4.1/papaparse.min.js"></script>
   <script>
-    const CSV_URL = './datos.csv';
-    const resultados = document.getElementById('resultados');
-    const buscador   = document.getElementById('buscador');
-    const btnLista   = document.getElementById('btnLista');
-    const btnGrid    = document.getElementById('btnGrid');
-    const params     = new URLSearchParams(window.location.search);
-    let datos = [];
-
-    function render(lista){
-      resultados.innerHTML = '';
-      if (!lista || !lista.length){
-        resultados.innerHTML = '<p style="text-align:center;color:#666;margin:24px 0">No se encontraron resultados</p>';
-        return;
+    // Funciones de navegación
+    function showSection(sec){
+      document.getElementById("menu").classList.remove("active");
+      document.getElementById("muestras").classList.remove("active");
+      document.getElementById("consultas").classList.remove("active");
+      document.getElementById("orden").classList.remove("active");
+      document.getElementById(sec).classList.add("active");
+      if(sec==='orden'){
+        document.getElementById('fecha').value = new Date().toISOString().split('T')[0];
       }
-      const frag = document.createDocumentFragment();
-      for (const item of lista){
-        const ID = item['ID'] || '';
-        const CODIGO = item['CODIGO'] || '';
-        const DESCRIPCION = item['DESCRIPCION'] || '';
-        const UBICACION = item['UBICACION'] || '';
-        const PROVEEDOR = item['PROVEEDOR'] || '';
-        const WEB = item['WEB SITE'] || '';
-        const IMG = item['IMAGEN'] || '';
-        if (!CODIGO && !DESCRIPCION) continue;
-        const card = document.createElement('div');
-        card.className = 'card';
-        card.innerHTML = `
-          <img class="thumb" src="${IMG}" alt="${DESCRIPCION}" loading="lazy" />
+    }
+    function goHome(){
+      document.getElementById("menu").classList.add("active");
+      document.getElementById("muestras").classList.remove("active");
+      document.getElementById("consultas").classList.remove("active");
+      document.getElementById("orden").classList.remove("active");
+      document.getElementById('buscadorMuestras').value = '';
+      document.getElementById('buscadorInv').value = '';
+      document.getElementById('resultadosMuestras').innerHTML = '';
+      document.getElementById('resultadosInv').innerHTML = '';
+    }
+
+    // === Módulo Muestras ===
+    const CSV_MUESTRAS = './datos_muestras.csv';
+    const resultadosMuestras = document.getElementById('resultadosMuestras');
+    const buscadorMuestras = document.getElementById('buscadorMuestras');
+    let datosMuestras = [];
+
+    Papa.parse(CSV_MUESTRAS, {
+      download:true,
+      header:true,
+      skipEmptyLines:true,
+      complete: function(res){ datosMuestras = res.data; renderMuestras(datosMuestras); }
+    });
+
+    function renderMuestras(lista){
+      resultadosMuestras.innerHTML='';
+      if(!lista.length){ resultadosMuestras.innerHTML='<p>No se encontraron resultados</p>'; return; }
+      lista.forEach(item=>{
+        const card = document.createElement('div'); card.className='card-item';
+        card.innerHTML=`<div class="content"><h3>${item['DESCRIPCION']}</h3><p>Código: ${item['CODIGO']}</p></div>`;
+        resultadosMuestras.appendChild(card);
+      });
+    }
+
+    buscadorMuestras.addEventListener('input', ()=>{
+      const t = buscadorMuestras.value.toLowerCase();
+      renderMuestras(datosMuestras.filter(d=>
+        (d['DESCRIPCION']||'').toLowerCase().includes(t) ||
+        (d['CODIGO']||'').toLowerCase().includes(t)
+      ));
+    });
+
+    // === Módulo Consultas ===
+    const CSV_INV = './datos_inventario.csv';
+    const resultadosInv = document.getElementById('resultadosInv');
+    const buscadorInv = document.getElementById('buscadorInv');
+    let datosInv = [];
+
+    Papa.parse(CSV_INV,{
+      download:true,
+      header:true,
+      skipEmptyLines:true,
+      complete:function(res){ datosInv=res.data; renderInv(datosInv); }
+    });
+
+    function renderInv(lista){
+      resultadosInv.innerHTML='';
+      if(!lista.length){ resultadosInv.innerHTML='<p>No se encontraron resultados</p>'; return; }
+      lista.forEach(item=>{
+        const imgUrl = `img/${item['Número de artículo']}.jpg`;
+        const card = document.createElement('div'); card.className='card-item';
+        card.innerHTML=`
+          <img class="thumb" src="${imgUrl}" alt="${item['Descripción del artículo']}">
           <div class="content">
-            <h3 class="title">${DESCRIPCION || CODIGO}</h3>
-            <p class="meta"><b>Código:</b> ${CODIGO}</p>
-            <p class="meta"><b>Ubicación:</b> ${UBICACION}</p>
-            <p class="meta"><b>Proveedor:</b> ${PROVEEDOR}</p>
-            <p class="meta"><b>ID:</b> ${ID}</p>
-            ${WEB ? `<a class="link" href="${WEB}" target="_blank" rel="noopener">Ver más</a>` : ''}
-          </div>
-        `;
-        frag.appendChild(card);
-      }
-      resultados.appendChild(frag);
+            <h3>${item['Descripción del artículo']}</h3>
+            <p><b>Número:</b> ${item['Número de artículo']}</p>
+            <p><b>En stock:</b> ${item['En stock']}</p>
+            <p><b>Disponible:</b> ${item['Disponible']}</p>
+            <p><b>Ubicación:</b> ${item['UBICACION']}</p>
+          </div>`;
+        resultadosInv.appendChild(card);
+      });
     }
 
-    function aplicarFiltroTexto(){
-      const t = (buscador.value || '').toLowerCase().trim();
-      if (!t){ render(datos); return; }
-      const filtrados = datos.filter(it =>
-        (it['CODIGO']||'').toLowerCase().includes(t) ||
-        (it['DESCRIPCION']||'').toLowerCase().includes(t) ||
-        (it['PROVEEDOR']||'').toLowerCase().includes(t) ||
-        (it['UBICACION']||'').toLowerCase().includes(t) ||
-        (it['ID']||'').toLowerCase().includes(t)
-      );
-      render(filtrados);
-    }
-
-    function setListView(){ resultados.classList.remove('grid-view'); resultados.classList.add('lista-view'); }
-    function setGridView(){ resultados.classList.remove('lista-view'); resultados.classList.add('grid-view'); }
-    btnLista.addEventListener('click', setListView);
-    btnGrid .addEventListener('click', setGridView);
-    buscador.addEventListener('input', aplicarFiltroTexto);
-
-    Papa.parse(CSV_URL, {
-      download: true,
-      header: true,
-      skipEmptyLines: true,
-      complete: function(res){
-        datos = (res.data || []).filter(r =>
-          (r['CODIGO'] && r['CODIGO'].trim()) ||
-          (r['DESCRIPCION'] && r['DESCRIPCION'].trim())
-        );
-
-        // Parámetros
-        const ide = params.get('id');
-        const ubic = params.get('ubicacion');
-
-        if (ide){
-          buscador.value = ide; // 👈 deja escrito en la caja
-          render(datos.filter(d => (d['ID']||'').toLowerCase() === ide.toLowerCase()));
-        } else if (ubic){
-          buscador.value = ubic; // 👈 deja escrito en la caja
-          render(datos.filter(d => (d['UBICACION']||'').toLowerCase().startsWith(ubic.toLowerCase())));
-        } else {
-          render(datos);
-        }
-      }
+    buscadorInv.addEventListener('input', ()=>{
+      const t = buscadorInv.value.toLowerCase();
+      renderInv(datosInv.filter(d=>
+        (d['Descripción del artículo']||'').toLowerCase().includes(t) ||
+        (d['Número de artículo']||'').toLowerCase().includes(t)
+      ));
     });
   </script>
 </body>
